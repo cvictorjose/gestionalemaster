@@ -8,16 +8,13 @@
         <div class="panel-heading">
             @lang('global.app_create')
         </div>
-
-
         
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-12 form-group">
 
-
                     {!! Form::label('lab_name', 'Laboratorio*', ['class' => 'control-label']) !!}
-                    {!! Form::text('lab_name', old('Laboratorio'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
+                    {!! Form::text('lab_name', old('Laboratorio'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('lab_name'))
                         <p class="help-block">

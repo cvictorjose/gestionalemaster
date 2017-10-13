@@ -26,11 +26,18 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    @if (Session::has('message'))
+                    @if (Session::has('flashMessage'))
+                        <div class="alert {{ Session::has('flashType') ? 'alert-'.session('flashType') : '' }}">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ session('flashMessage') }}
+                        </div>
+                    @endif
+
+                   {{-- @if (Session::has('message'))
                         <div class="note note-info">
                             <p>{{ Session::get('message') }}</p>
                         </div>
-                    @endif
+                    @endif--}}
                     @if ($errors->count() > 0)
                         <div class="note note-danger">
                             <ul class="list-unstyled">

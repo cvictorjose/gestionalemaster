@@ -3,18 +3,11 @@
 
 @section('content')
     {{--<h3 class="page-title">@lang('global.labs.title')</h3>--}}
-
-
     <div class="panel panel-default">
         <div class="panel-heading">
             @lang('global.app_list')
             <a href="{{ route('laboratorio.create') }}" class="btn btn-success">
-                @lang('global.app_add_new')</a><br>
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
+                @lang('global.app_add_new')</a>
         </div>
 
         <div class="panel-body table-responsive">
@@ -56,7 +49,7 @@
                                         'style' => 'display: inline-block;',
                                         'method' => 'DELETE',
                                         'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['admin.users.destroy', $lab->id])) !!}
+                                        'route' => ['laboratorio.destroy', $lab->id])) !!}
                                     {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
                                     {!! Form::close() !!}
                                 </td>

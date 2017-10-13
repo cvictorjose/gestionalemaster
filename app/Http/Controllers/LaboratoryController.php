@@ -27,12 +27,6 @@ class LaboratoryController extends Controller
     public function create()
     {
         return view('admin.laboratory.create');
-
-       /* if (! Gate::allows('users_manage')) {
-            return abort(401);
-        }
-        $roles = Role::get()->pluck('name', 'name');
-        return view('admin.laboratory.create', compact('roles'));*/
     }
 
 
@@ -59,6 +53,8 @@ class LaboratoryController extends Controller
                     'flashType'    => 'danger',
                     'flashMessage' => $status[0]
                 ];
+                return back()->withInput()->with($message);
+                //return redirect()->route('laboratorio.create')->with($message);
             } else {
                 try {
                     $lab = new Laboratory();
@@ -70,21 +66,44 @@ class LaboratoryController extends Controller
 
                     $message = [
                         'flashType'    => 'success',
-                        'flashMessage' => 'Laboratorio inserito'
+                        'flashMessage' => 'Laboratorio aggiunto con successo!'
                     ];
 
                 } catch (\Exception $e) {
-                    //  $status         = array('stat'=>'error', 'msg'=>'Errore - Laboratorio','mode'=>'add');
-
                     $message = [
                         'flashType'    => 'danger',
-                        'flashMessage' => 'Errore! Laboratorio'
+                        'flashMessage' => 'Errore! Controllare i dati di inserimento del Laboratorio'
                     ];
                 }
             }
         }
+        return redirect()->route('laboratorio.index')->with($message);
+    }
 
-        return redirect()->route('laboratorio.index')->with('success', 'Laboratorio creato con successo!');
+    /**
+     * Remove Lab from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        /*if (! Gate::allows('users_manage')) {
+            return abort(401);
+        }*/
 
+
+
+
+
+        try {
+            $lab = Laboratory::findOrFail($id);
+            $lab->delete();
+            //da controllare se ce anche nel round o altri tb
+            //Story::where('user_id',$result->_id)->delete();
+            return redirect()->route('laboratorio.index');
+        } catch (Exception $e) {
+            return $this->createCodeMessageError($e);
+        }
     }
 }
