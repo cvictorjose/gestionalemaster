@@ -32,6 +32,8 @@ class Laboratory extends Model
      *
      * @return mixed
      */
+
+
     protected function checkCodeLab($code){
         try {
             return Laboratory::where('icar_code', $code)->get()->isNotEmpty();

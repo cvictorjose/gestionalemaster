@@ -35,15 +35,15 @@ class LaboratoryController extends Controller
         $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); exit;
         if(!empty($inputData) && count($inputData)> 0) {
             $rules = [
-                'icar_code' => 'required',
-                'lab_name'  => 'required'
+                'icar_code' => 'required|unique:laboratory',
+                'lab_name'  => 'required|min:3|max:100',
             ];
 
             $messages = [
                 'required' => 'Controllare tutti i campi obbligatori (*).',
-                'unique'   => strtoupper(':attribute_busy'),
-                'max'      => strtoupper(':attribute_too_long'),
-                'min'      => strtoupper(':attribute_too_short')
+                'unique'   => 'Il codice del laboratorio esiste sul DB',
+                'max'      => 'Il nome del laboratorio deve avere massimo 10 caratteri',
+                'min'      => 'Il nome del laboratorio deve avere minimo 3 caratteri'
             ];
             $validator = Validator::make(Input::all(), $rules, $messages);
             if ($validator->fails())
@@ -56,20 +56,32 @@ class LaboratoryController extends Controller
                 return back()->withInput()->with($message);
                 //return redirect()->route('laboratorio.create')->with($message);
             } else {
-                try {
-                    $lab = new Laboratory();
-                    $lab->icar_code = Input::get('icar_code');
-                    $lab->lab_name  = Input::get('lab_name');
-                    $lab->status    = (Input::get('status'))? '1' : '0';
-                    $lab->save();
-                    //$status         = array('stat'=>'ok', 'msg'=>'Laboratorio aggiunto','mode'=>'add');
 
-                    $message = [
-                        'flashType'    => 'success',
-                        'flashMessage' => 'Laboratorio aggiunto con successo!'
-                    ];
+                try {
+
+                   $checkCode=Laboratory::checkCodeLab(Input::get('icar_code'));
+                    if ($checkCode) {
+                        $message = [
+                            'flashType'    => 'danger',
+                            'flashMessage' => 'Il codice del laboratorio esiste gia nel DB'
+                        ];
+                        return back()->withInput()->with($message);
+                    }else{
+                        $lab = new Laboratory();
+                        $lab->icar_code = Input::get('icar_code');
+                        $lab->lab_name  = Input::get('lab_name');
+                        $lab->status    = (Input::get('status'))? '1' : '0';
+                        $lab->save();
+                        //$status         = array('stat'=>'ok', 'msg'=>'Laboratorio aggiunto','mode'=>'add');
+
+                        $message = [
+                            'flashType'    => 'success',
+                            'flashMessage' => 'Laboratorio aggiunto con successo!'
+                        ];
+                    }
 
                 } catch (\Exception $e) {
+                    //log
                     $message = [
                         'flashType'    => 'danger',
                         'flashMessage' => 'Errore! Controllare i dati di inserimento del Laboratorio'
@@ -88,14 +100,6 @@ class LaboratoryController extends Controller
      */
     public function destroy($id)
     {
-        /*if (! Gate::allows('users_manage')) {
-            return abort(401);
-        }*/
-
-
-
-
-
         try {
             $lab = Laboratory::findOrFail($id);
             $lab->delete();
@@ -103,7 +107,7 @@ class LaboratoryController extends Controller
             //Story::where('user_id',$result->_id)->delete();
             return redirect()->route('laboratorio.index');
         } catch (Exception $e) {
-            return $this->createCodeMessageError($e);
+            //log
         }
     }
 }

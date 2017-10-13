@@ -14,7 +14,7 @@
                 <div class="col-xs-12 form-group">
 
                     {!! Form::label('lab_name', 'Laboratorio*', ['class' => 'control-label']) !!}
-                    {!! Form::text('lab_name', old('Laboratorio'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::text('lab_name', old('Laboratorio'), ['class' => 'form-control', 'placeholder' => 'Inserisci il Nome']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('lab_name'))
                         <p class="help-block">
@@ -25,7 +25,7 @@
 
                 <div class="col-xs-12 form-group">
                     {!! Form::label('icar_code', 'Codice Laboratorio*', ['class' => 'control-label']) !!}
-                    {!! Form::text('icar_code', old('Codice Laboratorio'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
+                    {!! Form::text('icar_code', old('Codice Laboratorio'), ['class' => 'form-control', 'placeholder' => 'Inserisci il codice', 'required' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('icar_code'))
                         <p class="help-block">
@@ -37,12 +37,6 @@
                 <div class="col-xs-12 form-group">
                     {!! Form::label('status', 'Status', ['class' => 'control-label']) !!}
                     {!! Form::checkbox('status', old('Status'), ['class' => 'form-control', 'placeholder' => '', 'required' => '', 'value' => '0']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('status'))
-                        <p class="help-block">
-                            {{ $errors->first('status') }}
-                        </p>
-                    @endif
                 </div>
             </div>
         </div>
