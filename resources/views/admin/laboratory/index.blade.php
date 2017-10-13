@@ -11,10 +11,11 @@
         </div>
 
         <div class="panel-body table-responsive">
-            <table class="table table-bordered table-striped {{ count($labs) > 0 ? 'datatable' : '' }} dt-select">
+            {{--<table class="table table-bordered table-striped {{ count($labs) > 0 ? 'datatable' : '' }} dt-datatable">--}}
+            <table class="table table-bordered table-striped datatable">
                 <thead>
                     <tr>
-                        <th style="text-align:center;"><input type="checkbox" id="select-all" /></th>
+                        {{--<th style="text-align:center;"><input type="checkbox" id="select-all" /></th>--}}
 
                         {{--<th>@lang('global.users.fields.name')</th>
                         <th>@lang('global.users.fields.email')</th>
@@ -35,9 +36,7 @@
                     @if (count($labs) > 0)
                         @foreach ($labs as $lab)
                             <tr data-entry-id="{{ $lab->id }}">
-
-                                <td></td>
-
+                                {{--<td></td>--}}
                                 <td>{{ $lab->id  }}</td>
                                 <td>{{ $lab->icar_code }}</td>
                                 <td><a href="{{ url('/laboratorio', $lab->id) }}">{{ $lab->lab_name }}</a></td>
@@ -53,7 +52,6 @@
                                     {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
                                     {!! Form::close() !!}
                                 </td>
-
                             </tr>
                         @endforeach
                     @else
@@ -67,8 +65,9 @@
     </div>
 @stop
 
+{{--
 @section('javascript') 
     <script>
-        window.route_mass_crud_entries_destroy = '{{ route('admin.users.mass_destroy') }}';
+        window.route_mass_crud_entries_destroy = '{{ url('laboratorio.massDestroy') }}';
     </script>
-@endsection
+@endsection--}}

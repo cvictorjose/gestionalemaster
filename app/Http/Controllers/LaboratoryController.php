@@ -110,4 +110,25 @@ class LaboratoryController extends Controller
             //log
         }
     }
+
+
+    /**
+     * Delete all selected User at once.
+     *
+     * @param Request $request
+     */
+    public function massDestroy(Request $request)
+    {
+        if ($request->input('ids')) {
+            $entries = Laboratory::whereIn('id', $request->input('ids'))->get();
+
+            return $entries;
+
+            foreach ($entries as $entry) {
+                $entry->delete();
+            }
+        }
+
+        return "null";
+    }
 }
