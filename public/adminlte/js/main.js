@@ -19,42 +19,42 @@ $(document).ready(function () {
         "iDisplayLength": 100,
         "aaSorting": [],
         buttons: [
-            {
-                extend: 'copy',
-                exportOptions: {
-                    columns: ':visible',
-                    format: {
-                        body: handleCheckboxes
-                    }
-                }
-            },
-            {
-                extend: 'csv',
-                exportOptions: {
-                    columns: ':visible',
-                    format: {
-                        body: handleCheckboxes
-                    }
-                }
-            },
-            {
-                extend: 'excel',
-                exportOptions: {
-                    columns: ':visible',
-                    format: {
-                        body: handleCheckboxes
-                    }
-                }
-            },
-            {
-                extend: 'pdf',
-                exportOptions: {
-                    columns: ':visible',
-                    format: {
-                        body: handleCheckboxes
-                    }
-                }
-            },
+            //{
+            //    extend: 'copy',
+            //    exportOptions: {
+            //        columns: ':visible',
+            //        format: {
+            //            body: handleCheckboxes
+            //        }
+            //    }
+            //},
+            //{
+            //    extend: 'csv',
+            //    exportOptions: {
+            //        columns: ':visible',
+            //        format: {
+            //            body: handleCheckboxes
+            //        }
+            //    }
+            //},
+            //{
+            //    extend: 'excel',
+            //    exportOptions: {
+            //        columns: ':visible',
+            //        format: {
+            //            body: handleCheckboxes
+            //        }
+            //    }
+            //},
+            //{
+            //    extend: 'pdf',
+            //    exportOptions: {
+            //        columns: ':visible',
+            //        format: {
+            //            body: handleCheckboxes
+            //        }
+            //    }
+            //},
             {
                 extend: 'print',
                 exportOptions: {
