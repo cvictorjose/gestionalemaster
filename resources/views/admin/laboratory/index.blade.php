@@ -9,7 +9,12 @@
         <div class="panel-heading">
             @lang('global.app_list')
             <a href="{{ route('laboratorio.create') }}" class="btn btn-success">
-                @lang('global.app_add_new')</a>
+                @lang('global.app_add_new')</a><br>
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
         </div>
 
         <div class="panel-body table-responsive">

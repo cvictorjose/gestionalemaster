@@ -21,6 +21,8 @@
     window._token = '{{ csrf_token() }}';
 </script>
 
-
+<script>
+    $('div.alert').delay(3000).slideUp(300);
+</script>
 
 @yield('javascript')

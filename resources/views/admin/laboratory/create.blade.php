@@ -8,46 +8,46 @@
         <div class="panel-heading">
             @lang('global.app_create')
         </div>
+
+
         
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('name', 'Name*', ['class' => 'control-label']) !!}
-                    {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('name'))
-                        <p class="help-block">
-                            {{ $errors->first('name') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('password', 'Password*', ['class' => 'control-label']) !!}
-                    {!! Form::password('password', ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
+
+                    {!! Form::label('lab_name', 'Laboratorio*', ['class' => 'control-label']) !!}
+                    {!! Form::text('lab_name', old('Laboratorio'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('password'))
+                    @if($errors->has('lab_name'))
                         <p class="help-block">
-                            {{ $errors->first('password') }}
+                            {{ $errors->first('lab_name') }}
+                        </p>
+                    @endif
+                </div>
+
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('icar_code', 'Codice Laboratorio*', ['class' => 'control-label']) !!}
+                    {!! Form::text('icar_code', old('Codice Laboratorio'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('icar_code'))
+                        <p class="help-block">
+                            {{ $errors->first('icar_code') }}
+                        </p>
+                    @endif
+                </div>
+
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('status', 'Status', ['class' => 'control-label']) !!}
+                    {!! Form::checkbox('status', old('Status'), ['class' => 'form-control', 'placeholder' => '', 'required' => '', 'value' => '0']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('status'))
+                        <p class="help-block">
+                            {{ $errors->first('status') }}
                         </p>
                     @endif
                 </div>
             </div>
-            <div class="row">
-                {{--<div class="col-xs-12 form-group">
-                    {!! Form::label('roles', 'Roles*', ['class' => 'control-label']) !!}
-                    {!! Form::select('roles[]', $roles, old('roles'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'required' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('roles'))
-                        <p class="help-block">
-                            {{ $errors->first('roles') }}
-                        </p>
-                    @endif
-                </div>--}}
-            </div>
-            
         </div>
     </div>
 
