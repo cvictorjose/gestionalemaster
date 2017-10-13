@@ -22,3 +22,13 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Laboratory::class, function (Faker\Generator $faker) {
+
+    return [
+        'icar_code' => $faker->randomNumber(),
+        'lab_name' => 'LAB-'.$faker->userName,
+        'status'=> '1',
+    ];
+});
+

@@ -1,6 +1,6 @@
 @inject('request', 'Illuminate\Http\Request')
 <!-- Left side column. contains the sidebar -->
-<aside class="main-sidebar">
+<aside class="main-sidebar" >
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <ul class="sidebar-menu">
@@ -11,7 +11,14 @@
                     <span class="title">@lang('global.app_dashboard')</span>
                 </a>
             </li>
-            
+
+            <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
+                <a href="{{ url('/laboratorio') }}">
+                    <i class="fa fa-wrench"></i>
+                    <span class="title">@lang('global.labs.title')</span>
+                </a>
+            </li>
+
             @can('users_manage')
             <li class="treeview">
                 <a href="#">
