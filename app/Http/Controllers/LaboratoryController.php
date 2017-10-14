@@ -30,6 +30,85 @@ class LaboratoryController extends Controller
     }
 
 
+    /**
+     * Show the form for editing Lab.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        try {
+            $lab = Laboratory::findOrFail($id);
+            return view('admin.laboratory.edit', compact('lab'));
+        } catch (Exception $e) {
+            //log
+        }
+    }
+
+
+    /**
+     * Update Lab in storage.
+     *
+     * @param    $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $lab = Laboratory::find($id);
+        $inputData = $request->only('icar_code','lab_name','status');
+
+        if(!empty($inputData) && count($inputData)> 0) {
+            $rules = [
+                'icar_code' => 'required|unique:laboratory,icar_code,'. $id,
+                'lab_name'  => 'required|min:3|max:100',
+            ];
+            $messages = [
+                'required' => 'Controllare tutti i campi obbligatori (*).',
+                'unique'   => 'Il codice del laboratorio esiste sul DB',
+                'max'      => 'Il nome del laboratorio deve avere massimo 100 caratteri',
+                'min'      => 'Il nome del laboratorio deve avere minimo 3 caratteri'
+            ];
+            $validator = Validator::make(Input::all(), $rules, $messages);
+            if ($validator->fails())
+            {
+                $status   =  $validator->errors()->all();
+                $message = [
+                    'flashType'    => 'danger',
+                    'flashMessage' => $status[0]
+                ];
+                return back()->withInput()->with($message);
+            }
+            else {
+                foreach($inputData as $column => $value)
+                {
+                    if($value!=null)
+                        switch ($column){
+                            default:
+                                $lab->{$column}=$value;
+                                break;
+                        }
+                }
+                $lab->status  = (Input::get('status'))? '1' : '0';
+                $lab->save();
+
+                $message = [
+                    'flashType'    => 'success',
+                    'flashMessage' => 'Laboratorio aggiornato',
+                    'mode'=>'edit'
+                ];
+            }
+        }
+        return redirect()->route('laboratorio.edit', ['id' => $id])->with($message);
+    }
+
+    /**
+     * Store a newly created Lab in storage.
+     *
+     * @param
+     * @return \Illuminate\Http\Response
+     */
     public function store()
     {
         $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); exit;
@@ -42,7 +121,7 @@ class LaboratoryController extends Controller
             $messages = [
                 'required' => 'Controllare tutti i campi obbligatori (*).',
                 'unique'   => 'Il codice del laboratorio esiste sul DB',
-                'max'      => 'Il nome del laboratorio deve avere massimo 10 caratteri',
+                'max'      => 'Il nome del laboratorio deve avere massimo 100 caratteri',
                 'min'      => 'Il nome del laboratorio deve avere minimo 3 caratteri'
             ];
             $validator = Validator::make(Input::all(), $rules, $messages);
@@ -58,7 +137,6 @@ class LaboratoryController extends Controller
             } else {
 
                 try {
-
                    $checkCode=Laboratory::checkCodeLab(Input::get('icar_code'));
                     if ($checkCode) {
                         $message = [
@@ -112,23 +190,4 @@ class LaboratoryController extends Controller
     }
 
 
-    /**
-     * Delete all selected User at once.
-     *
-     * @param Request $request
-     */
-    public function massDestroy(Request $request)
-    {
-        if ($request->input('ids')) {
-            $entries = Laboratory::whereIn('id', $request->input('ids'))->get();
-
-            return $entries;
-
-            foreach ($entries as $entry) {
-                $entry->delete();
-            }
-        }
-
-        return "null";
-    }
 }

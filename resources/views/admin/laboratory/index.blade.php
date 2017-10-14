@@ -16,7 +16,6 @@
                 <thead>
                     <tr>
                         {{--<th style="text-align:center;"><input type="checkbox" id="select-all" /></th>--}}
-
                         {{--<th>@lang('global.users.fields.name')</th>
                         <th>@lang('global.users.fields.email')</th>
                         <th>@lang('global.users.fields.roles')</th>
@@ -28,7 +27,6 @@
                         <th>Status</th>
                         <th>Registrato</th>
                         <th>Azione</th>
-
                     </tr>
                 </thead>
                 
@@ -39,11 +37,11 @@
                                 {{--<td></td>--}}
                                 <td>{{ $lab->id  }}</td>
                                 <td>{{ $lab->icar_code }}</td>
-                                <td><a href="{{ url('/laboratorio', $lab->id) }}">{{ $lab->lab_name }}</a></td>
+                                <td>{{ $lab->lab_name }}</td>
                                 <td>{{ ($lab->status > 0) ? 'activo' : 'disattivato' }}</td>
                                 <td>{{ $lab->created_at }}</td>
                                 <td>
-                                    <a href="{{ route('admin.users.edit',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    <a href="{{ route('laboratorio.edit',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
                                     {!! Form::open(array(
                                         'style' => 'display: inline-block;',
                                         'method' => 'DELETE',
@@ -66,7 +64,7 @@
 @stop
 
 {{--
-@section('javascript') 
+@section('javascript')
     <script>
         window.route_mass_crud_entries_destroy = '{{ url('laboratorio.massDestroy') }}';
     </script>
