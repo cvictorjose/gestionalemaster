@@ -1,3 +1,4 @@
+
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
@@ -23,6 +24,66 @@
 
 <script>
     $('div.alert').delay(3000).slideUp(300);
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+<script type="text/javascript">
+    var url = "{{ route('typeahead.response') }}";
+    $('#search_text').typeahead({
+
+
+        /*source: function (query, process) {
+            var $this = this //get a reference to the typeahead object
+            return $.get(url, { query: query }, function (data) {
+                var options = [];
+                $this["map"] = {}; //replace any existing map attr with an empty object
+                $.each(data,function (i,val){
+                    options.push(val.lab_name);
+                    $this.map[val.lab_name] = val.id; //keep reference from name -> id
+                });
+                return process(options);
+            });
+        },
+        updater: function (item) {
+            console.log(this.map[item],item); //access it here
+            $('.search_text').val(this.map[item],item);
+        }*/
+
+
+        source: function (query, process) {
+            states = [];
+            map = {};
+
+            return $.get(url, { query: query }, function (data) {
+
+            $.each(data, function (i, state) {
+                map[state.lab_name] = state;
+                states.push(state.lab_name);
+            });
+            console.log(data);
+            process(states);
+
+            });
+        },
+
+        matcher: function (item) {
+            if (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1) {
+                return true;
+            }
+        },
+
+        updater: function (item) {
+            $('#invisible_id').attr('value', map[item].id);
+            return item;
+        }
+
+        /*source:  function (query, process) {
+            return $.get(url, { query: query }, function (data) {
+                return process(data);
+            });
+        }*/
+    });
 </script>
 
 @yield('javascript')

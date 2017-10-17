@@ -189,5 +189,24 @@ class LaboratoryController extends Controller
         }
     }
 
+    public function ajaxData(Request $request)
+    {
+        $query = $request->get('query','');
+        $posts = Laboratory::where('lab_name','LIKE','%'.$query.'%')->get();
+        return $posts;
+
+       /* $query = $request->get('query','');
+        $posts = Laboratory::where('lab_name','LIKE','%'.$query.'%')->get();
+
+        $data=array();
+        foreach ($posts as $product) {
+            $data[]=$product->lab_name;
+        }
+        if(count($data))
+            return $data;
+        else
+            return ['value'=>'No Result Found','id'=>''];*/
+    }
+
 
 }

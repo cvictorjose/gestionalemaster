@@ -29,3 +29,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 
 });
 Route::resource('laboratorio', 'LaboratoryController');
+Route::resource('round', 'RoundController');
+
+
+
+Route::get('typeahead-response',array('as'=>'typeahead.response','uses'=>'LaboratoryController@ajaxData'));

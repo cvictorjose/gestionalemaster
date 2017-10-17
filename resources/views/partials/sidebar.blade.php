@@ -14,8 +14,15 @@
 
             <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/laboratorio') }}">
-                    <i class="fa fa-wrench"></i>
+                    <i class="fa fa-stethoscope"></i>
                     <span class="title">@lang('global.labs.title')</span>
+                </a>
+            </li>
+
+            <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
+                <a href="{{ url('/round') }}">
+                    <i class="fa fa-stethoscope"></i>
+                    <span class="title">@lang('global.round.title')</span>
                 </a>
             </li>
 
