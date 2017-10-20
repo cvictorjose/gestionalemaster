@@ -24,11 +24,67 @@
 
 <script>
     $('div.alert').delay(3000).slideUp(300);
+
+
+    $(document).ready(function() {
+
+
+
+        $('.js-data-example-ajax').select2({
+            ajax: {
+                url: '/typeahead-response',
+                data: function (params) {
+                    var query = {
+                        query: params.term,
+                        type: 'public'
+                    }
+
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+
+       /* $('.js-data-example-ajax').select2({
+
+            ajax: {
+                url: '/typeahead-response',
+                processResults: function (data) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    return {
+
+                        results: data.items
+                    };
+                }
+            }
+
+           /!* ajax: {
+                url: '/typeahead-response',
+                data: function (params) {
+                    var query = {
+                        query: params.term,
+                        type: 'public'
+                    }
+
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }*!/
+        });*/
+
+
+
+
+    });
+
+
+
 </script>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-<script type="text/javascript">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>--}}
+{{--<script type="text/javascript">
     var url = "{{ route('typeahead.response') }}";
     $('#search_text').typeahead({
 
@@ -84,6 +140,9 @@
             });
         }*/
     });
-</script>
+</script>--}}
+
+
+
 
 @yield('javascript')

@@ -193,7 +193,17 @@ class LaboratoryController extends Controller
     {
         $query = $request->get('query','');
         $posts = Laboratory::where('lab_name','LIKE','%'.$query.'%')->get();
-        return $posts;
+
+        $results= array();
+
+        foreach ($posts as $p){
+            $new= new \stdClass();
+            $new->id  =$p->id;
+            $new->text=$p->lab_name;
+            $results[]=$new;
+        }
+        return response()->json(['results' => $results]);
+//        return $posts;
 
        /* $query = $request->get('query','');
         $posts = Laboratory::where('lab_name','LIKE','%'.$query.'%')->get();

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2751c4cd8772dfdc6d17da51b322a70e",
+    "content-hash": "11b9c39426e8b15cbd3856de28e0dea4",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2590,6 +2590,41 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "vsn4ik/bootstrap-checkbox",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vsn4ik/bootstrap-checkbox.git",
+                "reference": "1f0fb3ff49cf41f318d56a53b50db3d463d85ec0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vsn4ik/bootstrap-checkbox/zipball/1f0fb3ff49cf41f318d56a53b50db3d463d85ec0",
+                "reference": "1f0fb3ff49cf41f318d56a53b50db3d463d85ec0",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vasily A.",
+                    "homepage": "https://github.com/vsn4ik"
+                }
+            ],
+            "description": "A checkbox component based on Bootstrap framework",
+            "homepage": "http://vsn4ik.github.io/bootstrap-checkbox",
+            "keywords": [
+                "bootstrap",
+                "checkbox",
+                "jquery-plugin",
+                "switch"
+            ],
+            "time": "2017-09-09T09:42:04+00:00"
         }
     ],
     "packages-dev": [
@@ -4069,7 +4104,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "vsn4ik/bootstrap-checkbox": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

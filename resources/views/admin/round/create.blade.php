@@ -1,77 +1,124 @@
 @extends('layouts.app')
 
+<?php
+$today = date("my");
+?>
+
 @section('content')
     {!! Form::open(['method' => 'POST', 'route' => ['round.store']]) !!}
-    {{ Form::hidden('idLab', 'secret', array('id' => 'invisible_id')) }}
+
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_create')
+            <h4>@lang('global.app_create') Round</h4>
         </div>
 
         <div class="panel-body">
-            <div class="panel panel-primary">
-                <div class="panel-heading">Example of Bootstrap Typeahead Autocomplete Search Textbox</div>
-                <div class="panel-body">
-                    <div class="col-xs-3 form-group">
+            <div class="row">
+                <div class="col-xs-2 form-group">
+                    {!! Form::label('Code', 'Codice Round*', ['class' => 'control-label']) !!}
+                    {!! Form::text('code_round',$today, ['class' => 'form-control', 'placeholder' => 'Inserisci il Code Round' ]) !!}
+                </div>
 
-                        {!! Form::label('Code', 'Codice Round*', ['class' => 'control-label']) !!}
-                        {!! Form::text('code_round', old('Laboratorio'), ['class' => 'form-control', 'placeholder' => 'Inserisci il Code Round']) !!}
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('Lab', 'Laboratorio*', ['class' => 'control-label']) !!}
+                    <select class="js-data-example-ajax" style="width: 100%" name="laboratory_id"></select>
+                </div>
 
+                <div class="col-xs-12 form-group">
+                    <h4>{!! Form::label('Code', 'Data results received on time', ['class' => 'control-label']) !!}</h4>
 
-                    </div>
-
-                    <div class="col-xs-12 form-group">
-                        {!! Form::label('Lab', 'Laboratorio*', ['class' => 'control-label']) !!}
-                        {!! Form::text('search_text', null, array('placeholder' => 'Search Text','class' => 'form-control','id'=>'search_text')) !!}
-
-                    </div>
-
-
-                    <div class="col-xs-12 form-group">
-                        {!! Form::label('Code', 'esta es la prima domanda', ['class' => 'control-label']) !!}
-                        <div class="col-xs-3 input-group">
-                            <span class="input-group-addon">
-                              <input type="radio"  id="domanda1" name="domanda1">
-                            </span>
-                            {!! Form::label('Code', 'Domanda 1', ['class' => 'form-control']) !!}
-                        </div>
-
-                        <div class="col-xs-3 input-group">
-                            <span class="input-group-addon">
-                              <input type="radio" id="domanda1" name="domanda1">
-                            </span>
-                            {!! Form::label('Code', 'Domanda 2', ['class' => 'form-control']) !!}
+                    <div class="col-xs-3 input-group">
+                        <div class="btn-group btn-group-vertical" data-toggle="buttons">
+                            <label class="btn active">
+                                <input type="radio" name='results_received' checked><i class="fa fa-circle-o
+                                fa-2x"></i><i
+                                        class="fa fa-dot-circle-o fa-2x"></i> <span>  Si</span>
+                            </label>
+                            <label class="btn">
+                                <input type="radio" name='results_received'><i class="fa fa-circle-o fa-2x"></i><i class="fa
+                                fa-dot-circle-o fa-2x"></i><span> No</span>
+                            </label>
                         </div>
                     </div>
+                </div>
 
 
-                    <div class="col-xs-12 form-group">
-                        {!! Form::label('Code', 'TEST', ['class' => 'control-label']) !!}
+                <div class="col-xs-12 form-group">
+                    <h4>{!! Form::label('Code', 'Scegli i test', ['class' => 'control-label']) !!}</h4>
 
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-4">Descrizione del Test</th>
+                                <th>Are all the sample results received?</th>
+                                <th>Have you sent the data with the correct units of measurements?</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
                         @if (count($tests) > 0)
                             @foreach ($tests as $test)
-                                <div class="col-xs-3 input-group">
-                                    <span class="input-group-addon">
-                                      <input type="checkbox"  id="{{ $test->code }}" name="{{ $test->code }}">
-                                    </span>
-                                    {!! Form::label('Code', $test->code, ['class' => 'form-control']) !!}
-                                </div>
+                                <tr data-entry-id="{{ $test->id }}">
+                                    <td>
+                                        <div class="btn-group btn-group" data-toggle="buttons">
+                                            <label class="btn active">
+                                                <input type="checkbox" name='{{ $test->code }}' >
+                                                <i class="fa fa-square-o fa-2x"></i>
+                                                <i class="fa fa-check-square-o fa-2x"></i><span> {{ $test->code }}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-vertical" data-toggle="buttons">
+                                            <label class="btn ">
+                                                <input type="radio" name='question1_{{ $test->code }}' value="1">
+                                                <i class="fa fa-circle-o fa-2x"></i>
+                                                <i class="fa fa-dot-circle-o fa-2x"></i>
+                                                <span style="padding-right: 5px;">Si</span>
+                                            </label>
+
+                                            <label class="btn active">
+                                                <input type="radio" name='question1_{{ $test->code }}' checked
+                                                       value="0">
+                                                <i class="fa fa-circle-o fa-2x"></i>
+                                                <i class="fa fa-dot-circle-o fa-2x"></i> <span>No</span>
+                                            </label>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="btn-group btn-group-vertical" data-toggle="buttons">
+                                            <label class="btn ">
+                                                <input type="radio" name='question2_{{ $test->code }}' value="1">
+                                                <i class="fa fa-circle-o fa-2x"></i>
+                                                <i class="fa fa-dot-circle-o fa-2x"></i>
+                                                <span style="padding-right: 5px;">Si</span>
+                                            </label>
+
+                                            <label class="btn active ">
+                                                <input type="radio" name='question2_{{ $test->code }}' checked
+                                                       value="0">
+                                                <i class="fa fa-circle-o fa-2x"></i>
+                                                <i class="fa fa-dot-circle-o fa-2x"></i> <span>No</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                         @else
                             <tr>
                                 <td colspan="9">@lang('global.app_no_entries_in_table')</td>
                             </tr>
                         @endif
-
-
-
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
+            {!! Form::close() !!}
         </div>
     </div>
-
-    {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
-    {!! Form::close() !!}
+    </div>
 @stop
 
