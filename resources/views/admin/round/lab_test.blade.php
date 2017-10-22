@@ -15,8 +15,10 @@
                 <thead>
                     <tr>
                         <th>Codice Round</th>
-                        <th>Laboratorio</th>
-
+                        <th>Code Test</th>
+                        <th>Sample results received?</th>
+                        <th>Correct units of measurements?</th>
+                        <th>Registrato?</th>
                         <th>Azione</th>
                     </tr>
                 </thead>
@@ -26,11 +28,14 @@
 
                         <tr data-entry-id="{{ $lab->id }}">
                             <td>{{ $lab->code_round }}</td>
-                            <td>{{ $lab->laboratory_id }}</td>
+                            <td>{{ $lab->code_test }}</td>
+                            <td>{{ $lab->question1 }}</td>
+                            <td>{{ $lab->question2 }}</td>
+                            <td>{{ $lab->created_at }}</td>
 
                             <td>
-                                <a href="{{ route('round_lab_test') }}" class="btn btn-xs btn-info">@lang('global.app_view')</a>
-                                <a href="{{ route('round.edit',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_report')</a>
+                                <a href="{{ route('round_lab_test') }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+
                                 {!! Form::open(array(
                                         'style' => 'display: inline-block;',
                                         'method' => 'POST',

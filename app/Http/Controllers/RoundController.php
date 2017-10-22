@@ -39,8 +39,6 @@ class RoundController extends Controller
     {
         try {
             $labs = Round::select('code_round','laboratory_id')->distinct()->get();
-
-            
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
@@ -49,6 +47,30 @@ class RoundController extends Controller
         }
         return view('admin.round.labs', compact('labs'));
     }
+
+
+    /**
+     * Load all Test of single Lab
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function roundLabTest()
+    {
+        try {
+            $labs = Round::where('laboratory_id','15')->Where('code_round', '1017')->get();
+
+
+        } catch (\Exception $e) {
+            $message = [
+                'flashType'    => 'danger',
+                'flashMessage' => 'Errore! Laboratorio'
+            ];
+        }
+        return view('admin.round.lab_test', compact('labs'));
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.

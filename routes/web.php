@@ -31,7 +31,10 @@ Route::resource('laboratorio', 'LaboratoryController');
 //ROUND
 Route::resource('round', 'RoundController');
 Route::get('round_labs',array('as'=>'round_labs','uses'=>'RoundController@roundlab'));
+Route::get('round_lab_test',array('as'=>'round_lab_test','uses'=>'RoundController@roundLabTest'));
 Route::post('round_destroy',array('as'=>'round_destroy','uses'=>'RoundController@destroyRound'));
+
+
 
 //AUTOCOMPLETE
 Route::get('typeahead-response',array('as'=>'typeahead.response','uses'=>'LaboratoryController@ajaxData'));
