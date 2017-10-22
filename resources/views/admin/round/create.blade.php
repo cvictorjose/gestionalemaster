@@ -1,9 +1,5 @@
 @extends('layouts.app')
-
-<?php
-$today = date("my");
-?>
-
+<?php $today = date("my");?>
 @section('content')
     {!! Form::open(['method' => 'POST', 'route' => ['round.store']]) !!}
 
@@ -29,15 +25,16 @@ $today = date("my");
 
                     <div class="col-xs-3 input-group">
                         <div class="btn-group btn-group-vertical" data-toggle="buttons">
-                            <label class="btn active">
-                                <input type="radio" name='results_received' checked><i class="fa fa-circle-o
-                                fa-2x"></i><i
-                                        class="fa fa-dot-circle-o fa-2x"></i> <span>  Si</span>
-                            </label>
-                            <label class="btn">
-                                <input type="radio" name='results_received'><i class="fa fa-circle-o fa-2x"></i><i class="fa
-                                fa-dot-circle-o fa-2x"></i><span> No</span>
-                            </label>
+
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="happy0"
+                                       data-title="1">YES</a>
+                                    <a class="btn btn-primary btn-sm active" data-toggle="happy0"
+                                       data-title="0">NO</a>
+                                </div>
+                                <input type="hidden" name="results_received" id="happy0" value="0">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -48,11 +45,11 @@ $today = date("my");
 
                     <table class="table table-bordered table-striped">
                         <thead>
-                            <tr>
-                                <th class="col-xs-4">Descrizione del Test</th>
-                                <th>Are all the sample results received?</th>
-                                <th>Have you sent the data with the correct units of measurements?</th>
-                            </tr>
+                        <tr>
+                            <th class="col-xs-4">Descrizione del Test</th>
+                            <th>Are all the sample results received?</th>
+                            <th>Have you sent the data with the correct units of measurements?</th>
+                        </tr>
                         </thead>
 
                         <tbody>
@@ -60,47 +57,50 @@ $today = date("my");
                             @foreach ($tests as $test)
                                 <tr data-entry-id="{{ $test->id }}">
                                     <td>
-                                        <div class="btn-group btn-group" data-toggle="buttons">
+                                       {{-- <div class="btn-group btn-group" data-toggle="buttons">
                                             <label class="btn active">
                                                 <input type="checkbox" name='{{ $test->code }}' >
                                                 <i class="fa fa-square-o fa-2x"></i>
                                                 <i class="fa fa-check-square-o fa-2x"></i><span> {{ $test->code }}
                                             </label>
+                                        </div>--}}
+
+                                        <div class="funkyradio-default">
+                                            <input type="checkbox" name="{{ $test->code }}" id="{{ $test->code }}" />
+                                            <label for="checkbox1">{{ $test->code }}</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-vertical" data-toggle="buttons">
-                                            <label class="btn ">
-                                                <input type="radio" name='question1_{{ $test->code }}' value="1">
-                                                <i class="fa fa-circle-o fa-2x"></i>
-                                                <i class="fa fa-dot-circle-o fa-2x"></i>
-                                                <span style="padding-right: 5px;">Si</span>
-                                            </label>
-
-                                            <label class="btn active">
-                                                <input type="radio" name='question1_{{ $test->code }}' checked
-                                                       value="0">
-                                                <i class="fa fa-circle-o fa-2x"></i>
-                                                <i class="fa fa-dot-circle-o fa-2x"></i> <span>No</span>
-                                            </label>
+                                            <div class="input-group">
+                                                <div id="radioBtn" class="btn-group">
+                                                    <a class="btn btn-primary btn-sm notActive"
+                                                        data-toggle="happy_{{ $test->code }}"
+                                                       data-title="1" >YES</a>
+                                                    <a class="btn btn-primary btn-sm active" data-toggle="happy_{{ $test->code }}"
+                                                       data-title="0">NO</a>
+                                                </div>
+                                                <input type="hidden" name="question1_{{ $test->code }}" id="happy_{{
+                                                $test->code }}" value="0">
+                                            </div>
                                         </div>
                                     </td>
 
                                     <td>
                                         <div class="btn-group btn-group-vertical" data-toggle="buttons">
-                                            <label class="btn ">
-                                                <input type="radio" name='question2_{{ $test->code }}' value="1">
-                                                <i class="fa fa-circle-o fa-2x"></i>
-                                                <i class="fa fa-dot-circle-o fa-2x"></i>
-                                                <span style="padding-right: 5px;">Si</span>
-                                            </label>
 
-                                            <label class="btn active ">
-                                                <input type="radio" name='question2_{{ $test->code }}' checked
-                                                       value="0">
-                                                <i class="fa fa-circle-o fa-2x"></i>
-                                                <i class="fa fa-dot-circle-o fa-2x"></i> <span>No</span>
-                                            </label>
+                                            <div class="input-group">
+                                                <div id="radioBtn" class="btn-group">
+                                                    <a class="btn btn-primary btn-sm notActive" data-toggle="happy2_{{
+                                                    $test->code }}"
+                                                       data-title="1">YES</a>
+                                                    <a class="btn btn-primary btn-sm active"
+                                                       data-toggle="happy2_{{ $test->code }}"
+                                                       data-title="0">NO</a>
+                                                </div>
+                                                <input type="hidden" name="question2_{{ $test->code }}" id="happy2_{{
+                                                $test->code }}" value="0">
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -114,8 +114,7 @@ $today = date("my");
                     </table>
                 </div>
             </div>
-
-            {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
+            {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-success']) !!}
             {!! Form::close() !!}
         </div>
     </div>

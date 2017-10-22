@@ -114,7 +114,7 @@ class RoundController extends Controller
                             $item->code_test   = $ct->code;
                             $item->question1   = Input::get('question1_'.$ct->code)? '1' : '0';
                             $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
-                            $item->save();
+                           // $item->save();
                         }
                     }
                     $message = [
