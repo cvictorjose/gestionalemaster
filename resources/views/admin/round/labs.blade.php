@@ -17,18 +17,34 @@
                         <th>Codice Round</th>
                         <th>Laboratorio</th>
                         <th>Registrato</th>
+                        <th>Modificato</th>
                         <th>Azione</th>
                     </tr>
                 </thead>
                 <tbody>
                 @if (count($labs) > 0)
                     @foreach ($labs as $lab)
+
                         <tr data-entry-id="{{ $lab->id }}">
                             <td>{{ $lab->code_round }}</td>
                             <td>{{ $lab->laboratory_id }}</td>
                             <td>{{ $lab->created_at }}</td>
+                            <td>{{ $lab->updated_at }}</td>
                             <td>
-                                <a href="{{ route('laboratorio.edit',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                <a href="{{ route('round.edit',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'POST',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['round_destroy'])) !!}
+                                {{ csrf_field() }}
+
+                                <input name="lab_id" type="hidden" value={{$lab->laboratory_id}}>
+                                <input name="lab_round" type="hidden" value={{$lab->code_round}}>
+                                {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                {!! Form::close() !!}
+
+                                {{--<a href="{{ route('round.report',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>--}}
                             </td>
                         </tr>
                     @endforeach

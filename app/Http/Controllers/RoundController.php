@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\CodeTest;
 use App\Round;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
@@ -40,7 +39,7 @@ class RoundController extends Controller
     public function roundlab()
     {
         try {
-            $labs = Round::select('code_round','created_at','laboratory_id')->distinct()->get();
+            $labs = Round::select('code_round','created_at','updated_at','laboratory_id')->distinct()->get();
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
@@ -102,8 +101,6 @@ class RoundController extends Controller
 
                 try {
                     $code_test= CodeTest::where('status','1')->get(['code']);
-
-
                     foreach ($code_test as $ct){
 
                         $test_active  = (Input::get($ct->code))? 1 : 0;
@@ -119,8 +116,6 @@ class RoundController extends Controller
                             $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
                             $item->save();
                         }
-
-
                     }
                     $message = [
                         'flashType'    => 'success',
@@ -175,13 +170,25 @@ class RoundController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove Round from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroyRound()
     {
-        //
+        $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+        $lab_id=$inputData['lab_id'];
+        $lab_round=$inputData['lab_round'];
+
+       try {
+          $data = Round::where('laboratory_id',$lab_id)->Where('code_round', $lab_round)->get();
+           foreach ($data as $d){
+               $d->delete();
+           }
+            return redirect()->route('round_labs');
+        } catch (Exception $e) {
+            //log
+        }
     }
 }
