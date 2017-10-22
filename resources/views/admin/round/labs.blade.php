@@ -16,8 +16,7 @@
                     <tr>
                         <th>Codice Round</th>
                         <th>Laboratorio</th>
-                        <th>Registrato</th>
-                        <th>Modificato</th>
+
                         <th>Azione</th>
                     </tr>
                 </thead>
@@ -28,10 +27,9 @@
                         <tr data-entry-id="{{ $lab->id }}">
                             <td>{{ $lab->code_round }}</td>
                             <td>{{ $lab->laboratory_id }}</td>
-                            <td>{{ $lab->created_at }}</td>
-                            <td>{{ $lab->updated_at }}</td>
+
                             <td>
-                                <a href="{{ route('round.edit',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                <a href="{{ route('round.edit',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_report')</a>
                                 {!! Form::open(array(
                                         'style' => 'display: inline-block;',
                                         'method' => 'POST',

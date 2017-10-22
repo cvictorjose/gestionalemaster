@@ -38,7 +38,9 @@ class RoundController extends Controller
     public function roundlab()
     {
         try {
-            $labs = Round::select('code_round','created_at','updated_at','laboratory_id')->distinct()->get();
+            $labs = Round::select('code_round','laboratory_id')->distinct()->get();
+
+            
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
@@ -141,7 +143,7 @@ class RoundController extends Controller
                             'flashType'    => 'danger',
                             'flashMessage' => 'Devi spuntare almeno 1 Test'
                         ];
-                    
+
                     $message = [
                         'flashType'    => 'success',
                         'flashMessage' => 'Round aggiunto con successo!'
