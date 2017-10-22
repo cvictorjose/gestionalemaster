@@ -15,18 +15,20 @@
                 <thead>
                     <tr>
                         <th>Codice Round</th>
-                        <th>Numero Laboratori</th>
+                        <th>Laboratorio</th>
+                        <th>Registrato</th>
                         <th>Azione</th>
                     </tr>
                 </thead>
                 <tbody>
-                @if (count($rounds) > 0)
-                    @foreach ($rounds as $round)
-                        <tr data-entry-id="{{ $round->id }}">
-                            <td>{{ $round->code_round }}</td>
-                            <td>3 dafare</td>
+                @if (count($labs) > 0)
+                    @foreach ($labs as $lab)
+                        <tr data-entry-id="{{ $lab->id }}">
+                            <td>{{ $lab->code_round }}</td>
+                            <td>{{ $lab->laboratory_id }}</td>
+                            <td>{{ $lab->created_at }}</td>
                             <td>
-                                <a href="{{ route('round_labs') }}" class="btn btn-xs btn-info">@lang('global.labs.det_labs')</a>
+                                <a href="{{ route('laboratorio.edit',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
                             </td>
                         </tr>
                     @endforeach

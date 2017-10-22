@@ -24,13 +24,13 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('roles_mass_destroy', ['uses' => 'Admin\RolesController@massDestroy', 'as' => 'roles.mass_destroy']);
     Route::resource('users', 'Admin\UsersController');
     Route::post('users_mass_destroy', ['uses' => 'Admin\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
-
-    //LABORATORY
-
 });
+//LABORATORY
 Route::resource('laboratorio', 'LaboratoryController');
+
+//ROUND
 Route::resource('round', 'RoundController');
+Route::get('round_labs',array('as'=>'round_labs','uses'=>'RoundController@roundlab'));
 
-
-
+//AUTOCOMPLETE
 Route::get('typeahead-response',array('as'=>'typeahead.response','uses'=>'LaboratoryController@ajaxData'));

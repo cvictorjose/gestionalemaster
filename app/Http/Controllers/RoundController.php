@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class RoundController extends Controller
 {
-   //call carica all labo d un round -- $rounds = Round::select('code_round','created_at','laboratory_id')->distinct()->get();
+    //call carica all labo d un round -- $rounds = Round::select('code_round','created_at','laboratory_id')->distinct()->get();
 
     /**
      * Display a listing of the resource.
@@ -21,9 +21,7 @@ class RoundController extends Controller
     public function index()
     {
         try {
-            $rounds = Round::select('code_round','created_at','laboratory_id')->distinct()->get();
-
-
+            $rounds = Round::select('code_round')->distinct()->get();
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
@@ -31,6 +29,25 @@ class RoundController extends Controller
             ];
         }
      return view('admin.round.index', compact('rounds'));
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function roundlab()
+    {
+        try {
+            $labs = Round::select('code_round','created_at','laboratory_id')->distinct()->get();
+        } catch (\Exception $e) {
+            $message = [
+                'flashType'    => 'danger',
+                'flashMessage' => 'Errore! Laboratorio'
+            ];
+        }
+        return view('admin.round.labs', compact('labs'));
     }
 
     /**
