@@ -25,4 +25,23 @@ class Round extends Model
     protected $hidden = [
         'created_at', 'updated_at',
     ];
+
+    /**
+     * Controlla se un Test è stato già registrato
+     *
+     * @var array
+     */
+    public static function TestChecked($data){
+        try {
+           $results = Round::where('laboratory_id',$data['lab'])->Where('code_round', $data['round'])->get();
+            foreach ($results as $r){
+                if ($data['test']==$r->code_test) return 1;
+            }
+            return 0;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+
 }

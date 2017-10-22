@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class RoundController extends Controller
 {
-    //call carica all labo d un round -- $rounds = Round::select('code_round','created_at','laboratory_id')->distinct()->get();
 
     /**
      * Display a listing of the resource.
@@ -75,7 +74,7 @@ class RoundController extends Controller
      */
     public function store(Request $request)
     {
-        $inputData  = Input::all(); echo "<pre>"; print_r($inputData); //exit;
+        $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
         if(!empty($inputData) && count($inputData)> 0) {
             $rules = [
                 'laboratory_id' => 'required',
@@ -101,26 +100,54 @@ class RoundController extends Controller
 
                 try {
                     $code_test= CodeTest::where('status','1')->get(['code']);
+                    $test_spuntati=0;
                     foreach ($code_test as $ct){
-
                         $test_active  = (Input::get($ct->code))? 1 : 0;
-
                         if ($test_active == 1){
-                            echo "entro-----".$ct->code;
-                            $item = new Round();
-                            $item->laboratory_id         = Input::get('laboratory_id');
-                            $item->code_round            = Input::get('code_round');
-                            $item->results_received      = Input::get('results_received')? '1' : '0';
-                            $item->code_test   = $ct->code;
-                            $item->question1   = Input::get('question1_'.$ct->code)? '1' : '0';
-                            $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
-                           // $item->save();
+
+                            $checkData= array(
+                                'test' =>$ct->code,
+                                'lab'  =>Input::get('laboratory_id'),
+                                'round'=>Input::get('code_round')
+                            );
+
+                            $checkData2=Round::TestChecked($checkData);
+
+                            echo $checkData2;
+
+                            if ($checkData2<1){
+
+                                $test_spuntati=1;
+                                $item = new Round();
+                                $item->laboratory_id         = Input::get('laboratory_id');
+                                $item->code_round            = Input::get('code_round');
+                                $item->results_received      = Input::get('results_received')? '1' : '0';
+                                $item->code_test   = $ct->code;
+                                $item->question1   = Input::get('question1_'.$ct->code)? '1' : '0';
+                                $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
+                                $item->save();
+                            }else{
+                                $message = [
+                                    'flashType'    => 'danger',
+                                    'flashMessage' => 'Il Code Test spuntato esiste gia sul DB'
+                                ];
+                                return back()->withInput()->with($message);
+                            }
                         }
                     }
+
+                    if ($test_spuntati<1)
+                        $message = [
+                            'flashType'    => 'danger',
+                            'flashMessage' => 'Devi spuntare almeno 1 Test'
+                        ];
+                    
                     $message = [
                         'flashType'    => 'success',
                         'flashMessage' => 'Round aggiunto con successo!'
                     ];
+
+                    return back()->withInput()->with($message);
 
                 } catch (\Exception $e) {
                     //log

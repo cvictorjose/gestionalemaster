@@ -49,11 +49,6 @@
 
 <style type="text/css">
 
-      .disabled {
-            pointer-events: none;
-            cursor: default;
-      }
-
       .funkyradio div {
             clear: both;
             overflow: hidden;

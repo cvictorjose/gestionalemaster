@@ -15,17 +15,17 @@
                     {!! Form::text('code_round',$today, ['class' => 'form-control', 'placeholder' => 'Inserisci il Code Round' ]) !!}
                 </div>
 
-                <div class="col-xs-12 form-group">
+                <div class="col-xs-10 form-group">
                     {!! Form::label('Lab', 'Laboratorio*', ['class' => 'control-label']) !!}
                     <select class="js-data-example-ajax" style="width: 100%" name="laboratory_id"></select>
                 </div>
 
                 <div class="col-xs-12 form-group">
-                    <h4>{!! Form::label('Code', 'Data results received on time', ['class' => 'control-label']) !!}</h4>
+                    <h4>{!! Form::label('Code', 'Data results', ['class' => 'control-label']) !!}</h4>
 
-                    <div class="col-xs-3 input-group">
+                    <div class="col-xs-2 ">
+                        <label>Ricevuti in tempo?</label>
                         <div class="btn-group btn-group-vertical" data-toggle="buttons">
-
                             <div class="input-group">
                                 <div id="radioBtn" class="btn-group">
                                     <a class="btn btn-primary btn-sm notActive" data-toggle="happy0"
@@ -37,12 +37,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-2 input-group">
+                        <label>Quando?</label>
+                        <input class="date form-control" type="text" name="date" size="20" placeholder="Scegli la data">
+                    </div>
                 </div>
 
 
                 <div class="col-xs-12 form-group">
                     <h4>{!! Form::label('Code', 'Scegli i test', ['class' => 'control-label']) !!}</h4>
-
                     <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
@@ -57,14 +60,6 @@
                             @foreach ($tests as $test)
                                 <tr data-entry-id="{{ $test->id }}">
                                     <td>
-                                       {{-- <div class="btn-group btn-group" data-toggle="buttons">
-                                            <label class="btn active">
-                                                <input type="checkbox" name='{{ $test->code }}' >
-                                                <i class="fa fa-square-o fa-2x"></i>
-                                                <i class="fa fa-check-square-o fa-2x"></i><span> {{ $test->code }}
-                                            </label>
-                                        </div>--}}
-
                                         <div class="funkyradio-default">
                                             <input type="checkbox" name="{{ $test->code }}" id="{{ $test->code }}" />
                                             <label for="checkbox1">{{ $test->code }}</label>
@@ -88,7 +83,6 @@
 
                                     <td>
                                         <div class="btn-group btn-group-vertical" data-toggle="buttons">
-
                                             <div class="input-group">
                                                 <div id="radioBtn" class="btn-group">
                                                     <a class="btn btn-primary btn-sm notActive" data-toggle="happy2_{{

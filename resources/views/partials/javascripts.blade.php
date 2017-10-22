@@ -20,14 +20,10 @@
 <script src="{{ url('adminlte/js/app.min.js') }}"></script>
 <script>
     window._token = '{{ csrf_token() }}';
-</script>
 
-<script>
     $('div.alert').delay(3000).slideUp(300);
 
-
     $(document).ready(function() {
-
         $('.js-data-example-ajax').select2({
             ajax: {
                 url: '/typeahead-response',
@@ -36,7 +32,6 @@
                         query: params.term,
                         type: 'public'
                     }
-
                     // Query parameters will be ?search=[term]&type=public
                     return query;
                 }
@@ -47,48 +42,13 @@
             var sel = $(this).data('title');
             var tog = $(this).data('toggle');
             $('#'+tog).prop('value', sel);
-
             $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
             $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
         })
 
-
-
-
-       /* $('.js-data-example-ajax').select2({
-
-            ajax: {
-                url: '/typeahead-response',
-                processResults: function (data) {
-                    // Tranforms the top-level key of the response object from 'items' to 'results'
-                    return {
-
-                        results: data.items
-                    };
-                }
-            }
-
-           /!* ajax: {
-                url: '/typeahead-response',
-                data: function (params) {
-                    var query = {
-                        query: params.term,
-                        type: 'public'
-                    }
-
-                    // Query parameters will be ?search=[term]&type=public
-                    return query;
-                }
-            }*!/
-        });*/
-
-
-
-
+        $('.date').datepicker({
+            dateFormat: 'yy/mm/dd'});
     });
-
-
-
 </script>
 
 
@@ -151,8 +111,6 @@
         }*/
     });
 </script>--}}
-
-
 
 
 @yield('javascript')
