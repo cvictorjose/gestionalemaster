@@ -62,21 +62,21 @@
                                     <td>
                                         <div class="funkyradio-default">
                                             <input type="checkbox" name="{{ $test->code }}" id="{{ $test->code }}" />
-                                            <label for="checkbox1">{{ $test->code }}</label>
+                                            <label for="checkbox1">{{strtoupper($test->code) }}</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-vertical" data-toggle="buttons">
                                             <div class="input-group">
                                                 <div id="radioBtn" class="btn-group">
-                                                    <a class="btn btn-primary btn-sm notActive"
+                                                    <a class="btn btn-primary btn-sm active"
                                                         data-toggle="happy_{{ $test->code }}"
                                                        data-title="1" >YES</a>
-                                                    <a class="btn btn-primary btn-sm active" data-toggle="happy_{{ $test->code }}"
+                                                    <a class="btn btn-primary btn-sm notActive" data-toggle="happy_{{ $test->code }}"
                                                        data-title="0">NO</a>
                                                 </div>
                                                 <input type="hidden" name="question1_{{ $test->code }}" id="happy_{{
-                                                $test->code }}" value="0">
+                                                $test->code }}" value="1">
                                             </div>
                                         </div>
                                     </td>
@@ -85,15 +85,15 @@
                                         <div class="btn-group btn-group-vertical" data-toggle="buttons">
                                             <div class="input-group">
                                                 <div id="radioBtn" class="btn-group">
-                                                    <a class="btn btn-primary btn-sm notActive" data-toggle="happy2_{{
+                                                    <a class="btn btn-primary btn-sm active" data-toggle="happy2_{{
                                                     $test->code }}"
                                                        data-title="1">YES</a>
-                                                    <a class="btn btn-primary btn-sm active"
+                                                    <a class="btn btn-primary btn-sm notActive"
                                                        data-toggle="happy2_{{ $test->code }}"
                                                        data-title="0">NO</a>
                                                 </div>
                                                 <input type="hidden" name="question2_{{ $test->code }}" id="happy2_{{
-                                                $test->code }}" value="0">
+                                                $test->code }}" value="1">
                                             </div>
                                         </div>
                                     </td>

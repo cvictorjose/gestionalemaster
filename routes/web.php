@@ -31,9 +31,11 @@ Route::resource('laboratorio', 'LaboratoryController');
 //ROUND
 Route::resource('round', 'RoundController');
 Route::get('round_labs',array('as'=>'round_labs','uses'=>'RoundController@roundlab'));
-Route::get('round_lab_test',array('as'=>'round_lab_test','uses'=>'RoundController@roundLabTest'));
+Route::post('round_lab_test',array('as'=>'round_lab_test','uses'=>'RoundController@roundLabTest'));
+Route::put('update_round_lab',array('as'=>'update_round_lab','uses'=>'RoundController@updateRoundLab'));
 Route::post('round_destroy',array('as'=>'round_destroy','uses'=>'RoundController@destroyRound'));
-
+Route::post('round_destroy_test',array('as'=>'round_destroy_test','uses'=>'RoundController@destroySingleTest'));
+Route::post('round_report',array('as'=>'round_report','uses'=>'RoundController@roundReport'));
 
 
 //AUTOCOMPLETE

@@ -24,7 +24,7 @@
                     @foreach ($rounds as $round)
                         <tr data-entry-id="{{ $round->id }}">
                             <td>{{ $round->code_round }}</td>
-                            <td>3 dafare</td>
+                            <td>{{ $total_labs}}</td>
                             <td>
                                 <a href="{{ route('round_labs') }}" class="btn btn-xs btn-info">@lang('global.labs.det_labs')</a>
                             </td>

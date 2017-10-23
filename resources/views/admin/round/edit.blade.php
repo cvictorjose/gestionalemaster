@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    {!! Form::model($lab, ['method' => 'PUT', 'route' => ['laboratorio.update', $lab->id]]) !!}
+    {!! Form::model($lab, ['method' => 'PUT', 'route' => ['round.update', $lab->id]]) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">

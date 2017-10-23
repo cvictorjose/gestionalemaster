@@ -34,21 +34,16 @@
                             <td>{{ $lab->created_at }}</td>
 
                             <td>
-                                <a href="{{ route('round_lab_test') }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
-
                                 {!! Form::open(array(
                                         'style' => 'display: inline-block;',
                                         'method' => 'POST',
                                         'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['round_destroy'])) !!}
+                                        'route' => ['round_destroy_test'])) !!}
                                 {{ csrf_field() }}
 
-                                <input name="lab_id" type="hidden" value={{$lab->laboratory_id}}>
-                                <input name="lab_round" type="hidden" value={{$lab->code_round}}>
+                                <input name="id" type="hidden" value={{$lab->id}}>
                                 {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
                                 {!! Form::close() !!}
-
-                                {{--<a href="{{ route('round.report',[$lab->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>--}}
                             </td>
                         </tr>
                     @endforeach

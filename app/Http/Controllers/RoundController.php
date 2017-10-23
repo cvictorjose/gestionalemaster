@@ -20,13 +20,15 @@ class RoundController extends Controller
     {
         try {
             $rounds = Round::select('code_round')->distinct()->get();
+            $labs   = Round::select('laboratory_id')->distinct()->get();
+            $total_labs = count($labs);
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-     return view('admin.round.index', compact('rounds'));
+     return view('admin.round.index', compact('rounds', 'total_labs'));
     }
 
 
@@ -57,9 +59,10 @@ class RoundController extends Controller
     public function roundLabTest()
     {
         try {
-            $labs = Round::where('laboratory_id','15')->Where('code_round', '1017')->get();
-
-
+            $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+            $lab_id=$inputData['lab_id'];
+            $lab_round=$inputData['lab_round'];
+            $labs = Round::where('laboratory_id',$lab_id)->Where('code_round', $lab_round)->get();
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
@@ -68,8 +71,6 @@ class RoundController extends Controller
         }
         return view('admin.round.lab_test', compact('labs'));
     }
-
-
 
 
     /**
@@ -136,11 +137,7 @@ class RoundController extends Controller
                             );
 
                             $checkData2=Round::TestChecked($checkData);
-
-                            echo $checkData2;
-
                             if ($checkData2<1){
-
                                 $test_spuntati=1;
                                 $item = new Round();
                                 $item->laboratory_id         = Input::get('laboratory_id');
@@ -186,27 +183,7 @@ class RoundController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -215,9 +192,20 @@ class RoundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateRoundLab()
     {
-        //
+       /* try {
+            $inputData  = Input::all(); // echo "<pre>"; print_r($inputData); //exit;
+            $lab_id=$inputData['lab_id'];
+            $lab_round=$inputData['lab_round'];
+
+            $lab = Round::where('laboratory_id',$lab_id)->Where('code_round', $lab_round)->get();
+
+            return $lab;
+            //return view('admin.round.edit', compact('lab'));
+        } catch (Exception $e) {
+            //log
+        }*/
     }
 
     /**
@@ -237,7 +225,36 @@ class RoundController extends Controller
            foreach ($data as $d){
                $d->delete();
            }
-            return redirect()->route('round_labs');
+           $message = [
+               'flashType'    => 'success',
+               'flashMessage' => 'Laboratorio eliminato con successo!'
+           ];
+           return redirect()->route('round_labs')->with($message);
+        } catch (Exception $e) {
+            //log
+        }
+    }
+
+    /**
+     * Remove Round from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroySingleTest()
+    {
+        $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+        $id=$inputData['id'];
+
+        try {
+            $t = Round::find($id);
+            $t->delete();
+            $message = [
+                'flashType'    => 'success',
+                'flashMessage' => 'Test eliminato con successo!'
+            ];
+            return redirect()->route('round_labs')->with($message);
+
         } catch (Exception $e) {
             //log
         }
