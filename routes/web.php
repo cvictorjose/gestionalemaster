@@ -37,7 +37,7 @@ Route::post('round_destroy',array('as'=>'round_destroy','uses'=>'RoundController
 Route::post('round_destroy_test',array('as'=>'round_destroy_test','uses'=>'RoundController@destroySingleTest'));
 
 //REPORT
-Route::get('round_report',array('as'=>'round_report','uses'=>'ReportController@roundReport'));
+Route::post('round_report',array('as'=>'round_report','uses'=>'ReportController@roundReport'));
 
 
 //AUTOCOMPLETE

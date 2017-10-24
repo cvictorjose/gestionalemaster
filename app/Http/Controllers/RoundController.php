@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CodeTest;
+use App\Laboratory;
 use App\Round;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -40,7 +41,18 @@ class RoundController extends Controller
     public function roundlab()
     {
         try {
-            $labs = Round::select('code_round','laboratory_id')->distinct()->get();
+            $data = Round::select('code_round','laboratory_id')->distinct()->get();
+            $labs=array();
+            foreach ($data as $l){
+                $icar= Laboratory::find($l->laboratory_id);
+                $pcNew=new \stdClass();
+                $pcNew->code_round    = $l->code_round;
+                $pcNew->laboratory_id = $l->laboratory_id;
+                $pcNew->icar_code     = $icar->icar_code;
+                $pcNew->lab_name     = $icar->lab_name;
+                $labs[]=$pcNew;
+            }
+
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',

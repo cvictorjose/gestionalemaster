@@ -13,7 +13,7 @@ class Data extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['icar_code', 'round'];
     /**
      * The attributes that should be hidden for arrays.
      *

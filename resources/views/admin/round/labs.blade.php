@@ -23,11 +23,22 @@
                 <tbody>
                 @if (count($labs) > 0)
                     @foreach ($labs as $lab)
-                        <tr data-entry-id="{{ $lab->id }}">
+                        <tr data-entry-id="{{ $lab->laboratory_id }}">
                             <td>{{ $lab->code_round }}</td>
-                            <td>{{ $lab->laboratory_id }}</td>
+                            <td>{{ $lab->lab_name }}</td>
                             <td>
-                                <a href="{{ route('round_report') }}" class="btn btn-xs btn-success">@lang('global.app_report')</a>
+                                {{--REPORT BUTTON--}}
+                                {!! Form::open(array(
+                                       'style' => 'display: inline-block;',
+                                       'method' => 'POST',
+                                       'route' => ['round_report'])) !!}
+                                {{ csrf_field() }}
+                                <input name="lab_id" type="hidden" value={{ $lab->laboratory_id }}>
+                                <input name="icar" type="hidden" value={{ $lab->icar_code }}>
+                                <input name="round" type="hidden" value={{ $lab->code_round }}>
+                                {!! Form::submit(trans('global.app_report'), array('class' => 'btn btn-xs btn-success')) !!}
+                                {!! Form::close() !!}
+
                             </td>
                             <td>
                                 {{--details test--}}

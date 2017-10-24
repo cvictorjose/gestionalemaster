@@ -1,13 +1,81 @@
 @inject('request', 'Illuminate\Http\Request')
+
+<?php
+
+
+if (count($data) > 0){
+    $protein_ref_labcode=$fat_ref_labcode=$lactose_ref_labcode=$urea_ref_labcode=$scc_ref_labcode=$bhb_ref_labcode="&nbsp;";
+    $protein_ref_x100=$fat_ref_x100=$lactose_ref_x100=$urea_ref_x100=$scc_ref_x100=$bhb_ref_x100="&nbsp;";
+    $protein_ref_dev=$fat_ref_dev=$lactose_ref_dev=$urea_ref_dev=$scc_ref_dev=$bhb_ref_dev="&nbsp;";
+    $protein_ref_sdev=$fat_ref_sdev=$lactose_ref_sdev=$urea_ref_sdev=$scc_ref_sdev=$bhb_ref_sdev="&nbsp;";
+    $protein_ref_dist=$fat_ref_dist=$lactose_ref_dist=$urea_ref_dist=$scc_ref_dist=$bhb_ref_dist="&nbsp;";
+    $protein_ref_m=$fat_ref_m=$lactose_ref_m=$urea_ref_m=$scc_ref_m=$bhb_ref_m="&nbsp;";
+
+    foreach ($data as $d){
+        switch ($d->type) {
+            case 'protein_ref':
+                $protein_ref_labcode = $d->lab_code;
+                $protein_ref_x100    = $d->percent;
+                $protein_ref_dev     = $d->dev;
+                $protein_ref_sdev    = $d->s_dev;
+                $protein_ref_dist    = $d->dist;
+                $protein_ref_m       = $d->method;
+                break;
+            case 'fat_ref':
+                $fat_ref_labcode = $d->lab_code;
+                $fat_ref_x100    = $d->percent;
+                $fat_ref_dev     = $d->dev;
+                $fat_ref_sdev    = $d->s_dev;
+                $fat_ref_dist    = $d->dist;
+                $fat_ref_m       = $d->method;
+                break;
+            case 'lactose_ref':
+                $lactose_ref_labcode = $d->lab_code;
+                $lactose_ref_x100    = $d->percent;
+                $lactose_ref_dev     = $d->dev;
+                $lactose_ref_sdev    = $d->s_dev;
+                $lactose_ref_dist    = $d->dist;
+                $lactose_ref_m       = $d->method;
+                break;
+
+            case 'urea_ref':
+                $urea_ref_labcode = $d->lab_code;
+                $urea_ref_x100    = $d->percent;
+                $urea_ref_dev     = $d->dev;
+                $urea_ref_sdev    = $d->s_dev;
+                $urea_ref_dist    = $d->dist;
+                $urea_ref_m       = $d->method;
+                break;
+
+            case 'scc_ref':
+                $scc_ref_labcode = $d->lab_code;
+                $scc_ref_x100    = $d->percent;
+                $scc_ref_dev     = $d->dev;
+                $scc_ref_sdev    = $d->s_dev;
+                $scc_ref_dist    = $d->dist;
+                $scc_ref_m       = $d->method;
+                break;
+
+            case 'bhb_ref':
+                $bhb_ref_labcode = $d->lab_code;
+                $bhb_ref_x100    = $d->percent;
+                $bhb_ref_dev     = $d->dev;
+                $bhb_ref_sdev    = $d->s_dev;
+                $bhb_ref_dist    = $d->dist;
+                $bhb_ref_m       = $d->method;
+                break;
+        }
+
+
+
+    }
+}
+?>
 @extends('layouts.app')
 
 @section('content')
 
     <div class="panel panel-default">
-        <div class="panel-heading">
-            @lang('global.app_list')
-
-        </div>
 
         <div class="panel-body table-responsive">
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -20,9 +88,6 @@
                     @page {
                         size: A4;
                     }
-
-
-
                     table { margin-top: 20px; width:775px; border: 1px solid #000; }
                     table#info { width: 100% !important; border:none; }
                     td { text-align:center; padding: 3px; border:1px solid #ccc; width:94px; font-size: 10px; vertical-align:middle; }
@@ -66,7 +131,7 @@
                 <tr>
                     <td style="width:140px" class="bold">Laboratory Name</td>
                     <!-- qui va inserito il nome del laboratorio per cui creo il report -->
-                    <td style="width:615px">ACME spa</td>
+                    <td style="width:615px">xxxxxxxxxxx</td>
                 </tr>
             </table>
 
@@ -104,12 +169,12 @@
                     Query: cerca id del laboratorio in icar_code e round attuale in round
                     memorizzo lab_code in una variabile perché mi serve dopo
                     -->
-                    <td>1</td>				<!-- stampo valore di rank quando type = fat_ref -->
-                    <td>1</td>				<!-- stampo valore di rank quando type = protein_ref -->
-                    <td>&nbsp;</td>			<!-- stampo valore di rank quando type = lactose_ref -->
-                    <td>&nbsp;</td>			<!-- stampo valore di rank quando type = urea_ref -->
-                    <td>1</td>				<!-- stampo valore di rank quando type = scc_ref -->
-                    <td>&nbsp;</td>			<!-- stampo valore di rank quando type = bhb -->
+                    <td>{{$fat_ref_labcode}}</td>				<!-- stampo valore di rank quando type = fat_ref -->
+                    <td>{{$protein_ref_labcode}}</td>				<!-- stampo valore di rank quando type = protein_ref -->
+                    <td>{{$lactose_ref_labcode}}</td>			<!-- stampo valore di rank quando type = lactose_ref -->
+                    <td>{{$urea_ref_labcode}}</td>			<!-- stampo valore di rank quando type = urea_ref -->
+                    <td>{{$scc_ref_labcode}}</td>				<!-- stampo valore di rank quando type = scc_ref -->
+                    <td>{{$bhb_ref_labcode}}</td>			<!-- stampo valore di rank quando type = bhb -->
                 </tr>
                 <tr> </tr>
                 <tr> </tr>
@@ -200,67 +265,79 @@
                     <td>SCC*1000/ml</td>
                     <td>mmol/L</td>
                 </tr>
-                <tr>
-                    <!--
-                    Tabella: data
-                    Query: cerco lab_code e round
-                    -->
 
-                    <td class="bold">Code</td> 		<!-- stampo valore di rank per ogni type; le celle sempre bianche -->
-                    <td>1</td>
-                    <td>1</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>1</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="bold">%</td>			<!-- stampo valore di percent per ogni type; le celle sempre bianche -->
-                    <td>100</td>
-                    <td>56</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>38%</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="bold">d</td>			<!-- stampo valore di dev per ogni type -->
-                    <!--  se il valore nella cella è all'interno del range, la cella è verde; se è al di fuori, la cella è rossa  -->
-                    <td class="red">0,059</td>		<!-- range: tra -0,020 e +0,020  -->
-                    <td class="green">0,002</td>	<!-- range: tra -0,025 e +0,025  -->
-                    <td>&nbsp;</td>					<!-- range: tra -0,10 e +0,10  -->
-                    <td>&nbsp;</td>					<!-- range: tra -2,5 e +2,5  -->
-                    <td class="red">-13%</td>		<!-- range: tra -10% e +10%  -->
-                    <td>&nbsp;</td>					<!-- range: tra -0,045 e +0,045  -->
-                </tr>
-                <tr>
-                    <td class="bold">Sd</td>		<!-- stampo valore di s_dev per ogni type -->
-                    <!-- se il valore è superiore al limite, la cella è rossa; se è inferiore, la cella è verde; se è uguale, è bianca -->
-                    <td class="red">0,159</td>		<!-- limite: 0,030 -->
-                    <td class="red">0,022</td>		<!-- limite: 0,020 -->
-                    <td>&nbsp;</td>					<!-- limite: 0,010 -->
-                    <td>&nbsp;</td>					<!-- limite: 1,5 -->
-                    <td>10%</td>					<!-- limite: 10% -->
-                    <td>&nbsp;</td>					<!-- limite: 0,045 -->
-                </tr>
-                <tr>
-                    <td class="bold">D</td>			<!-- stampo valore di dist per ogni type; le celle sempre bianche -->
-                    <td>0,17</td>
-                    <td>0,022</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>17%</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="bold">Method</td>	<!-- stampo valore di method per ogni type; le celle sempre bianche -->
-                    <td>ISO 1211/IDF 1</td>
-                    <td>ISO 8968/IDF 20</td>
-                    <td>Enzymatic</td>
-                    <td>Diff. pH</td>
-                    <td>ISO 13366-2/IDF 148-2</td>
-                    <td>&nbsp;</td>
-                </tr>
+                    <tr>
+                        <td class="bold">Code</td> 		<!-- stampo valore di rank per ogni type; le celle sempre bianche -->
+                        <td>{{ $fat_ref_labcode }}</td>
+                        <td>{{ $protein_ref_labcode }}</td>
+                        <td>{{ $lactose_ref_labcode }}</td>
+                        <td>{{ $urea_ref_labcode }}</td>
+                        <td>{{ $scc_ref_labcode }}</td>
+                        <td>{{ $bhb_ref_labcode }}</td>
+                    </tr>
+                    <tr>
+                        <td class="bold">%</td>			<!-- stampo valore di percent per ogni type; le celle sempre bianche -->
+                        <td>{{ $fat_ref_x100 }}</td>
+                        <td>{{ $protein_ref_x100 }}</td>
+                        <td>{{ $lactose_ref_x100 }}</td>
+                        <td>{{ $urea_ref_x100 }}</td>
+                        <td>{{ $scc_ref_x100 }}</td>
+                        <td>{{ $bhb_ref_x100 }}</td>
+                    </tr>
+                    <tr>
+                        <td class="bold">d</td>			<!-- stampo valore di dev per ogni type -->
+                        <!--  se il valore nella cella è all'interno del range, la cella è verde; se è al di fuori, la cella è rossa  -->
+                       {{-- <td class="red">0,059</td>		<!-- range: tra -0,020 e +0,020  -->
+                        <td class="green">0,002</td>	<!-- range: tra -0,025 e +0,025  -->
+                        <td>&nbsp;</td>					<!-- range: tra -0,10 e +0,10  -->
+                        <td>&nbsp;</td>					<!-- range: tra -2,5 e +2,5  -->
+                        <td class="red">-13%</td>		<!-- range: tra -10% e +10%  -->
+                        <td>&nbsp;</td>					<!-- range: tra -0,045 e +0,045  -->--}}
+
+                        <td>{{ $fat_ref_dev }}</td>
+                        <td>{{ $protein_ref_dev }}</td>
+                        <td>{{ $lactose_ref_dev }}</td>
+                        <td>{{ $urea_ref_dev }}</td>
+                        <td>{{ $scc_ref_dev }}</td>
+                        <td>{{ $bhb_ref_dev }}</td>
+                    </tr>
+                    <tr>
+                        <td class="bold">Sd</td>		<!-- stampo valore di s_dev per ogni type -->
+                        <!-- se il valore è superiore al limite, la cella è rossa; se è inferiore, la cella è verde; se è uguale, è bianca -->
+                        {{--<td class="red">0,159</td>		<!-- limite: 0,030 -->
+                        <td class="red">0,022</td>		<!-- limite: 0,020 -->
+                        <td>&nbsp;</td>					<!-- limite: 0,010 -->
+                        <td>&nbsp;</td>					<!-- limite: 1,5 -->
+                        <td>10%</td>					<!-- limite: 10% -->
+                        <td>&nbsp;</td>					<!-- limite: 0,045 -->--}}
+
+                        <td>{{ $fat_ref_sdev }}</td>
+                        <td>{{ $protein_ref_sdev }}</td>
+                        <td>{{ $lactose_ref_sdev }}</td>
+                        <td>{{ $urea_ref_sdev }}</td>
+                        <td>{{ $scc_ref_sdev }}</td>
+                        <td>{{ $bhb_ref_sdev }}</td>
+                    </tr>
+                    <tr>
+                        <td class="bold">D</td>			<!-- stampo valore di dist per ogni type; le celle sempre bianche -->
+                        <td>{{ $fat_ref_dist }}</td>
+                        <td>{{ $protein_ref_dist }}</td>
+                        <td>{{ $lactose_ref_dist }}</td>
+                        <td>{{ $urea_ref_dist }}</td>
+                        <td>{{ $scc_ref_dist }}</td>
+                        <td>{{ $bhb_ref_dist }}</td>
+                    </tr>
+                    <tr>
+                        <td class="bold">Method</td>	<!-- stampo valore di method per ogni type; le celle sempre bianche -->
+                        <td>{{ $fat_ref_m }}</td>
+                        <td>{{ $protein_ref_m }}</td>
+                        <td>{{ $lactose_ref_m }}</td>
+                        <td>{{ $urea_ref_m }}</td>
+                        <td>{{ $scc_ref_m }}</td>
+                        <td>{{ $bhb_ref_m }}</td>
+                    </tr>
+
+
                 <tr class="grey">
                     <td colspan="13" height="30" valign="bottom" class="bold">Limits</td>
                 </tr>

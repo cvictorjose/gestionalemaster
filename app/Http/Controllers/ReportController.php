@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Data;
-use App\Round;
+use App\Laboratory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class ReportController extends Controller
 {
@@ -15,21 +16,25 @@ class ReportController extends Controller
      */
     public function roundReport()
     {
-        return view('admin.report.report');
-
         try {
             $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-            $icar_code=$inputData['icar_code'];
-            $round=$inputData['lab_round'];
-            $labs = Data::where('icar_code',$icar_code)->Where('round', $round)->get();
+            $icar  = $inputData['icar'];
+            $round = $inputData['round'];
+            $lab_id =$inputData['lab_id'];
 
-            return $dati;
+            $data = Data::where('icar_code',$icar)->Where('round', $round)->get();
+
+            $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
+
+
+            return view('admin.report.report', compact('data','round'));
+            // return $labs;
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-        return view('admin.round.lab_test', compact('labs'));
+
     }
 }
