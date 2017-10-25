@@ -115,13 +115,13 @@ class RoundController extends Controller
         if(!empty($inputData) && count($inputData)> 0) {
             $rules = [
                 'laboratory_id' => 'required',
-                'code_round'      => 'required|min:4|max:4',
+                'code_round'      => 'required|min:4|max:10',
             ];
 
             $messages = [
                 'required' => 'Controllare tutti i campi obbligatori (*).',
                 'unique'   => 'Il codice del laboratorio esiste sul DB',
-                'max'      => 'Code Round deve avere massimo 4 digiti',
+                'max'      => 'Code Round deve avere massimo 10 digiti',
                 'min'      => 'Code Round deve avere minimo 4 digiti'
             ];
             $validator = Validator::make(Input::all(), $rules, $messages);

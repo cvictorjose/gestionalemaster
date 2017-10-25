@@ -26,6 +26,15 @@ class Round extends Model
         'created_at', 'updated_at',
     ];
 
+
+    public function lab(){
+        try {
+            return $this->belongsTo(Laboratory::class, 'laboratory_id');
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     /**
      * Controlla se un Test è stato già registrato
      *
