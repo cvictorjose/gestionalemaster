@@ -71,57 +71,60 @@ if (count($data) > 0){
     $protein_ref_dist=$fat_ref_dist=$lactose_ref_dist=$urea_ref_dist=$scc_ref_dist=$bhb_ref_dist="&nbsp;";
     $protein_ref_m=$fat_ref_m=$lactose_ref_m=$urea_ref_m=$scc_ref_m=$bhb_ref_m="&nbsp;";
 
+
+
+
     foreach ($data as $d){
         switch ($d->type) {
             case 'protein_ref':
                 $protein_ref_labcode = $d->lab_code;
                 $protein_ref_x100    = $d->percent;
-                $protein_ref_dev     = $d->dev;
-                $protein_ref_sdev    = $d->s_dev;
-                $protein_ref_dist    = $d->dist;
+                $protein_ref_dev     = number_format($d->dev,3);
+                $protein_ref_sdev    = number_format($d->s_dev,3);
+                $protein_ref_dist    = number_format($d->dist,3);;
                 $protein_ref_m       = $d->method;
                 break;
             case 'fat_ref':
                 $fat_ref_labcode = $d->lab_code;
                 $fat_ref_x100    = $d->percent;
-                $fat_ref_dev     = $d->dev;
-                $fat_ref_sdev    = $d->s_dev;
-                $fat_ref_dist    = $d->dist;
+                $fat_ref_dev     = number_format($d->dev,3);
+                $fat_ref_sdev    = number_format($d->s_dev,3);
+                $fat_ref_dist    = number_format($d->dist,3);;
                 $fat_ref_m       = $d->method;
                 break;
             case 'lactose_ref':
                 $lactose_ref_labcode = $d->lab_code;
                 $lactose_ref_x100    = $d->percent;
-                $lactose_ref_dev     = $d->dev;
-                $lactose_ref_sdev    = $d->s_dev;
-                $lactose_ref_dist    = $d->dist;
+                $lactose_ref_dev     = number_format($d->dev,3);
+                $lactose_ref_sdev    = number_format($d->s_dev,3);
+                $lactose_ref_dist    = number_format($d->dist,3);;
                 $lactose_ref_m       = $d->method;
                 break;
 
             case 'urea_ref':
                 $urea_ref_labcode = $d->lab_code;
                 $urea_ref_x100    = $d->percent;
-                $urea_ref_dev     = $d->dev;
-                $urea_ref_sdev    = $d->s_dev;
-                $urea_ref_dist    = $d->dist;
+                $urea_ref_dev     = number_format($d->dev,3);
+                $urea_ref_sdev    = number_format($d->s_dev,3);
+                $urea_ref_dist    = number_format($d->dist,3);;
                 $urea_ref_m       = $d->method;
                 break;
 
             case 'scc_ref':
                 $scc_ref_labcode = $d->lab_code;
                 $scc_ref_x100    = $d->percent;
-                $scc_ref_dev     = $d->dev;
-                $scc_ref_sdev    = $d->s_dev;
-                $scc_ref_dist    = $d->dist;
+                $scc_ref_dev     = number_format($d->dev,3);
+                $scc_ref_sdev    = number_format($d->s_dev,3);
+                $scc_ref_dist    = number_format($d->dist,3);;
                 $scc_ref_m       = $d->method;
                 break;
 
             case 'bhb_ref':
                 $bhb_ref_labcode = $d->lab_code;
                 $bhb_ref_x100    = $d->percent;
-                $bhb_ref_dev     = $d->dev;
-                $bhb_ref_sdev    = $d->s_dev;
-                $bhb_ref_dist    = $d->dist;
+                $bhb_ref_dev     = number_format($d->dev,3);
+                $bhb_ref_sdev    = number_format($d->s_dev,3);
+                $bhb_ref_dist    = number_format($d->dist,3);;
                 $bhb_ref_m       = $d->method;
                 break;
         }
@@ -357,38 +360,78 @@ if (count($data) > 0){
                         <td>{{ $bhb_ref_x100 }}</td>
                     </tr>
                     <tr>
-                        <td class="bold">d</td>			<!-- stampo valore di dev per ogni type -->
+                        <td class="bold">d</td>			
                         <!--  se il valore nella cella è all'interno del range, la cella è verde; se è al di fuori, la cella è rossa  -->
-                       {{-- <td class="red">0,059</td>		<!-- range: tra -0,020 e +0,020  -->
-                        <td class="green">0,002</td>	<!-- range: tra -0,025 e +0,025  -->
-                        <td>&nbsp;</td>					<!-- range: tra -0,10 e +0,10  -->
-                        <td>&nbsp;</td>					<!-- range: tra -2,5 e +2,5  -->
-                        <td class="red">-13%</td>		<!-- range: tra -10% e +10%  -->
-                        <td>&nbsp;</td>					<!-- range: tra -0,045 e +0,045  -->--}}
 
-                        <td>{{ $fat_ref_dev }}</td>
-                        <td>{{ $protein_ref_dev }}</td>
-                        <td>{{ $lactose_ref_dev }}</td>
-                        <td>{{ $urea_ref_dev }}</td>
-                        <td>{{ $scc_ref_dev }}</td>
-                        <td>{{ $bhb_ref_dev }}</td>
+                        <!-- range: tra -0,020 e +0,020  -->
+                        <td class=
+                        @if ($fat_ref_dev == '&nbsp;') {{''}} @elseif (('-0,020' <= $fat_ref_dev) && ($fat_ref_dev <= '0,020')) {{$class}}
+                                @else {{$class_red}} @endif>{{$fat_ref_dev}}
+                        </td>
+
+                        <!-- range: tra -0,025 e +0,025  -->
+                        <td class=
+                        @if ($protein_ref_dev == '&nbsp;') {{''}} @elseif (('-0,025' <= $protein_ref_dev) && ($protein_ref_dev <= '0,025')) {{$class}}
+                                @else {{$class_red}} @endif>{{$protein_ref_dev}}
+                        </td>
+
+                        <!-- range: tra -0,10 e +0,10  -->
+                        <td class=
+                        @if ($lactose_ref_dev == '&nbsp;') {{''}} @elseif (('-0,10' <= $lactose_ref_dev) && ($lactose_ref_dev <= '0,10')) {{$class}}
+                        @else {{$class_red}} @endif>{{$lactose_ref_dev}}
+                        </td>
+
+                        <!-- range: tra -2,5 e +2,5  -->
+                        <td class=
+                        @if ($urea_ref_dev == '&nbsp;') {{''}} @elseif (('-2,5' <= $urea_ref_dev) && ($urea_ref_dev <= '2,5')) {{$class}}
+                                @else {{$class_red}} @endif>{{$urea_ref_dev}}
+                        </td>
+
+                        <!-- range: tra -10% e +10%  -->
+                        <td class=
+                        @if ($scc_ref_dev == '&nbsp;') {{''}} @elseif (('-10' <= $scc_ref_dev) && ($scc_ref_dev <= '10')) {{$class}}
+                                @else {{$class_red}} @endif>{{$scc_ref_dev}}
+                        </td>
+
+                        <!-- range: tra -0,045 e +0,045  -->
+                        <td class=
+                        @if ($bhb_ref_dev == '&nbsp;') {{''}} @elseif (('0,045' <= $bhb_ref_dev) && ($bhb_ref_dev <= '0,045')) {{$class}}
+                                @else {{$class_red}} @endif>{{$bhb_ref_dev}}
+                        </td>
                     </tr>
                     <tr>
                         <td class="bold">Sd</td>		<!-- stampo valore di s_dev per ogni type -->
                         <!-- se il valore è superiore al limite, la cella è rossa; se è inferiore, la cella è verde; se è uguale, è bianca -->
-                        {{--<td class="red">0,159</td>		<!-- limite: 0,030 -->
-                        <td class="red">0,022</td>		<!-- limite: 0,020 -->
-                        <td>&nbsp;</td>					<!-- limite: 0,010 -->
-                        <td>&nbsp;</td>					<!-- limite: 1,5 -->
-                        <td>10%</td>					<!-- limite: 10% -->
-                        <td>&nbsp;</td>					<!-- limite: 0,045 -->--}}
+                        <!-- limite: 0,030 -->
+                        <td class=
+                        @if ($fat_ref_sdev == '0,030' || $fat_ref_sdev == '&nbsp;') {{''}} @elseif ($fat_ref_sdev >'0,030') {{$class_red}}
+                                @elseif($fat_ref_sdev < '0,030'){{$class}} @endif>{{$fat_ref_sdev}}</td>
 
-                        <td>{{ $fat_ref_sdev }}</td>
-                        <td>{{ $protein_ref_sdev }}</td>
-                        <td>{{ $lactose_ref_sdev }}</td>
-                        <td>{{ $urea_ref_sdev }}</td>
-                        <td>{{ $scc_ref_sdev }}</td>
-                        <td>{{ $bhb_ref_sdev }}</td>
+                        <!-- limite: 0,020 -->
+                        <td class=
+                        @if ($protein_ref_sdev == '0,020' || $protein_ref_sdev == '&nbsp;') {{''}} @elseif ($protein_ref_sdev >'0,020') {{$class_red}}
+                                @elseif($protein_ref_sdev < '0,020'){{$class}} @endif>{{$protein_ref_sdev}}</td>
+
+                        <!-- limite: 0,010 -->
+                        <td class=
+                            @if ($lactose_ref_sdev == '0,010' || $lactose_ref_sdev == '&nbsp;') {{''}} @elseif ($lactose_ref_sdev >'0,010') {{$class_red}}
+                            @elseif($lactose_ref_sdev < '0,010'){{$class}} @endif>{{$lactose_ref_sdev}}</td>
+
+                        <!-- limite: 1,5 -->
+                        <td class=
+                        @if ($urea_ref_sdev == '1,5' || $urea_ref_sdev == '&nbsp;') {{''}} @elseif ($urea_ref_sdev >'1,5') {{$class_red}}
+                                @elseif($urea_ref_sdev < '1,5'){{$class}} @endif>{{$urea_ref_sdev}}</td>
+
+
+                        <!-- limite: 10 -->
+                        <td class=
+                        @if ($scc_ref_sdev == '10' || $scc_ref_sdev == '&nbsp;') {{''}} @elseif ($scc_ref_sdev >'10') {{$class_red}}
+                                @elseif($scc_ref_sdev < '10'){{$class}} @endif>{{$scc_ref_sdev}}</td>
+
+                        <!-- limite: 0,045 -->
+                        <td class=
+                        @if ($bhb_ref_sdev == '0,045' || $bhb_ref_sdev == '&nbsp;') {{''}} @elseif ($bhb_ref_sdev >'0,045') {{$class_red}}
+                                @elseif($bhb_ref_sdev < '0,045'){{$class}} @endif>{{$bhb_ref_sdev}}</td>
                     </tr>
                     <tr>
                         <td class="bold">D</td>			<!-- stampo valore di dist per ogni type; le celle sempre bianche -->
