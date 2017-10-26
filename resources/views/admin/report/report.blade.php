@@ -11,52 +11,51 @@ if (count($round) > 0){
     $p_ref_sample=$fat_ref_sample=$lac_ref_sample=$u_ref_sample=$scc_ref_sample=$bhb_ref_sample="No";
     $p_ref_q2=$fat_ref_q2=$lac_ref_q2=$u_ref_q2=$scc_ref_q2=$bhb_ref_q2="";
 
+    $p_a=$f_a=$l_a=$u_a=$s_a=$b_a=0;
+
     foreach ($round as $r){
         $code_round             = $r->code_round;
         $results_received       = ($r->results_received)?"Yes":"No";
         $results_received_date  = ($r->results_received_date)? date("d-m-Y", strtotime($r->results_received_date)):"";
-
-
-
         switch ($r->code_test) {
             case 'protein_ref':
                 $p_ref_sub     = "Yes";
                 $p_ref_sample  = ($r->question1)?"Yes":"No";
                 $p_ref_q2      = ($r->question2)?"Yes":"No";
-
+                $p_a=1;
                 break;
             case 'fat_ref':
                 $fat_ref_sub     = "Yes";
                 $fat_ref_sample  = ($r->question1)?"Yes":"No";
-                $fat_ref_q2        = ($r->question2)?"Yes":"No";
-
+                $fat_ref_q2      = ($r->question2)?"Yes":"No";
+                $f_a=1;
                 break;
             case 'lactose_ref':
                 $lac_ref_sub     = "Yes";
                 $lac_ref_sample  = ($r->question1)?"Yes":"No";
-                $lac_ref_q2        = ($r->question2)?"Yes":"No";
-
+                $lac_ref_q2      = ($r->question2)?"Yes":"No";
+                $l_a=1;
                 break;
 
             case 'urea_ref':
                 $u_ref_sub     = "Yes";
                 $u_ref_sample  = ($r->question1)?"Yes":"No";
-                $u_ref_q2        = ($r->question2)?"Yes":"No";
-
+                $u_ref_q2      = ($r->question2)?"Yes":"No";
+                $u_a=1;
                 break;
 
             case 'scc_ref':
-                $scc_ref_sub    = "Yes";
+                $scc_ref_sub     = "Yes";
                 $scc_ref_sample  = ($r->question1)?"Yes":"No";
-                $scc_ref_q2        = ($r->question2)?"Yes":"No";
-
+                $scc_ref_q2      = ($r->question2)?"Yes":"No";
+                $s_a=1;
                 break;
 
             case 'bhb_ref':
-                $bhb_ref_sub    = "Yes";
+                $bhb_ref_sub     = "Yes";
                 $bhb_ref_sample  = ($r->question1)?"Yes":"No";
-                $bhb_ref_q2        = ($r->question2)?"Yes":"No";
-
+                $bhb_ref_q2      = ($r->question2)?"Yes":"No";
+                $b_a=1;
                 break;
         }
     }
@@ -70,8 +69,6 @@ if (count($data) > 0){
     $protein_ref_sdev=$fat_ref_sdev=$lactose_ref_sdev=$urea_ref_sdev=$scc_ref_sdev=$bhb_ref_sdev="&nbsp;";
     $protein_ref_dist=$fat_ref_dist=$lactose_ref_dist=$urea_ref_dist=$scc_ref_dist=$bhb_ref_dist="&nbsp;";
     $protein_ref_m=$fat_ref_m=$lactose_ref_m=$urea_ref_m=$scc_ref_m=$bhb_ref_m="&nbsp;";
-
-
 
 
     foreach ($data as $d){
@@ -360,7 +357,7 @@ if (count($data) > 0){
                         <td>{{ $bhb_ref_x100 }}</td>
                     </tr>
                     <tr>
-                        <td class="bold">d</td>			
+                        <td class="bold">d</td>
                         <!--  se il valore nella cella è all'interno del range, la cella è verde; se è al di fuori, la cella è rossa  -->
 
                         <!-- range: tra -0,020 e +0,020  -->
@@ -476,6 +473,7 @@ if (count($data) > 0){
                 </tr>
             </table>
 
+
             <table cellspacing="0" id="e">
                 <tr>
                     <td rowspan="13" class="tabcode">E</td>
@@ -498,18 +496,42 @@ if (count($data) > 0){
                     <td>SCC*1000/ml</td>
                     <td>mmol/L</td>
                 </tr>
-                <!--
-                Tabella: outliers
-                Query: cerco lab_code e round
-                -->
+
                 <tr>
                     <td>Sample 1</td> 	<!-- ripeti come sample 1 per tutti e 10 -->
-                    <td class="red">Cochran</td>	<!-- se il test è attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
-                    <td class="green">&nbsp;</td>	<!-- se il test è attivato ma non ho righe con sample_number = 1, cella vuota verde -->
-                    <td>&nbsp;</td>					<!-- se il test non è stato attivato, la cella è bianca -->
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
+                    <!-- se il test è attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
+                    <!-- se il test è attivato ma non ho righe con sample_number = 1, cella vuota verde -->
+                    <!-- se il test non è stato attivato, la cella è bianca -->
+                    <?php
+
+                    $f_s1=$p_s1=$l_s1=$u_s1=$s_s1=$b_s1="";
+
+                    foreach($sn_1 as $o)
+                    {
+                        if ($o->code=='fat_ref')    $f_s1=$o->outlier;
+                        if ($o->code=='protein_ref')$p_s1=$o->outlier;
+                        if ($o->code=='lactose_ref')$l_s1=$o->outlier;
+                        if ($o->code=='urea_ref')   $u_s1=$o->outlier;
+                        if ($o->code=='scc_ref')    $s_s1=$o->outlier;
+                        if ($o->code=='bhb')        $b_s1=$o->outlier;
+                    }
+
+                    if ($f_s1 && $f_a==1)  $class="red"; elseif($f_s1=="" && $f_a==1) $class="green"; else $class="";
+                        echo "<td class=".$class.">".$f_s1."</td>";
+                    if ($p_s1 && $p_a==1)  $class="red"; elseif($p_s1=="" && $p_a==1) $class="green"; else $class="";
+                        echo "<td class=".$class.">".$p_s1."</td>";
+                    if ($l_s1 && $l_a==1)  $class="red"; elseif($l_s1=="" && $l_a==1) $class="green"; else $class="";
+                        echo "<td class=".$class.">".$l_s1."</td>";
+                    if ($u_s1 && $u_a==1)  $class="red"; elseif($u_s1=="" && $u_a==1) $class="green"; else $class="";
+                        echo "<td class=".$class.">".$u_s1."</td>";
+                    if ($s_s1 && $s_a==1)  $class="red"; elseif($s_s1=="" && $s_a==1) $class="green"; else $class="";
+                        echo "<td class=".$class.">".$s_s1."</td>";
+                    if ($b_s1 && $b_a==1)  $class="red"; elseif($b_s1=="" && $b_a==1) $class="green"; else $class="";
+                        echo "<td class=".$class.">".$b_s1."</td>";
+                    ?>
+
+
+
                 </tr>
                 <tr>
                     <td>Sample 2</td>	<!-- ripeti come sample 1 per tutti e 10 -->
