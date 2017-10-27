@@ -28,13 +28,11 @@ class Zscorept extends Model
 
 
 
-    public static function getZScorePt()
+    public static function getZScorePt($icar,$round)
     {
         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
-
-        //Inizio REPEAT
         $arr_zscorept=array();
-        $repeat= Zscorept::where('round','RF0316')->where('lab_code','1')->get();
+        $repeat= Zscorept::where('round',$round)->where('lab_code',$icar)->get();
 
 
         for ($i=1; $i<11; $i++) {

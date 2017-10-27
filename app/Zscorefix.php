@@ -28,13 +28,13 @@ class Zscorefix extends Model
 
 
 
-    public static function getZScoreFix()
+    public static function getZScoreFix($icar,$round)
     {
         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
 
         //Inizio REPEAT
         $arr_zscorefix=array();
-        $repeat= Zscorefix::where('round','RF0316')->where('lab_code','1')->get();
+        $repeat= Zscorefix::where('round',$round)->where('lab_code',$icar)->get();
 
 
         for ($i=1; $i<11; $i++) {

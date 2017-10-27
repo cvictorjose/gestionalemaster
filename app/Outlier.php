@@ -24,4 +24,19 @@ class Outlier extends Model
     protected $hidden = [
         'created_at', 'updated_at',
     ];
+
+    public static function getOutliers($icar,$round)
+    {
+
+        $sn_1=$sn_2=$sn_3=$sn_4=$sn_5=$sn_6=$sn_7=$sn_8=$sn_9=$sn_10=array();
+        $outliers= Outlier::where('round',$round)->where('lab_code',$icar)->orderBy('sample_number')->get();
+        foreach($outliers as $o)
+        {
+            $item= new \stdClass();
+            $item->code  =$o->type;
+            $item->outlier=$o->outlier_type;
+            if($o->sample_number==1){$sn_1[]=$item;}
+        }
+        return $sn_1;
+    }
 }
