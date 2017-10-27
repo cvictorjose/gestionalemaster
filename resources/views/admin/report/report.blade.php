@@ -812,7 +812,6 @@ if (count($data) > 0){
                     <tr>
                         <td>Sample {{$numsample}}</td>
                         <?php
-
                         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
                         foreach ($code_arr as $t){
                             $valor=$zscorept[$v]->{$t};
@@ -842,89 +841,31 @@ if (count($data) > 0){
                 </tr>
 
 
-                <!-- identica cosa di zscore-pt ma questa volta su tabella zscore-fix-->
+                <?php
+                $numsample=1;
+                ?>
+                @for($v=0; $v<10; $v++)
+                    <tr>
+                        <td>Sample {{$numsample}}</td>
+                        <?php
+                        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
+                        foreach ($code_arr as $t){
+                            $valor=$zscorefix[$v]->{$t};
+                            if ($valor <'-3') $class="red";
+                            if ($valor >'-3' && $valor<'-2')$class="yellow";
+                            if ($valor >'-2' && $valor<'2')$class="green";
+                            if ($valor >'2'  && $valor<'3')$class="yellow";
+                            if ($valor >'3') $class="red";
+                            echo "<td  class=".$class.">".$valor."</td>";
+                        }
+                        ?>
+                    </tr>
+                    <?php
+                    $numsample++;
+                    ?>
+                @endfor
 
 
-                <tr>
-                    <td>Sample1</td>
-                    <td>-0,77</td>
-                    <td>1,25</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample2</td>
-                    <td>0,90</td>
-                    <td>-0,75</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample3</td>
-                    <td>0,57</td>
-                    <td>-0,47</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample4</td>
-                    <td>0,65</td>
-                    <td>1,11</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample5</td>
-                    <td>25,58</td>
-                    <td>1,30</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample6</td>
-                    <td>-0,32</td>
-                    <td>0,32</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample7</td>
-                    <td>0,64</td>
-                    <td>-0,56</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample8</td>
-                    <td>0,51</td>
-                    <td>0,64</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample9</td>
-                    <td>1,36</td>
-                    <td>-2,53</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample10</td>
-                    <td>0,62</td>
-                    <td>0,72</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
                 <tr class="grey">
                     <td colspan="6">
                         <p class="note">If there is a sample with a &quot;z-score&quot; in the yellow or red area please check table VI and VII in correspondence of your lab code.</p>

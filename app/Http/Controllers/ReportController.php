@@ -7,6 +7,7 @@ use App\Laboratory;
 use App\Outlier;
 use App\Repeatability;
 use App\Round;
+use App\Zscorefix;
 use App\Zscorept;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -26,7 +27,11 @@ class ReportController extends Controller
             $round = $inputData['round'];
             $lab_id =$inputData['lab_id'];
 
+            //ZscorePT
             $zscorept=Zscorept::getZScorePt();
+
+            //ZscoreFIX
+            $zscorefix=Zscorefix::getZScoreFix();
 
 
 
@@ -102,7 +107,7 @@ class ReportController extends Controller
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
 
-            return view('admin.report.report', compact('data','round','lab','sn_1','arr_sp1','zscorept'));
+            return view('admin.report.report', compact('data','round','lab','sn_1','arr_sp1','zscorept','zscorefix'));
 
         } catch (\Exception $e) {
             $message = [
