@@ -793,100 +793,42 @@ if (count($data) > 0){
                     <td class="bold">SCC</td>
                 </tr>
 
-                <!--
-                Classi da assegnare alle celle:
-                se la cella è vuota, nessuna classe
-                se valore minore di -3 : classe red
-                se valore tra -3 e -2 : classe yellow
-                se valore tra -2 e +2 : classe green
-                se valore tra 2 e 3 : classe yellow
-                se valore maggiore di 3: classe red
 
-                Tabella: zscore-pt
-                Query: cerco lab_code e round
 
-                -->
+                {{-- Classi da assegnare alle celle:
+                  se la cella è vuota, nessuna classe
+                  se valore minore di -3 : classe red
+                  se valore tra -3 e -2 : classe yellow
+                  se valore tra -2 e +2 : classe green
+                  se valore tra 2 e 3 : classe yellow
+                  se valore maggiore di 3: classe red
+                  --}}
 
-                <tr>
-                    <td>Sample1</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,98</td>			<!-- stampo valore di sample_1 quanto type è fat_ref -->
-                    <td>4,98</td>			<!-- stampo valore di sample_1 quanto type è protein_ref -->
-                    <td>&nbsp;</td>			<!-- stampo valore di sample_1 quanto type è lactose_ref -->
-                    <td>&nbsp;</td>			<!-- stampo valore di sample_1 quanto type è urea_ref -->
-                    <td>450</td>			<!-- stampo valore di sample_1 quanto type è scc_ref -->
-                </tr>
-                <tr>
-                    <td>Sample2</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>5,01</td>
-                    <td>5,01</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample3</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,89</td>
-                    <td>4,89</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample4</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,94</td>
-                    <td>4,94</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample5</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,85</td>
-                    <td>4,85</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample6</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,85</td>
-                    <td>4,85</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample7</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,82</td>
-                    <td>4,82</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample8</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,83</td>
-                    <td>4,83</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample9</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,74</td>
-                    <td>4,74</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
-                <tr>
-                    <td>Sample10</td>		<!-- ripeto il ciclo per i 10 sample -->
-                    <td>4,83</td>
-                    <td>4,83</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>450</td>
-                </tr>
+
+                <?php
+                $numsample=1;
+                ?>
+                @for($v=0; $v<10; $v++)
+                    <tr>
+                        <td>Sample {{$numsample}}</td>
+                        <?php
+
+                        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
+                        foreach ($code_arr as $t){
+                            $valor=$zscorept[$v]->{$t};
+                            if ($valor <'-3') $class="red";
+                            if ($valor >'-3' && $valor<'-2')$class="yellow";
+                            if ($valor >'-2' && $valor<'2')$class="green";
+                            if ($valor >'2'  && $valor<'3')$class="yellow";
+                            if ($valor >'3') $class="red";
+                            echo "<td  class=".$class.">".$valor."</td>";
+                        }
+                        ?>
+                    </tr>
+                    <?php
+                    $numsample++;
+                    ?>
+                @endfor
                 <tr>
                     <td colspan="6" class="bold title2">Your Z-Score Fix</td>
                 </tr>
