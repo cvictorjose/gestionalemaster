@@ -4,12 +4,19 @@
 
 
 if (count($round) > 0){
+    //class TD
     $class="green";
     $class_red="red";
     $class_no="";
+
+    //attivato test?
     $p_ref_sub=$fat_ref_sub=$lac_ref_sub=$u_ref_sub=$scc_ref_sub=$bhb_ref_sub="No";
+
+    //question 1 e 2
     $p_ref_sample=$fat_ref_sample=$lac_ref_sample=$u_ref_sample=$scc_ref_sample=$bhb_ref_sample="No";
     $p_ref_q2=$fat_ref_q2=$lac_ref_q2=$u_ref_q2=$scc_ref_q2=$bhb_ref_q2="";
+
+    $i=1;
 
     $p_a=$f_a=$l_a=$u_a=$s_a=$b_a=0;
 
@@ -498,7 +505,8 @@ if (count($data) > 0){
                 </tr>
 
                 <tr>
-                    <td>Sample 1</td> 	<!-- ripeti come sample 1 per tutti e 10 -->
+                    <td>Sample 1</td>
+                    <!-- DEVO RIPETERLO 10 volte---ripeti come sample 1 per tutti e 10 -->
                     <!-- se il test è attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
                     <!-- se il test è attivato ma non ho righe con sample_number = 1, cella vuota verde -->
                     <!-- se il test non è stato attivato, la cella è bianca -->
@@ -529,9 +537,6 @@ if (count($data) > 0){
                     if ($b_s1 && $b_a==1)  $class="red"; elseif($b_s1=="" && $b_a==1) $class="green"; else $class="";
                         echo "<td class=".$class.">".$b_s1."</td>";
                     ?>
-
-
-
                 </tr>
                 <tr>
                     <td>Sample 2</td>	<!-- ripeti come sample 1 per tutti e 10 -->
@@ -643,7 +648,8 @@ if (count($data) > 0){
                     <td>SCC*1000/ml</td>
                     <td>mmol/L</td>
                 </tr>
-                <tr>
+
+                {{--<tr>
                     <td>Sample 1</td>		<!--  ripeti come sample 1 per tutti e 10  -->
                     <!-- se il valore è superiore al limite, la cella è rossa; se è inferiore, la cella è verde; se è uguale, è bianca -->
                     <td>&nbsp;</td>			<!-- limite: 0,043 -->
@@ -652,88 +658,46 @@ if (count($data) > 0){
                     <td>&nbsp;</td>			<!-- limite: 1,52 -->
                     <td>&nbsp;</td>			<!--   -->
                     <td>&nbsp;</td>			<!-- limite: 0,03 -->
-                </tr>
-                <tr>
-                    <td>Sample 2</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 3</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 4</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 5</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 6</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 7</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 8</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 9</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 10</td>		<!--  ripeti come sample 1 per tutti e 10  -->
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
+                </tr>--}}
+
+
+                <?php
+               //print_r($arr_sp1);
+                $numsample=1;
+                ?>
+                @for($v=0; $v<10; $v++)
+                    <tr>
+                        <td>Sample {{$numsample}}</td>
+                        <?php
+
+                        if ($arr_sp1[$v]->fat_ref>'0.043')  $class1="red"; elseif($arr_sp1[$v]->fat_ref<'0.043')
+                            $class1="green"; else $class1="";
+
+                        if ($arr_sp1[$v]->protein_ref>'0.038')  $class2="red"; elseif($arr_sp1[$v]->protein_ref<'0.038')
+                            $class2="green"; else $class2="";
+
+                        if ($arr_sp1[$v]->lactose_ref>'0.06')  $class3="red"; elseif($arr_sp1[$v]->lactose_ref<'0.06')
+                            $class3="green"; else $class3="";
+
+                        if ($arr_sp1[$v]->urea_ref>'1.52')  $class4="red"; elseif($arr_sp1[$v]->urea_ref<'1.52')
+                            $class4="green"; else $class4="";
+
+                        if ($arr_sp1[$v]->bhb_ref>'0.03')  $class6="red"; elseif($arr_sp1[$v]->bhb_ref<'0.03')
+                            $class6="green"; else $class6="";
+
+                            echo "<td  class=".$class1.">".$arr_sp1[$v]->fat_ref."</td>";
+                            echo "<td  class=".$class2.">".$arr_sp1[$v]->protein_ref."</td>";
+                            echo "<td  class=".$class3.">".$arr_sp1[$v]->lactose_ref."</td>";
+                            echo "<td  class=".$class4.">".$arr_sp1[$v]->urea_ref."</td>";
+                            echo "<td>".$arr_sp1[$v]->scc_ref."</td>";
+                            echo "<td  class=".$class6.">".$arr_sp1[$v]->bhb_ref."</td>";
+                        ?>
+                    </tr>
+                    <?php
+                    $numsample++;
+                    ?>
+                @endfor
+
                 <tr class="grey">
                     <td colspan="7" class="note">If the repeatability in smaller than the limit the cell is in green if there is a sample with a &quot;r&quot; bigger than the limit the cell is in red.    Please check table II in correspondence of the parameter and your lab code.</td>
                 </tr>
