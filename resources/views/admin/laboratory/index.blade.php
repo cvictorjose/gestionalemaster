@@ -2,17 +2,16 @@
 @extends('layouts.app')
 
 @section('content')
-    {{--<h3 class="page-title">@lang('global.labs.title')</h3>--}}
+    <a href="{{ route('laboratorio.create') }}" class="btn btn-success pull-right">@lang('global.app_add_new')</a>
+
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_list')
-            <a href="{{ route('laboratorio.create') }}" class="btn btn-success">
-                @lang('global.app_add_new')</a>
+            <h4>@lang('global.app_list')   @lang('global.labs.title')</h4>
         </div>
 
+
         <div class="panel-body table-responsive">
-            {{--<table class="table table-bordered table-striped {{ count($labs) > 0 ? 'datatable' : '' }} dt-datatable">--}}
-            <table class="table table-bordered table-striped datatable">
+            <table class="table table-bordered table-striped {{ count($labs) > 0 ? 'datatable' : '' }} dt-datatable">
                 <thead>
                     <tr>
                         {{--<th style="text-align:center;"><input type="checkbox" id="select-all" /></th>--}}
@@ -21,7 +20,7 @@
                         <th>@lang('global.users.fields.roles')</th>
                         <th>&nbsp;</th>--}}
 
-                        <th>ID</th>
+                        {{--<th>ID</th>--}}
                         <th>Code</th>
                         <th>Laboratorio</th>
                         <th>Status</th>
@@ -35,7 +34,7 @@
                         @foreach ($labs as $lab)
                             <tr data-entry-id="{{ $lab->id }}">
                                 {{--<td></td>--}}
-                                <td>{{ $lab->id  }}</td>
+                                {{--<td>{{ $lab->id  }}</td>--}}
                                 <td>{{ $lab->icar_code }}</td>
                                 <td>{{ $lab->lab_name }}</td>
                                 <td>{{ ($lab->status > 0) ? 'activo' : 'disattivato' }}</td>

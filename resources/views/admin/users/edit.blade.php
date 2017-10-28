@@ -1,19 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('global.users.title')</h3>
     
     {!! Form::model($user, ['method' => 'PUT', 'route' => ['admin.users.update', $user->id]]) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_edit')
+            <h4>@lang('global.app_edit')  - Utente: {{$user->name}}</h4>
         </div>
 
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('name', 'Name*', ['class' => 'control-label']) !!}
+                    {!! Form::label('name', 'Nome*', ['class' => 'control-label']) !!}
                     {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('name'))
@@ -63,7 +62,8 @@
         </div>
     </div>
 
-    {!! Form::submit(trans('global.app_update'), ['class' => 'btn btn-danger']) !!}
+    {!! Form::submit(trans('global.app_update'), ['class' => 'btn btn-success']) !!}
+    {!! link_to(URL::previous(), 'Indietro', ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 @stop
 

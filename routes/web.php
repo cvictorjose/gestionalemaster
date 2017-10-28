@@ -1,5 +1,5 @@
 <?php
-Route::get('/', function () { return redirect('/admin/home'); });
+Route::get('/', function () { return redirect('/laboratorio'); });
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
@@ -26,18 +26,23 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('users_mass_destroy', ['uses' => 'Admin\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
 });
 //LABORATORY
-Route::resource('laboratorio', 'LaboratoryController');
+
+Route::group(['middleware' => ['auth']], function () {
+
+  Route::resource('laboratorio', 'LaboratoryController');
 
 //ROUND
-Route::resource('round', 'RoundController');
-Route::get('round_labs',array('as'=>'round_labs','uses'=>'RoundController@roundlab'));
-Route::post('round_lab_test',array('as'=>'round_lab_test','uses'=>'RoundController@roundLabTest'));
-Route::put('update_round_lab',array('as'=>'update_round_lab','uses'=>'RoundController@updateRoundLab'));
-Route::post('round_destroy',array('as'=>'round_destroy','uses'=>'RoundController@destroyRound'));
-Route::post('round_destroy_test',array('as'=>'round_destroy_test','uses'=>'RoundController@destroySingleTest'));
+    Route::resource('round', 'RoundController');
+    Route::get('round_labs',array('as'=>'round_labs','uses'=>'RoundController@roundlab'));
+    Route::post('round_lab_test',array('as'=>'round_lab_test','uses'=>'RoundController@roundLabTest'));
+    Route::put('update_round_lab',array('as'=>'update_round_lab','uses'=>'RoundController@updateRoundLab'));
+    Route::post('round_destroy',array('as'=>'round_destroy','uses'=>'RoundController@destroyRound'));
+    Route::post('round_destroy_test',array('as'=>'round_destroy_test','uses'=>'RoundController@destroySingleTest'));
 
 //REPORT
-Route::post('round_report',array('as'=>'round_report','uses'=>'ReportController@roundReport'));
+    Route::post('round_report',array('as'=>'round_report','uses'=>'ReportController@roundReport'));
+});
+
 
 
 //AUTOCOMPLETE

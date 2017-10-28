@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">Change password</h3>
-
     @if(session('success'))
         <!-- If password successfully show message -->
         <div class="row">
@@ -15,7 +13,7 @@
         <!-- If no success message in flash session show change password form  -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                @lang('global.app_edit')
+                <h4>@lang('global.app_edit') password dell'utente loggato</h4>
             </div>
 
             <div class="panel-body">
@@ -60,7 +58,7 @@
             </div>
         </div>
 
-        {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
+        {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-success']) !!}
         {!! Form::close() !!}
     @endif
 @stop

@@ -2,14 +2,14 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
-                <div class="panel-heading">{{ ucfirst(config('app.name')) }} Login</div>
+                <div class="panel-heading">{{ ucfirst(config('app.name')) }} </div>
                 <div class="panel-body">
                     
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were problems with input:
+                            <strong>Whoops!</strong> Per favore ricontrolla le credenziali:
                             <br><br>
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -48,12 +48,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        {{--<div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <a href="{{ route('auth.password.reset') }}">Forgot your password?</a>
                             </div>
                         </div>
-
+--}}
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

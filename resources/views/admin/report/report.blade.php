@@ -503,41 +503,37 @@ if (count($data) > 0){
                     <td>SCC*1000/ml</td>
                     <td>mmol/L</td>
                 </tr>
+                <!-- se il test è attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
+                <!-- se il test è attivato ma non ho righe con sample_number = 1, cella vuota verde -->
+                <!-- se il test non è stato attivato, la cella è bianca -->
 
-                <tr>
-                    <td>Sample 1</td>
-                    <!-- DEVO RIPETERLO 10 volte---ripeti come sample 1 per tutti e 10 -->
-                    <!-- se il test è attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
-                    <!-- se il test è attivato ma non ho righe con sample_number = 1, cella vuota verde -->
-                    <!-- se il test non è stato attivato, la cella è bianca -->
+                <?php
+                //print_r($arr_sp1);
+                $numsample=1;
+                ?>
+                @for($v=0; $v<10; $v++)
+                    <tr>
+                        <td>Sample {{$numsample}}</td>
+                        <?php
+                        $class_f=$class_p=$class_l=$class_u=$class_s=$class_b="";
+                        if ($outlier[$v]->fat_ref!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
+                        if ($outlier[$v]->protein_ref!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
+                        if ($outlier[$v]->lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
+                        if ($outlier[$v]->urea_ref!="" && $l_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref=="" && $l_a==1) $class_u="green"; else $class_u="";
+                        if ($outlier[$v]->bhb_ref!="" && $l_a==1)  $class_b="red"; elseif($outlier[$v]->bhb_ref=="" && $l_a==1) $class_b="green"; else $class_b="";
+
+                        echo "<td  class=".$class_f.">".$outlier[$v]->fat_ref."</td>";
+                        echo "<td  class=".$class_p.">".$outlier[$v]->protein_ref."</td>";
+                        echo "<td  class=".$class_l.">".$outlier[$v]->lactose_ref."</td>";
+                        echo "<td  class=".$class_u.">".$outlier[$v]->urea_ref."</td>";
+                        echo "<td>".$outlier[$v]->scc_ref."</td>";
+                        echo "<td  class=".$class_b.">".$outlier[$v]->bhb_ref."</td>";
+                        ?>
+                    </tr>
                     <?php
-
-                    $f_s1=$p_s1=$l_s1=$u_s1=$s_s1=$b_s1="";
-
-                    foreach($sn_1 as $o)
-                    {
-                        if ($o->code=='fat_ref')    $f_s1=$o->outlier;
-                        if ($o->code=='protein_ref')$p_s1=$o->outlier;
-                        if ($o->code=='lactose_ref')$l_s1=$o->outlier;
-                        if ($o->code=='urea_ref')   $u_s1=$o->outlier;
-                        if ($o->code=='scc_ref')    $s_s1=$o->outlier;
-                        if ($o->code=='bhb')        $b_s1=$o->outlier;
-                    }
-
-                    if ($f_s1 && $f_a==1)  $class="red"; elseif($f_s1=="" && $f_a==1) $class="green"; else $class="";
-                        echo "<td class=".$class.">".$f_s1."</td>";
-                    if ($p_s1 && $p_a==1)  $class="red"; elseif($p_s1=="" && $p_a==1) $class="green"; else $class="";
-                        echo "<td class=".$class.">".$p_s1."</td>";
-                    if ($l_s1 && $l_a==1)  $class="red"; elseif($l_s1=="" && $l_a==1) $class="green"; else $class="";
-                        echo "<td class=".$class.">".$l_s1."</td>";
-                    if ($u_s1 && $u_a==1)  $class="red"; elseif($u_s1=="" && $u_a==1) $class="green"; else $class="";
-                        echo "<td class=".$class.">".$u_s1."</td>";
-                    if ($s_s1 && $s_a==1)  $class="red"; elseif($s_s1=="" && $s_a==1) $class="green"; else $class="";
-                        echo "<td class=".$class.">".$s_s1."</td>";
-                    if ($b_s1 && $b_a==1)  $class="red"; elseif($b_s1=="" && $b_a==1) $class="green"; else $class="";
-                        echo "<td class=".$class.">".$b_s1."</td>";
+                    $numsample++;
                     ?>
-                </tr>
+                @endfor
 
             </table>
 
@@ -832,7 +828,7 @@ if (count($data) > 0){
                         'lactation' =>'Strains',
                         'date'      =>'Date',
                         'Y'=>'Yes','T'=>'True','F'=>'False','N'=>'No'
-                        );
+                );
                 for($v=0; $v<5; $v++){
                     $a=$pag[$v]->sample01;
                     $b=$pag[$v]->sample02;
@@ -869,77 +865,79 @@ if (count($data) > 0){
                 ?>
 
 
-               {{-- <tr>
-                    <td class="left bold">Method</td>
-                    <!-- cerco nella tabella "pag" con queste coordinate:
-                        round = deve essere il codice round attuale, quello usato in tutto il report finora
-                        icar_code = per individuare il laboratorio per cui sto facendo il report
-                        row = deve essere uguale a "method"
-                        stampa i valori da sample 01 a sample05 nelle celle della riga
-                    -->
-                    <td>IDEXX</td>
-                    <td>IDEXX</td>
-                    <td>IDEXX</td>
-                    <td>IDEXX</td>
-                    <td>IDEXX</td>
-                </tr>
-                <tr>
-                    <td class="left bold">Presence of PAG</td>
-                    <!-- cerco nella tabella "pag" con queste coordinate:
-                        round = deve essere il codice round attuale, quello usato in tutto il report finora
-                        icar_code = per individuare il laboratorio per cui sto facendo il report
-                        row = deve essere uguale a "results"
-                        stampa i valori da sample 01 a sample05 nelle celle della riga
-                    -->
-                    <td>Yes</td>
-                    <td>No</td>
-                    <td>No</td>
-                    <td>No</td>
-                    <td>Yes</td>
-                </tr>--}}
-               {{-- <tr>
-                    <td class="left bold">Strains</td>
-                    <!-- cerco nella tabella "pag" con queste coordinate:
-                        round = deve essere il codice round attuale, quello usato in tutto il report finora
-                        icar_code = deve essere uguale a "all"
-                        row = deve essere uguale a "lactation"
-                        stampa i valori da sample 01 a sample05 nelle celle della riga
-                    -->
-                    <td>Non pregnant</td>
-                    <td>Pregnant - Artificial insemination</td>
-                    <td>Pregnant - Artificial insemination</td>
-                    <td>Pregnant - Artificial insemination</td>
-                    <td>Non pregnant</td>
-                </tr>
-                <tr>
-                    <td class="left bold">Date</td>
-                    <!-- cerco nella tabella "pag" con queste coordinate:
-                        round = deve essere il codice round attuale, quello usato in tutto il report finora
-                        icar_code = deve essere uguale a "all"
-                        row = deve essere uguale a "date"
-                        stampa i valori da sample 01 a sample05 nelle celle della riga
-                    -->
-                    <td>&nbsp;</td>
-                    <td>12/09/2017</td>
-                    <td>10/10/2017</td>
-                    <td>09/11/2017</td>
-                    <td>&nbsp;</td>
-                </tr>--}}
-               {{-- <tr>
-                    <td class="left bold">Laboratory accuracy</td>
-                    <!-- cerco nella tabella "pag" con queste coordinate:
-                        round = deve essere il codice round attuale, quello usato in tutto il report finora
-                        icar_code = per individuare il laboratorio per cui sto facendo il report
-                        row = deve essere uguale a "accuracy"
-                        stampa i valori da sample 01 a sample05 nelle celle della riga
-                    -->
-                    <td>True</td>
-                    <td>True</td>
-                    <td>True</td>
-                    <td>False</td>
-                    <td>True</td>
-                </tr>--}}
+                {{-- <tr>
+                     <td class="left bold">Method</td>
+                     <!-- cerco nella tabella "pag" con queste coordinate:
+                         round = deve essere il codice round attuale, quello usato in tutto il report finora
+                         icar_code = per individuare il laboratorio per cui sto facendo il report
+                         row = deve essere uguale a "method"
+                         stampa i valori da sample 01 a sample05 nelle celle della riga
+                     -->
+                     <td>IDEXX</td>
+                     <td>IDEXX</td>
+                     <td>IDEXX</td>
+                     <td>IDEXX</td>
+                     <td>IDEXX</td>
+                 </tr>
+                 <tr>
+                     <td class="left bold">Presence of PAG</td>
+                     <!-- cerco nella tabella "pag" con queste coordinate:
+                         round = deve essere il codice round attuale, quello usato in tutto il report finora
+                         icar_code = per individuare il laboratorio per cui sto facendo il report
+                         row = deve essere uguale a "results"
+                         stampa i valori da sample 01 a sample05 nelle celle della riga
+                     -->
+                     <td>Yes</td>
+                     <td>No</td>
+                     <td>No</td>
+                     <td>No</td>
+                     <td>Yes</td>
+                 </tr>--}}
+                {{-- <tr>
+                     <td class="left bold">Strains</td>
+                     <!-- cerco nella tabella "pag" con queste coordinate:
+                         round = deve essere il codice round attuale, quello usato in tutto il report finora
+                         icar_code = deve essere uguale a "all"
+                         row = deve essere uguale a "lactation"
+                         stampa i valori da sample 01 a sample05 nelle celle della riga
+                     -->
+                     <td>Non pregnant</td>
+                     <td>Pregnant - Artificial insemination</td>
+                     <td>Pregnant - Artificial insemination</td>
+                     <td>Pregnant - Artificial insemination</td>
+                     <td>Non pregnant</td>
+                 </tr>
+                 <tr>
+                     <td class="left bold">Date</td>
+                     <!-- cerco nella tabella "pag" con queste coordinate:
+                         round = deve essere il codice round attuale, quello usato in tutto il report finora
+                         icar_code = deve essere uguale a "all"
+                         row = deve essere uguale a "date"
+                         stampa i valori da sample 01 a sample05 nelle celle della riga
+                     -->
+                     <td>&nbsp;</td>
+                     <td>12/09/2017</td>
+                     <td>10/10/2017</td>
+                     <td>09/11/2017</td>
+                     <td>&nbsp;</td>
+                 </tr>--}}
+                {{-- <tr>
+                     <td class="left bold">Laboratory accuracy</td>
+                     <!-- cerco nella tabella "pag" con queste coordinate:
+                         round = deve essere il codice round attuale, quello usato in tutto il report finora
+                         icar_code = per individuare il laboratorio per cui sto facendo il report
+                         row = deve essere uguale a "accuracy"
+                         stampa i valori da sample 01 a sample05 nelle celle della riga
+                     -->
+                     <td>True</td>
+                     <td>True</td>
+                     <td>True</td>
+                     <td>False</td>
+                     <td>True</td>
+                 </tr>--}}
             </table>
+
+
 
             </body>
             </html>

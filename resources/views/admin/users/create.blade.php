@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('global.users.title')</h3>
+
     {!! Form::open(['method' => 'POST', 'route' => ['admin.users.store']]) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_create')
+            <h4>@lang('global.app_create')  @lang('global.users.title')</h4>
         </div>
         
         <div class="panel-body">
@@ -62,7 +62,8 @@
         </div>
     </div>
 
-    {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
+    {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-success']) !!}
+    {!! link_to(URL::previous(), 'Indietro', ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 @stop
 

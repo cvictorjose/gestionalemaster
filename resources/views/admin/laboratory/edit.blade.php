@@ -5,7 +5,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_edit') - {{$lab->lab_name}}
+            <h4>@lang('global.app_edit')  - {{$lab->lab_name}}</h4>
         </div>
 
         <div class="panel-body">

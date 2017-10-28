@@ -2,27 +2,23 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('global.users.title')</h3>
-    <p>
-        <a href="{{ route('admin.users.create') }}" class="btn btn-success">@lang('global.app_add_new')</a>
-    </p>
+    <a href="{{ route('admin.users.create') }}" class="btn btn-success pull-right">@lang('global.app_add_new')</a>
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_list')
+            <h4>@lang('global.app_list')   @lang('global.users.title')</h4>
         </div>
 
         <div class="panel-body table-responsive">
-            <table class="table table-bordered table-striped {{ count($users) > 0 ? 'datatable' : '' }} dt-select">
+            {{--<table class="table table-bordered table-striped {{ count($users) > 0 ? 'datatable' : '' }} dt-select">--}}
+            <table class="table table-bordered table-striped datatable">
                 <thead>
                     <tr>
-                        <th style="text-align:center;"><input type="checkbox" id="select-all" /></th>
-
+                        {{--<th style="text-align:center;"><input type="checkbox" id="select-all" /></th>--}}
                         <th>@lang('global.users.fields.name')</th>
                         <th>@lang('global.users.fields.email')</th>
                         <th>@lang('global.users.fields.roles')</th>
                         <th>&nbsp;</th>
-
                     </tr>
                 </thead>
                 
@@ -30,7 +26,7 @@
                     @if (count($users) > 0)
                         @foreach ($users as $user)
                             <tr data-entry-id="{{ $user->id }}">
-                                <td></td>
+                                {{--<td></td>--}}
 
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
@@ -49,7 +45,6 @@
                                     {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
                                     {!! Form::close() !!}
                                 </td>
-
                             </tr>
                         @endforeach
                     @else
@@ -64,7 +59,7 @@
 @stop
 
 @section('javascript') 
-    <script>
-        window.route_mass_crud_entries_destroy = '{{ route('admin.users.mass_destroy') }}';
-    </script>
+    {{--<script>--}}
+        {{--window.route_mass_crud_entries_destroy = '{{ route('admin.users.mass_destroy') }}';--}}
+    {{--</script>--}}
 @endsection

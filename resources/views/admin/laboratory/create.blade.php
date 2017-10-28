@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+
     {!! Form::open(['method' => 'POST', 'route' => ['laboratorio.store']]) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_create')
+            <h4>@lang('global.app_create')  @lang('global.labs.title')</h4>
         </div>
         
         <div class="panel-body">
@@ -31,7 +32,8 @@
         </div>
     </div>
 
-    {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
+    {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-success']) !!}
+    {!! link_to(URL::previous(), 'Indietro', ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 @stop
 

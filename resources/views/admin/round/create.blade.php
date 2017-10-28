@@ -109,6 +109,7 @@
                 </div>
             </div>
             {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-success']) !!}
+            {!! link_to(URL::previous(), 'Indietro', ['class' => 'btn btn-danger']) !!}
             {!! Form::close() !!}
         </div>
     </div>

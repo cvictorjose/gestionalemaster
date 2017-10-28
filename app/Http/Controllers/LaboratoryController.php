@@ -183,9 +183,16 @@ class LaboratoryController extends Controller
             $lab->delete();
             //da controllare se ce anche nel round o altri tb
             //Story::where('user_id',$result->_id)->delete();
-            return redirect()->route('laboratorio.index');
+            $message = [
+                'flashType'    => 'success',
+                'flashMessage' => 'Laboratorio eliminato con successo!'
+            ];
+            return redirect()->route('laboratorio.index')->with($message);
         } catch (Exception $e) {
-            //log
+            $message = [
+                'flashType'    => 'danger',
+                'flashMessage' => 'Errore! Controllare Laboratorio'
+            ];
         }
     }
 

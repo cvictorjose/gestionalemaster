@@ -2,13 +2,13 @@
 @extends('layouts.app')
 
 @section('content')
-    {{--<h3 class="page-title">@lang('global.labs.title')</h3>--}}
+    <a href="{{ route('round.create') }}" class="btn btn-success pull-right">@lang('global.app_add_new')</a>
+
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_list')
-            <a href="{{ route('round.create') }}" class="btn btn-success">
-                @lang('global.app_add_new')</a>
+            <h4>@lang('global.app_list')   @lang('global.round.title')</h4>
         </div>
+
 
         <div class="panel-body table-responsive">
             <table class="table table-bordered table-striped datatable">

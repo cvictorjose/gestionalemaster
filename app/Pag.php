@@ -28,9 +28,13 @@ class Pag extends Model
 
 
 
+    /**
+     * Get Round and (icar or Lab_code=all)
+     *
+     * @var array
+     */
     public static function getPag($icar,$round)
     {
-
         $results= DB::table('pag')
             ->where('round', '=', $round)
             ->Where(function ($query) use ( $icar ) {
@@ -38,8 +42,6 @@ class Pag extends Model
                     ->orwhere('lab_code', '=', 'all');
             })
             ->get();
-
         return $results;
-
     }
 }

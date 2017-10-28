@@ -3,8 +3,13 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +49,28 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($exception instanceof  MethodNotAllowedHttpException){
+            //Not Login or Bad Auth
+            return response()->json(['error' => trans('error.UNAUTHORIZED'), 'code' => 401], 401);
+        }
+        if($exception instanceof NotFoundResourceException){
+
+            return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_FOUND_RESOURCE')],
+                404);
+        }
+        if ($exception instanceof ModelNotFoundException) {
+            return response()->json(['error' => trans('error.NOT_RESULTS_DB'), 'code' => 404], 404);
+        }
+        if($exception instanceof NotFoundHttpException)
+        {
+            return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_FOUND_HTTP')], 404);
+        }
+        if($exception instanceof AuthorizationException)
+        {
+            //Auth ok but Permission denied
+            return response()->json(['error' => trans('error.FORBIDDEN'), 'code' => 403], 403);
+        }
+
         return parent::render($request, $exception);
     }
 
