@@ -826,19 +826,21 @@ if (count($data) > 0){
                 <?php
                 $class="";
                 $chi=array(
-                        'method'=>'Method',
-                        'results'=>'Presence of PAG',
-                        'accuracy'=>'Laboratory accuracy',
+                        'method'    =>'Method',
+                        'results'   =>'Presence of PAG',
+                        'accuracy'  =>'Laboratory accuracy',
+                        'lactation' =>'Strains',
+                        'date'      =>'Date',
                         'Y'=>'Yes','T'=>'True','F'=>'False','N'=>'No'
                         );
-                for($v=0; $v<3; $v++){
+                for($v=0; $v<5; $v++){
                     $a=$pag[$v]->sample01;
                     $b=$pag[$v]->sample02;
                     $c=$pag[$v]->sample03;
                     $d=$pag[$v]->sample04;
                     $e=$pag[$v]->sample05;
 
-                    if ($pag[$v]->row!="method"){
+                    if ($pag[$v]->row =="results" || $pag[$v]->row =="accuracy" ){
                         $a=$chi[$pag[$v]->sample01];
                         $b=$chi[$pag[$v]->sample02];
                         $c=$chi[$pag[$v]->sample03];
@@ -885,7 +887,7 @@ if (count($data) > 0){
                     <td>No</td>
                     <td>Yes</td>
                 </tr>--}}
-                <tr>
+               {{-- <tr>
                     <td class="left bold">Strains</td>
                     <!-- cerco nella tabella "pag" con queste coordinate:
                         round = deve essere il codice round attuale, quello usato in tutto il report finora
@@ -912,7 +914,7 @@ if (count($data) > 0){
                     <td>10/10/2017</td>
                     <td>09/11/2017</td>
                     <td>&nbsp;</td>
-                </tr>
+                </tr>--}}
                {{-- <tr>
                     <td class="left bold">Laboratory accuracy</td>
                     <!-- cerco nella tabella "pag" con queste coordinate:

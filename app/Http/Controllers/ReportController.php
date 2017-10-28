@@ -41,7 +41,9 @@ class ReportController extends Controller
             $sn_1=Outlier::getOutliers($icar,$round);
 
             //PAG
-            $pag=Pag::getPag('11','RT0317');
+            $pag=Pag::getPag("11",'RT0317');
+
+
 
             $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
