@@ -538,87 +538,7 @@ if (count($data) > 0){
                         echo "<td class=".$class.">".$b_s1."</td>";
                     ?>
                 </tr>
-                <tr>
-                    <td>Sample 2</td>	<!-- ripeti come sample 1 per tutti e 10 -->
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 3</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 4</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 5</td>
-                    <td class="red">Cochran</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 6</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 7</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 8</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 9</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Sample 10</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                    <td class="green">&nbsp;</td>
-                </tr>
+
             </table>
 
             <div class="newpage"></div>
@@ -775,7 +695,6 @@ if (count($data) > 0){
                         <span class="half_r">126</span>
                     </td>
                 </tr>
-
             </table>
 
 
@@ -792,9 +711,6 @@ if (count($data) > 0){
                     <td class="bold">Urea</td>
                     <td class="bold">SCC</td>
                 </tr>
-
-
-
                 {{-- Classi da assegnare alle celle:
                   se la cella è vuota, nessuna classe
                   se valore minore di -3 : classe red
@@ -803,8 +719,6 @@ if (count($data) > 0){
                   se valore tra 2 e 3 : classe yellow
                   se valore maggiore di 3: classe red
                   --}}
-
-
                 <?php
                 $numsample=1;
                 ?>
@@ -892,6 +806,127 @@ if (count($data) > 0){
 
                     </td>
                 </tr>
+            </table>
+
+
+            <table cellspacing="0">
+                <tr>
+                    <td colspan="7" class="bold title">PAG</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="bold">Sample 1</td>
+                    <td class="bold">Sample 2</td>
+                    <td class="bold">Sample 3</td>
+                    <td class="bold">Sample 4</td>
+                    <td class="bold">Sample 5</td>
+                </tr>
+
+
+                <?php
+                $class="";
+                $chi=array(
+                        'method'=>'Method',
+                        'results'=>'Presence of PAG',
+                        'accuracy'=>'Laboratory accuracy',
+                        'Y'=>'Yes','T'=>'True','F'=>'False','N'=>'No'
+                        );
+                for($v=0; $v<3; $v++){
+                    $a=$pag[$v]->sample01;
+                    $b=$pag[$v]->sample02;
+                    $c=$pag[$v]->sample03;
+                    $d=$pag[$v]->sample04;
+                    $e=$pag[$v]->sample05;
+
+                    if ($pag[$v]->row!="method"){
+                        $a=$chi[$pag[$v]->sample01];
+                        $b=$chi[$pag[$v]->sample02];
+                        $c=$chi[$pag[$v]->sample03];
+                        $d=$chi[$pag[$v]->sample04];
+                        $e=$chi[$pag[$v]->sample05];
+                    }
+                    echo "<tr>";
+                    echo "<td  class=".$class." bold>".$chi[$pag[$v]->row]."</td>";
+                    echo "<td  class=".$class.">".$a."</td>";
+                    echo "<td  class=".$class.">".$b."</td>";
+                    echo "<td  class=".$class.">".$c."</td>";
+                    echo "<td  class=".$class.">".$d."</td>";
+                    echo "<td  class=".$class.">".$e."</td>";
+                    echo "</tr>";
+                }
+                ?>
+
+
+               {{-- <tr>
+                    <td class="left bold">Method</td>
+                    <!-- cerco nella tabella "pag" con queste coordinate:
+                        round = deve essere il codice round attuale, quello usato in tutto il report finora
+                        icar_code = per individuare il laboratorio per cui sto facendo il report
+                        row = deve essere uguale a "method"
+                        stampa i valori da sample 01 a sample05 nelle celle della riga
+                    -->
+                    <td>IDEXX</td>
+                    <td>IDEXX</td>
+                    <td>IDEXX</td>
+                    <td>IDEXX</td>
+                    <td>IDEXX</td>
+                </tr>
+                <tr>
+                    <td class="left bold">Presence of PAG</td>
+                    <!-- cerco nella tabella "pag" con queste coordinate:
+                        round = deve essere il codice round attuale, quello usato in tutto il report finora
+                        icar_code = per individuare il laboratorio per cui sto facendo il report
+                        row = deve essere uguale a "results"
+                        stampa i valori da sample 01 a sample05 nelle celle della riga
+                    -->
+                    <td>Yes</td>
+                    <td>No</td>
+                    <td>No</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                </tr>--}}
+                <tr>
+                    <td class="left bold">Strains</td>
+                    <!-- cerco nella tabella "pag" con queste coordinate:
+                        round = deve essere il codice round attuale, quello usato in tutto il report finora
+                        icar_code = deve essere uguale a "all"
+                        row = deve essere uguale a "lactation"
+                        stampa i valori da sample 01 a sample05 nelle celle della riga
+                    -->
+                    <td>Non pregnant</td>
+                    <td>Pregnant - Artificial insemination</td>
+                    <td>Pregnant - Artificial insemination</td>
+                    <td>Pregnant - Artificial insemination</td>
+                    <td>Non pregnant</td>
+                </tr>
+                <tr>
+                    <td class="left bold">Date</td>
+                    <!-- cerco nella tabella "pag" con queste coordinate:
+                        round = deve essere il codice round attuale, quello usato in tutto il report finora
+                        icar_code = deve essere uguale a "all"
+                        row = deve essere uguale a "date"
+                        stampa i valori da sample 01 a sample05 nelle celle della riga
+                    -->
+                    <td>&nbsp;</td>
+                    <td>12/09/2017</td>
+                    <td>10/10/2017</td>
+                    <td>09/11/2017</td>
+                    <td>&nbsp;</td>
+                </tr>
+               {{-- <tr>
+                    <td class="left bold">Laboratory accuracy</td>
+                    <!-- cerco nella tabella "pag" con queste coordinate:
+                        round = deve essere il codice round attuale, quello usato in tutto il report finora
+                        icar_code = per individuare il laboratorio per cui sto facendo il report
+                        row = deve essere uguale a "accuracy"
+                        stampa i valori da sample 01 a sample05 nelle celle della riga
+                    -->
+                    <td>True</td>
+                    <td>True</td>
+                    <td>True</td>
+                    <td>False</td>
+                    <td>True</td>
+                </tr>--}}
             </table>
 
             </body>

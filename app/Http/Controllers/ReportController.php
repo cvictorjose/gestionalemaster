@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Data;
 use App\Laboratory;
 use App\Outlier;
+use App\Pag;
 use App\Repeatability;
 use App\Round;
 use App\Zscorefix;
@@ -39,12 +40,14 @@ class ReportController extends Controller
             //REPEAT
             $sn_1=Outlier::getOutliers($icar,$round);
 
+            //PAG
+            $pag=Pag::getPag('11','RT0317');
 
             $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
 
-            return view('admin.report.report', compact('data','round','lab','sn_1','arr_sp1','zscorept','zscorefix'));
+            return view('admin.report.report', compact('data','round','lab','sn_1','arr_sp1','zscorept','zscorefix','pag'));
 
         } catch (\Exception $e) {
             $message = [
@@ -52,6 +55,5 @@ class ReportController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-
     }
 }
