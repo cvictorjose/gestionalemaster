@@ -847,6 +847,16 @@ if (count($data) > 0){
                         $d=$chi[$pag[$v]->sample04];
                         $e=$chi[$pag[$v]->sample05];
                     }
+
+                    if ($pag[$v]->row =="date" ){
+                        $a=($a)? date("d-m-Y", strtotime($a)):"";
+                        $b=($b)? date("d-m-Y", strtotime($b)):"";
+                        $c=($c)? date("d-m-Y", strtotime($c)):"";
+                        $d=($d)? date("d-m-Y", strtotime($d)):"";
+                        $e=($e)? date("d-m-Y", strtotime($e)):"";
+                    }
+
+
                     echo "<tr>";
                     echo "<td  class=".$class." bold>".$chi[$pag[$v]->row]."</td>";
                     echo "<td  class=".$class.">".$a."</td>";
