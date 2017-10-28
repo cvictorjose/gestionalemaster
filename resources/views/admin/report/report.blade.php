@@ -138,7 +138,7 @@ if (count($data) > 0){
 @extends('layouts.app')
 
 @section('content')
-
+    {!! link_to(URL::previous(), trans('global.app_back_to_list'), ['class' => 'btn btn-danger']) !!}
     <div class="panel panel-default">
 
         <div class="panel-body table-responsive">
@@ -943,6 +943,7 @@ if (count($data) > 0){
             </html>
         </div>
     </div>
+    {!! link_to(URL::previous(), trans('global.app_back_to_list'), ['class' => 'btn btn-danger']) !!}
 @stop
 
 

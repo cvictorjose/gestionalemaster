@@ -33,7 +33,7 @@
     </div>
 
     {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-success']) !!}
-    {!! link_to(URL::previous(), 'Indietro', ['class' => 'btn btn-danger']) !!}
+    {!! link_to(URL::previous(), trans('global.app_back_to_list'), ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 @stop
 
