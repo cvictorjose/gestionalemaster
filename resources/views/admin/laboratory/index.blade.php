@@ -9,7 +9,6 @@
             <h4>@lang('global.app_list')   @lang('global.labs.title')</h4>
         </div>
 
-
         <div class="panel-body table-responsive">
             <table class="table table-bordered table-striped {{ count($labs) > 0 ? 'datatable' : '' }} dt-datatable">
                 <thead>

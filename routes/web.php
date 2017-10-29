@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::resource('laboratorio', 'LaboratoryController');
 
-//ROUND
+    //ROUND
     Route::resource('round', 'RoundController');
     Route::post('round_labs',array('as'=>'round_labs','uses'=>'RoundController@roundlab'));
     Route::post('round_lab_test',array('as'=>'round_lab_test','uses'=>'RoundController@roundLabTest'));
@@ -39,8 +39,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('round_destroy',array('as'=>'round_destroy','uses'=>'RoundController@destroyRound'));
     Route::post('round_destroy_test',array('as'=>'round_destroy_test','uses'=>'RoundController@destroySingleTest'));
 
-//REPORT
+   //REPORT
     Route::post('round_report',array('as'=>'round_report','uses'=>'ReportController@roundReport'));
+
+    //REPORT
+    Route::get('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));
 });
 
 

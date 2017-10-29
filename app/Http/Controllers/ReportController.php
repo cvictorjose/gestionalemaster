@@ -56,4 +56,10 @@ class ReportController extends Controller
             ];
         }
     }
+
+    public function grafico()
+    {
+        return view('admin.grafico.index');
+
+    }
 }

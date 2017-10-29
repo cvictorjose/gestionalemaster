@@ -19,7 +19,7 @@ $(document).ready(function () {
         "iDisplayLength": 10,
         "aaSorting": [],
         buttons: [
-            /*{
+            {
                 extend: 'copy',
                 exportOptions: {
                     columns: ':visible',
@@ -64,7 +64,7 @@ $(document).ready(function () {
                     }
                 }
             },
-            'colvis'*/
+            'colvis'
         ]
     };
     $('.datatable').each(function () {
