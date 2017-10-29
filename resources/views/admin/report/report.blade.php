@@ -16,7 +16,16 @@ if (count($round) > 0){
 
     $i=1;
 
+    //tutti non spuntati
     $p_a=$f_a=$l_a=$u_a=$s_a=$b_a=$pag_a=0;
+
+
+    $protein_ref_labcode=$fat_ref_labcode=$lactose_ref_labcode=$urea_ref_labcode=$scc_ref_labcode=$bhb_ref_labcode="&nbsp;";
+    $protein_ref_x100=$fat_ref_x100=$lactose_ref_x100=$urea_ref_x100=$scc_ref_x100=$bhb_ref_x100="&nbsp;";
+    $protein_ref_dev=$fat_ref_dev=$lactose_ref_dev=$urea_ref_dev=$scc_ref_dev=$bhb_ref_dev="&nbsp;";
+    $protein_ref_sdev=$fat_ref_sdev=$lactose_ref_sdev=$urea_ref_sdev=$scc_ref_sdev=$bhb_ref_sdev="&nbsp;";
+    $protein_ref_dist=$fat_ref_dist=$lactose_ref_dist=$urea_ref_dist=$scc_ref_dist=$bhb_ref_dist="&nbsp;";
+    $protein_ref_m=$fat_ref_m=$lactose_ref_m=$urea_ref_m=$scc_ref_m=$bhb_ref_m="&nbsp;";
 
     foreach ($round as $r){
         $code_round             = $r->code_round;
@@ -72,12 +81,7 @@ if (count($round) > 0){
 
 
 if (count($data) > 0){
-    $protein_ref_labcode=$fat_ref_labcode=$lactose_ref_labcode=$urea_ref_labcode=$scc_ref_labcode=$bhb_ref_labcode="&nbsp;";
-    $protein_ref_x100=$fat_ref_x100=$lactose_ref_x100=$urea_ref_x100=$scc_ref_x100=$bhb_ref_x100="&nbsp;";
-    $protein_ref_dev=$fat_ref_dev=$lactose_ref_dev=$urea_ref_dev=$scc_ref_dev=$bhb_ref_dev="&nbsp;";
-    $protein_ref_sdev=$fat_ref_sdev=$lactose_ref_sdev=$urea_ref_sdev=$scc_ref_sdev=$bhb_ref_sdev="&nbsp;";
-    $protein_ref_dist=$fat_ref_dist=$lactose_ref_dist=$urea_ref_dist=$scc_ref_dist=$bhb_ref_dist="&nbsp;";
-    $protein_ref_m=$fat_ref_m=$lactose_ref_m=$urea_ref_m=$scc_ref_m=$bhb_ref_m="&nbsp;";
+
 
 
     foreach ($data as $d){
@@ -734,12 +738,15 @@ if (count($data) > 0){
                         <?php
                         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
                         foreach ($code_arr as $t){
+                            $class="";
                             $valor=$zscorept[$v]->{$t};
-                            if ($valor <'-3') $class="red";
-                            if ($valor >'-3' && $valor<'-2')$class="yellow";
-                            if ($valor >'-2' && $valor<'2')$class="green";
-                            if ($valor >'2'  && $valor<'3')$class="yellow";
-                            if ($valor >'3') $class="red";
+                            if ($valor!=""){
+                                if ($valor <'-3') $class="red";
+                                if ($valor >'-3' && $valor<'-2')$class="yellow";
+                                if ($valor >'-2' && $valor<'2')$class="green";
+                                if ($valor >'2'  && $valor<'3')$class="yellow";
+                                if ($valor >'3') $class="red";
+                            }
                             echo "<td  class=".$class.">".$valor."</td>";
                         }
                         ?>
@@ -770,12 +777,15 @@ if (count($data) > 0){
                         <?php
                         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
                         foreach ($code_arr as $t){
-                            $valor=$zscorefix[$v]->{$t};
+                        $class="";
+                        $valor=$zscorefix[$v]->{$t};
+                        if ($valor!=""){
                             if ($valor <'-3') $class="red";
                             if ($valor >'-3' && $valor<'-2')$class="yellow";
                             if ($valor >'-2' && $valor<'2')$class="green";
                             if ($valor >'2'  && $valor<'3')$class="yellow";
                             if ($valor >'3') $class="red";
+                        }
                             echo "<td  class=".$class.">".$valor."</td>";
                         }
                         ?>
