@@ -27,7 +27,7 @@
             </li>
 
             <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
-                <a href="{{ url('/round') }}">
+                <a href="{{ url('/grafico') }}">
                     <i class="fa fa-line-chart"></i>
                     <span class="title">@lang('global.chart.title')</span>
                 </a>

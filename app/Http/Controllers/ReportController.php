@@ -10,8 +10,10 @@ use App\Repeatability;
 use App\Round;
 use App\Zscorefix;
 use App\Zscorept;
+use ConsoleTVs\Charts\Facades\Charts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+
 
 class ReportController extends Controller
 {
@@ -59,7 +61,28 @@ class ReportController extends Controller
 
     public function grafico()
     {
-        return view('admin.grafico.index');
+        $icar="1";
+        $round="RF0316";
+        $data_g=Repeatability::grafic_repeat($icar,$round);
 
+return $data_g;
+
+        $chart = Charts::multi('line', 'material')
+            // Setup the chart settings
+            ->title("FAT_REF")
+            // A dimension of 0 means it will take 100% of the space
+            ->dimensions(0, 400) // Width x Height
+            // This defines a preset of colors already done:)
+            ->template("material")
+            // You could always set them manually
+            // ->colors(['#2196F3', '#F44336', '#FFC107'])
+            // Setup the diferent datasets (this is a multi chart)
+            ->dataset($round, [5,20,100,15,30,80,15,30,80,22])
+            ->dataset('0116', [15,30,80,25,10,40,25,10,40,44])
+            ->dataset('1215', [25,10,40,15,30,80,15,30,80,22])
+            // Setup what the values mean
+            ->labels(['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10']);
+
+        return view('admin.grafico.index', ['chart' => $chart]);
     }
 }

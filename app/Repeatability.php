@@ -84,4 +84,29 @@ class Repeatability extends Model
         }
         return $arr_sp1;
     }
+
+
+
+    public static function grafic_repeat($icar,$round)
+    {
+        $order=array();
+        $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->get();
+        foreach($repeat as $rp)
+        {
+            for ($i=1; $i<6; $i++) {
+                $item= new \stdClass();
+                if ($i==1) $item=$rp->sample01;
+                if ($i==2) $item=$rp->sample02;
+                if ($i==3) $item=$rp->sample03;
+                if ($i==4) $item=$rp->sample04;
+                if ($i==5) $item=$rp->sample05;
+                array_push($order,$item);
+            }
+
+        }
+        asort($order);
+        return $order;
+
+
+    }
 }
