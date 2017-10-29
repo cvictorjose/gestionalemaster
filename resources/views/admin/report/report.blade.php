@@ -65,7 +65,7 @@ if (count($round) > 0){
                 $s_a=1;
                 break;
 
-            case 'bhb_ref':
+            case 'bhb':
                 $bhb_ref_sub     = "Yes";
                 $bhb_ref_sample  = ($r->question1)?"Yes":"No";
                 $bhb_ref_q2      = ($r->question2)?"Yes":"No";
@@ -208,7 +208,6 @@ if (count($data) > 0){
             <table cellspacing="0" id="labname">
                 <tr>
                     <td style="width:140px" class="bold">Laboratory Name</td>
-                    <!-- qui va inserito il nome del laboratorio per cui creo il report -->
                     <td style="width:615px">{{$lab->lab_name}}</td>
                 </tr>
             </table>
