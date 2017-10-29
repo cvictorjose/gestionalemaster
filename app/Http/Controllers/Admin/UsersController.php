@@ -51,14 +51,37 @@ class UsersController extends Controller
      */
     public function store(StoreUsersRequest $request)
     {
-        if (! Gate::allows('users_manage')) {
+      /*  if (! Gate::allows('users_manage')) {
             return abort(401);
         }
         $user = User::create($request->all());
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->assignRole($roles);
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index');*/
+
+        try {
+            if (! Gate::allows('users_manage'))
+                return abort(401);
+
+            $user = User::create($request->all());
+            $roles = $request->input('roles') ? $request->input('roles') : [];
+            $user->assignRole($roles);
+
+            $message = [
+                'flashType'    => 'success',
+                'flashMessage' => 'Utente registrato con successo'
+            ];
+
+
+        } catch (RequestException $e) {
+            $message = [
+                'flashType'    => 'danger',
+                'flashMessage' => 'Errore! Controllare i dati di inserimento del Round'
+            ];
+        }
+
+        return redirect()->route('admin.users.index')->with($message);
     }
 
 
@@ -97,7 +120,12 @@ class UsersController extends Controller
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);
 
-        return redirect()->route('admin.users.index');
+        $message = [
+            'flashType'    => 'success',
+            'flashMessage' => 'Utente aggiornato con successo'
+        ];
+
+        return redirect()->route('admin.users.index')->with($message);
     }
 
     /**
@@ -114,7 +142,12 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.users.index');
+        $message = [
+            'flashType'    => 'success',
+            'flashMessage' => 'Utente eliminato con successo'
+        ];
+
+        return redirect()->route('admin.users.index')->with($message);
     }
 
     /**

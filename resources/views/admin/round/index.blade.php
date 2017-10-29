@@ -24,9 +24,17 @@
                     @foreach ($rounds as $round)
                         <tr data-entry-id="{{ $round->id }}">
                             <td>{{ $round->code_round }}</td>
-                            <td>{{ $total_labs}}</td>
+                            <td>{{ $round->total }}</td>
                             <td>
-                                <a href="{{ route('round_labs') }}" class="btn btn-xs btn-info">@lang('global.labs.det_labs')</a>
+                                {!! Form::open(array(
+                                           'style' => 'display: inline-block;',
+                                           'method' => 'POST',
+                                           'route' => ['round_labs'])) !!}
+                                {{ csrf_field() }}
+                                <input name="round_id" type="hidden" value={{$round->code_round}}>
+
+                                {!! Form::submit(trans('global.labs.det_labs'), array('class' => 'btn btn-xs btn-info')) !!}
+                                {!! Form::close() !!}
                             </td>
                         </tr>
                     @endforeach

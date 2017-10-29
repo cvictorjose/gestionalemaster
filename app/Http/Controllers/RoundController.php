@@ -20,16 +20,30 @@ class RoundController extends Controller
     public function index()
     {
         try {
-            $rounds = Round::select('code_round')->distinct()->get();
-            $labs   = Round::select('laboratory_id')->distinct()->get();
-            $total_labs = count($labs);
+
+            $rounds=array();
+            $round = Round::select('code_round')->distinct()->get();
+
+            foreach($round as $r){
+                $item= new \stdClass();
+                $item->id ="";
+                $item->code_round ="";
+                $item->total ="";
+
+                $lab   = Round::select('laboratory_id')->where('code_round',$r->code_round)->distinct()->get();
+
+                $item->id = $r->laboratory_id;
+                $item->code_round = $r->code_round;
+                $item->total = count($lab);
+                $rounds[]=$item;
+            }
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-     return view('admin.round.index', compact('rounds', 'total_labs'));
+     return view('admin.round.index', compact('rounds'));
     }
 
 
@@ -40,16 +54,21 @@ class RoundController extends Controller
      */
     public function roundlab()
     {
+
         try {
-            $data = Round::select('code_round','laboratory_id')->distinct()->get();
+            $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+            $round=$inputData['round_id'];
+
+            $data   = Round::select('laboratory_id')->where('code_round',$round)->distinct()->get();
+
             $labs=array();
             foreach ($data as $l){
                 $icar= Laboratory::find($l->laboratory_id);
                 $pcNew=new \stdClass();
-                $pcNew->code_round    = $l->code_round;
+                $pcNew->code_round    = $round;
                 $pcNew->laboratory_id = $l->laboratory_id;
                 $pcNew->icar_code     = $icar->icar_code;
-                $pcNew->lab_name     = $icar->lab_name;
+                $pcNew->lab_name      = $icar->lab_name;
                 $labs[]=$pcNew;
             }
 
@@ -59,7 +78,7 @@ class RoundController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-        return view('admin.round.labs', compact('labs'));
+       return view('admin.round.labs', compact('labs','round'));
     }
 
 
@@ -81,7 +100,7 @@ class RoundController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-        return view('admin.round.lab_test', compact('labs'));
+        return view('admin.round.lab_test', compact('labs','lab_round'));
     }
 
 
@@ -241,7 +260,7 @@ class RoundController extends Controller
                'flashType'    => 'success',
                'flashMessage' => 'Laboratorio eliminato con successo!'
            ];
-           return redirect()->route('round_labs')->with($message);
+           return redirect()->route('round.index')->with($message);
         } catch (Exception $e) {
             //log
         }
