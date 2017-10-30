@@ -63,9 +63,10 @@ class ReportController extends Controller
     {
         $icar="1";
         $round="RF0316";
-        $data_g=Repeatability::grafic_repeat($icar,$round);
+        $dataCurrentRound=Repeatability::getDataCurrentRound($icar,$round);
 
-return $data_g;
+//return $dataCurrentRound;
+
 
         $chart = Charts::multi('line', 'material')
             // Setup the chart settings
@@ -77,11 +78,11 @@ return $data_g;
             // You could always set them manually
             // ->colors(['#2196F3', '#F44336', '#FFC107'])
             // Setup the diferent datasets (this is a multi chart)
-            ->dataset($round, [5,20,100,15,30,80,15,30,80,22])
-            ->dataset('0116', [15,30,80,25,10,40,25,10,40,44])
-            ->dataset('1215', [25,10,40,15,30,80,15,30,80,22])
+            ->dataset($round, $dataCurrentRound)
+            ->dataset('0116', [0.00100,0.002,0.00012,0.00105,0.010,0.0040])
+
             // Setup what the values mean
-            ->labels(['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10']);
+            ->labels(['S1', 'S2', 'S3', 'S4', 'S5', 'S6']);
 
         return view('admin.grafico.index', ['chart' => $chart]);
     }

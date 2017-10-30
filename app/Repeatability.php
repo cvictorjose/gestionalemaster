@@ -2,7 +2,9 @@
 
 namespace App;
 
+use ArrayObject;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Response;
 
 class Repeatability extends Model
 {
@@ -87,26 +89,59 @@ class Repeatability extends Model
 
 
 
-    public static function grafic_repeat($icar,$round)
+    public static function getDataCurrentRound($icar,$round)
     {
-        $order=array();
-        $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->get();
-        foreach($repeat as $rp)
-        {
-            for ($i=1; $i<6; $i++) {
-                $item= new \stdClass();
-                if ($i==1) $item=$rp->sample01;
-                if ($i==2) $item=$rp->sample02;
-                if ($i==3) $item=$rp->sample03;
-                if ($i==4) $item=$rp->sample04;
-                if ($i==5) $item=$rp->sample05;
-                array_push($order,$item);
-            }
+        $positions=array();
+        $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
 
+        $fruits = array(
+            "sp1" => number_format($repeat->sample01,4),
+            "sp2" => number_format($repeat->sample02,4),
+            "sp3" => number_format($repeat->sample03,4),
+            "sp4" => number_format($repeat->sample04,4),
+            "sp5" => number_format($repeat->sample05,4),
+            "sp6" => number_format($repeat->sample06,4)
+        );
+        $fruitArrayObject = new ArrayObject($fruits);
+        $fruitArrayObject->asort();
+
+        foreach ($fruitArrayObject as $key => $val) {
+            $positions[]=$key;
         }
-        asort($order);
-        return $order;
 
 
+        $currentRound=array();
+        $dataZscorePT= Zscorept::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
+
+        foreach ($positions as $p){
+            switch ($p) {
+                case 'sp1':
+                    $currentRound[]=number_format($dataZscorePT->sample01,4);
+                    break;
+                case 'sp2':
+                    $currentRound[]=$dataZscorePT->sample02;
+                    break;
+                case 'sp3':
+                    $currentRound[]=$dataZscorePT->sample03;
+                    break;
+                case 'sp4':
+                    $currentRound[]=$dataZscorePT->sample04;
+                    break;
+                case 'sp5':
+                    $currentRound[]=$dataZscorePT->sample05;
+                    break;
+                case 'sp6':
+                    $currentRound[]=$dataZscorePT->sample06;
+                    break;
+            }
+        }
+
+        return $currentRound;
+       // return  (array('currentRound'=>$fruitArrayObject,'positions'=>$positions));
+
+        /*
+        if ($i==1) $sample= (filter_var($rp->sample01, FILTER_VALIDATE_INT))? $rp->sample01 : number_format($rp->sample01,4);
+                $item->sp1=$sample;
+       */
     }
 }
