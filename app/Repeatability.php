@@ -100,7 +100,11 @@ class Repeatability extends Model
             "sp3" => number_format($repeat->sample03,4),
             "sp4" => number_format($repeat->sample04,4),
             "sp5" => number_format($repeat->sample05,4),
-            "sp6" => number_format($repeat->sample06,4)
+            "sp6" => number_format($repeat->sample06,4),
+            "sp7" => number_format($repeat->sample07,4),
+            "sp8" => number_format($repeat->sample08,4),
+            "sp9" => number_format($repeat->sample09,4),
+            "sp10" => number_format($repeat->sample10,4)
         );
         $fruitArrayObject = new ArrayObject($fruits);
         $fruitArrayObject->asort();
@@ -133,11 +137,23 @@ class Repeatability extends Model
                 case 'sp6':
                     $currentRound[]=$dataZscorePT->sample06;
                     break;
+                case 'sp7':
+                    $currentRound[]=$dataZscorePT->sample07;
+                    break;
+                case 'sp8':
+                    $currentRound[]=$dataZscorePT->sample08;
+                    break;
+                case 'sp9':
+                    $currentRound[]=$dataZscorePT->sample09;
+                    break;
+                case 'sp10':
+                    $currentRound[]=$dataZscorePT->sample10;
+                    break;
             }
         }
 
-        return $currentRound;
-       // return  (array('currentRound'=>$fruitArrayObject,'positions'=>$positions));
+
+       return  (array('currentRound'=>$currentRound,'positions'=>$positions));
 
         /*
         if ($i==1) $sample= (filter_var($rp->sample01, FILTER_VALIDATE_INT))? $rp->sample01 : number_format($rp->sample01,4);
