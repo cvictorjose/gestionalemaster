@@ -91,9 +91,9 @@ class Repeatability extends Model
 
     public static function getDataCurrentRound($icar,$round)
     {
-
         $round="RF0317";
 
+        //INIZIO Blocco Base
         $positions=array();
         $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
 
@@ -117,7 +117,7 @@ class Repeatability extends Model
         foreach ($fruitArrayObject as $key => $val) {
             $positions[]=$key;
         }
-
+        //FINE Blocco Base
 
        //Prendo 2 round precendenti
         $round_precedenti=array();
@@ -136,25 +136,25 @@ class Repeatability extends Model
             }
         }
 
+
         $final=array();
         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+
         foreach ($code_arr as $type) {
-            $final[$type]['base']=Zscorept::blocksRound($icar,$round,$positions,$type);
+            $final['zscorept'][$type]['base']=Zscorept::getBlocksRoundPt($icar,$round,$positions,$type);
+            $final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($icar,$round,$positions,$type);
             //prendo 2 round precendenti a quello attuale
             foreach($round_precedenti as $round)
             {
-                $final[$type][$round]=Zscorept::blocksRound($icar,$round,$positions,$type);
+              $final['zscorept'][$type][$round]=Zscorept::getBlocksRoundPt($icar,$round,$positions,$type);
+              $final['zscorefix'][$type][$round]=Zscorefix::getBlocksRoundFx($icar,$round,$positions,$type);
             }
-
         }
 
         //ritono CurrentRound=Base,Round1,Round2
         return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti));
 
 
-        /*
-        if ($i==1) $sample= (filter_var($rp->sample01, FILTER_VALIDATE_INT))? $rp->sample01 : number_format($rp->sample01,4);
-                $item->sp1=$sample;
-       */
+
     }
 }

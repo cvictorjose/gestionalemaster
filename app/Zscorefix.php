@@ -88,4 +88,50 @@ class Zscorefix extends Model
         }
         return $arr_zscorefix;
     }
+
+
+    public static function getBlocksRoundFx($icar,$round,$positions,$type)
+    {
+        $currentRound=array();
+        $results= Zscorefix::where('round',$round)->where('lab_code',$icar)->where('type',$type)->first();
+
+        if ($results){
+            foreach ($positions as $p){
+                switch ($p) {
+                    case 'sp1':
+                        $currentRound[]=number_format($results->sample01,4);
+                        break;
+                    case 'sp2':
+                        $currentRound[]=$results->sample02;
+                        break;
+                    case 'sp3':
+                        $currentRound[]=$results->sample03;
+                        break;
+                    case 'sp4':
+                        $currentRound[]=$results->sample04;
+                        break;
+                    case 'sp5':
+                        $currentRound[]=$results->sample05;
+                        break;
+                    case 'sp6':
+                        $currentRound[]=$results->sample06;
+                        break;
+                    case 'sp7':
+                        $currentRound[]=$results->sample07;
+                        break;
+                    case 'sp8':
+                        $currentRound[]=$results->sample08;
+                        break;
+                    case 'sp9':
+                        $currentRound[]=$results->sample09;
+                        break;
+                    case 'sp10':
+                        $currentRound[]=$results->sample10;
+                        break;
+                }
+            }
+            return $currentRound;
+        }
+        return array(0,0,0,0,0,0,0,0,0,0);
+    }
 }

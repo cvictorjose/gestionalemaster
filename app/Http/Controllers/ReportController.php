@@ -71,25 +71,26 @@ class ReportController extends Controller
         //return  $dataCurrentRound['rounds'];
         //return $dataCurrentRound['currentRound']['fat_ref']['base'];
 
-        //count array
-        //azzera block2,3
-        $chart=array();
 
-        //$code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+        //creo un chart array[test]
+        $chart=array();
         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
         foreach ($code_arr as $type) {
             $p=1;
-            $base=$dataCurrentRound['currentRound'][$type]['base'];
+            $base=$dataCurrentRound['currentRound']['zscorept'][$type]['base'];
+            $basefx=$dataCurrentRound['currentRound']['zscorefix'][$type]['base'];
 
             foreach($dataCurrentRound['rounds'] as $r)
             {
                 switch ($p) {
                     case 1:
-                        $block2 = $dataCurrentRound['currentRound'][$type][$r];
+                        $block2 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
+                        $block2fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
                         $round2=$r;
                         break;
                     case 2:
-                        $block3 = $dataCurrentRound['currentRound'][$type][$r];
+                        $block3 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
+                        $block3fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
                         $round3=$r;
                         break;
                 }
@@ -98,12 +99,20 @@ class ReportController extends Controller
 
             $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3,
                 $ordinamento_sample);
+
+            $chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3,
+                $ordinamento_sample);
         }
-
-
-        return view('admin.grafico.index', ['chart' => $chart]);
+        return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx]);
     }
 
+
+
+    /**
+     * Create Chart with 3 blocks data
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function createChart($base,$block2,$block3,$round,$round2,$round3,$ordinamento_sample)
     {
         $chart = Charts::multi('line', 'material')
@@ -119,10 +128,8 @@ class ReportController extends Controller
             ->dataset($round, $base)
             ->dataset($round2,$block2)
             ->dataset($round3, $block3)
-
             // Setup what the values mean
             ->labels($ordinamento_sample);
-
         return $chart;
     }
 }
