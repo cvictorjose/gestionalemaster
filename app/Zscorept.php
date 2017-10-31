@@ -89,46 +89,52 @@ class Zscorept extends Model
 
 
 
-    public static function blocksRound($icar,$round,$positions)
+    public static function blocksRound($icar,$round,$positions,$type)
     {
         $currentRound=array();
-        $dataZscorePT= Zscorept::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
+        $dataZscorePT= Zscorept::where('round',$round)->where('lab_code',$icar)->where('type',$type)->first();
 
-        foreach ($positions as $p){
-            switch ($p) {
-                case 'sp1':
-                    $currentRound[]=number_format($dataZscorePT->sample01,4);
-                    break;
-                case 'sp2':
-                    $currentRound[]=$dataZscorePT->sample02;
-                    break;
-                case 'sp3':
-                    $currentRound[]=$dataZscorePT->sample03;
-                    break;
-                case 'sp4':
-                    $currentRound[]=$dataZscorePT->sample04;
-                    break;
-                case 'sp5':
-                    $currentRound[]=$dataZscorePT->sample05;
-                    break;
-                case 'sp6':
-                    $currentRound[]=$dataZscorePT->sample06;
-                    break;
-                case 'sp7':
-                    $currentRound[]=$dataZscorePT->sample07;
-                    break;
-                case 'sp8':
-                    $currentRound[]=$dataZscorePT->sample08;
-                    break;
-                case 'sp9':
-                    $currentRound[]=$dataZscorePT->sample09;
-                    break;
-                case 'sp10':
-                    $currentRound[]=$dataZscorePT->sample10;
-                    break;
+        if ($dataZscorePT){
+            foreach ($positions as $p){
+                switch ($p) {
+                    case 'sp1':
+                        $currentRound[]=number_format($dataZscorePT->sample01,4);
+                        break;
+                    case 'sp2':
+                        $currentRound[]=$dataZscorePT->sample02;
+                        break;
+                    case 'sp3':
+                        $currentRound[]=$dataZscorePT->sample03;
+                        break;
+                    case 'sp4':
+                        $currentRound[]=$dataZscorePT->sample04;
+                        break;
+                    case 'sp5':
+                        $currentRound[]=$dataZscorePT->sample05;
+                        break;
+                    case 'sp6':
+                        $currentRound[]=$dataZscorePT->sample06;
+                        break;
+                    case 'sp7':
+                        $currentRound[]=$dataZscorePT->sample07;
+                        break;
+                    case 'sp8':
+                        $currentRound[]=$dataZscorePT->sample08;
+                        break;
+                    case 'sp9':
+                        $currentRound[]=$dataZscorePT->sample09;
+                        break;
+                    case 'sp10':
+                        $currentRound[]=$dataZscorePT->sample10;
+                        break;
+                }
             }
+            return $currentRound;
+
         }
 
-        return $currentRound;
+        return array(0,0,0,0,0,0,0,0,0,0);
+
+
     }
 }

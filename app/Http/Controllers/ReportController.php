@@ -64,48 +64,65 @@ class ReportController extends Controller
         $icar="1";
         $round="RF0316";
         $dataCurrentRound=Repeatability::getDataCurrentRound($icar,$round);
-
-        //return $dataCurrentRound['currentRound']['base'];
-        //return  $dataCurrentRound['rounds'];
+        $ordinamento_sample=$dataCurrentRound['positions'];
 
         //return $dataCurrentRound['currentRound'];
+        //return $dataCurrentRound['currentRound']['base'];
+        //return  $dataCurrentRound['rounds'];
+        //return $dataCurrentRound['currentRound']['fat_ref']['base'];
 
-        $p=1;
-        foreach($dataCurrentRound['rounds'] as $r)
-        {
-            switch ($p) {
-                case 1:
-                    // return $dataCurrentRound['currentRound'][$r];
-                    $block2 = $dataCurrentRound['currentRound'][$r];
-                    $round2=$r;
-                    break;
-                case 2:
-                    $block3 = $dataCurrentRound['currentRound'][$r];
-                    $round3=$r;
-                    break;
+        //count array
+        //azzera block2,3
+        $chart=array();
+
+        //$code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+        foreach ($code_arr as $type) {
+            $p=1;
+            $base=$dataCurrentRound['currentRound'][$type]['base'];
+
+            foreach($dataCurrentRound['rounds'] as $r)
+            {
+                switch ($p) {
+                    case 1:
+                        $block2 = $dataCurrentRound['currentRound'][$type][$r];
+                        $round2=$r;
+                        break;
+                    case 2:
+                        $block3 = $dataCurrentRound['currentRound'][$type][$r];
+                        $round3=$r;
+                        break;
+                }
+                $p++;
             }
-            $p++;
+
+            $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3,
+                $ordinamento_sample);
         }
 
 
+        return view('admin.grafico.index', ['chart' => $chart]);
+    }
 
+    public function createChart($base,$block2,$block3,$round,$round2,$round3,$ordinamento_sample)
+    {
         $chart = Charts::multi('line', 'material')
             // Setup the chart settings
-            ->title("FAT_REF")
+            ->title("")
             // A dimension of 0 means it will take 100% of the space
-            ->dimensions(0, 400) // Width x Height
+            ->dimensions(0, 300) // Width x Height
             // This defines a preset of colors already done:)
             ->template("material")
             // You could always set them manually
             // ->colors(['#2196F3', '#F44336', '#FFC107'])
             // Setup the diferent datasets (this is a multi chart)
-            ->dataset($round, $dataCurrentRound['currentRound']['base'])
+            ->dataset($round, $base)
             ->dataset($round2,$block2)
             ->dataset($round3, $block3)
 
             // Setup what the values mean
-            ->labels($dataCurrentRound['positions']);
+            ->labels($ordinamento_sample);
 
-        return view('admin.grafico.index', ['chart' => $chart]);
+        return $chart;
     }
 }

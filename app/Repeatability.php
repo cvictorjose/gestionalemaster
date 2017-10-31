@@ -110,13 +110,16 @@ class Repeatability extends Model
             "sp10" => number_format($repeat->sample10,4)
         );
         $fruitArrayObject = new ArrayObject($fruits);
+        //ordino array ASC
         $fruitArrayObject->asort();
 
+        //Prendo il numero di sample, sp3,sp1,sp10 ecc
         foreach ($fruitArrayObject as $key => $val) {
             $positions[]=$key;
         }
 
 
+       //Prendo 2 round precendenti
         $round_precedenti=array();
         $words = substr($round, 0, -4);
         $getIds= Zscorept::where('round',$round)->where('lab_code',$icar)->orderBy('id','desc')->first();
@@ -134,13 +137,18 @@ class Repeatability extends Model
         }
 
         $final=array();
-        $final['base']=Zscorept::blocksRound($icar,$round,$positions);
+        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+        foreach ($code_arr as $type) {
+            $final[$type]['base']=Zscorept::blocksRound($icar,$round,$positions,$type);
+            //prendo 2 round precendenti a quello attuale
+            foreach($round_precedenti as $round)
+            {
+                $final[$type][$round]=Zscorept::blocksRound($icar,$round,$positions,$type);
+            }
 
-        foreach($round_precedenti as $round)
-        {
-            $final[$round]=Zscorept::blocksRound($icar,$round,$positions);
         }
 
+        //ritono CurrentRound=Base,Round1,Round2
         return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti));
 
 

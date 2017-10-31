@@ -18,8 +18,8 @@
             'method'    =>'Method',
             'results'   =>'Presence of PAG',
             'accuracy'  =>'Laboratory accuracy',
-            'lactation' =>'Strains',
-            'date'      =>'Date',
+            'lactation' =>'Cow Status',
+            'date'      =>'Insemination date',
             'Y'=>'Yes','T'=>'True','F'=>'False','N'=>'No'
     );
     for($v=0; $v<5; $v++){
