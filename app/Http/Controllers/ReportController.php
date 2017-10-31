@@ -65,6 +65,30 @@ class ReportController extends Controller
         $round="RF0316";
         $dataCurrentRound=Repeatability::getDataCurrentRound($icar,$round);
 
+        //return $dataCurrentRound['currentRound']['base'];
+        //return  $dataCurrentRound['rounds'];
+
+        //return $dataCurrentRound['currentRound'];
+
+        $p=1;
+        foreach($dataCurrentRound['rounds'] as $r)
+        {
+            switch ($p) {
+                case 1:
+                    // return $dataCurrentRound['currentRound'][$r];
+                    $block2 = $dataCurrentRound['currentRound'][$r];
+                    $round2=$r;
+                    break;
+                case 2:
+                    $block3 = $dataCurrentRound['currentRound'][$r];
+                    $round3=$r;
+                    break;
+            }
+            $p++;
+        }
+
+
+
         $chart = Charts::multi('line', 'material')
             // Setup the chart settings
             ->title("FAT_REF")
@@ -75,8 +99,9 @@ class ReportController extends Controller
             // You could always set them manually
             // ->colors(['#2196F3', '#F44336', '#FFC107'])
             // Setup the diferent datasets (this is a multi chart)
-            ->dataset($round, $dataCurrentRound['currentRound'])
-            ->dataset('0116', [0.00100,0.002,0.00012,0.00105,0.010,0.0040,0.0040,0.0040,0.0040,0.0040])
+            ->dataset($round, $dataCurrentRound['currentRound']['base'])
+            ->dataset($round2,$block2)
+            ->dataset($round3, $block3)
 
             // Setup what the values mean
             ->labels($dataCurrentRound['positions']);

@@ -91,6 +91,9 @@ class Repeatability extends Model
 
     public static function getDataCurrentRound($icar,$round)
     {
+
+        $round="RF0317";
+
         $positions=array();
         $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
 
@@ -114,46 +117,32 @@ class Repeatability extends Model
         }
 
 
-        $currentRound=array();
-        $dataZscorePT= Zscorept::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
-
-        foreach ($positions as $p){
-            switch ($p) {
-                case 'sp1':
-                    $currentRound[]=number_format($dataZscorePT->sample01,4);
-                    break;
-                case 'sp2':
-                    $currentRound[]=$dataZscorePT->sample02;
-                    break;
-                case 'sp3':
-                    $currentRound[]=$dataZscorePT->sample03;
-                    break;
-                case 'sp4':
-                    $currentRound[]=$dataZscorePT->sample04;
-                    break;
-                case 'sp5':
-                    $currentRound[]=$dataZscorePT->sample05;
-                    break;
-                case 'sp6':
-                    $currentRound[]=$dataZscorePT->sample06;
-                    break;
-                case 'sp7':
-                    $currentRound[]=$dataZscorePT->sample07;
-                    break;
-                case 'sp8':
-                    $currentRound[]=$dataZscorePT->sample08;
-                    break;
-                case 'sp9':
-                    $currentRound[]=$dataZscorePT->sample09;
-                    break;
-                case 'sp10':
-                    $currentRound[]=$dataZscorePT->sample10;
-                    break;
+        $round_precedenti=array();
+        $words = substr($round, 0, -4);
+        $getIds= Zscorept::where('round',$round)->where('lab_code',$icar)->orderBy('id','desc')->first();
+        $getIds2= Zscorept::where('id','<',$getIds->id)->where('round', 'like', $words.'%')->orderBy('id','desc')->get();
+        $crash=0;
+        foreach($getIds2 as $g)
+        {
+            if($crash==2) break;
+            if (!in_array($g->round, $round_precedenti)) {
+                if ($round!=$g->round) {
+                    $round_precedenti[]= $g->round;
+                    $crash++;
+                }
             }
         }
 
+        $final=array();
+        $final['base']=Zscorept::blocksRound($icar,$round,$positions);
 
-       return  (array('currentRound'=>$currentRound,'positions'=>$positions));
+        foreach($round_precedenti as $round)
+        {
+            $final[$round]=Zscorept::blocksRound($icar,$round,$positions);
+        }
+
+        return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti));
+
 
         /*
         if ($i==1) $sample= (filter_var($rp->sample01, FILTER_VALIDATE_INT))? $rp->sample01 : number_format($rp->sample01,4);
