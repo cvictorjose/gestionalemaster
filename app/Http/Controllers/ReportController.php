@@ -48,6 +48,8 @@ class ReportController extends Controller
             $pag=Pag::getPag("11",'RT0317');
 
             $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
+
+
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             return view('admin.report.report_ref', compact('data','round','lab','outlier','arr_sp1','zscorept',
@@ -61,11 +63,8 @@ class ReportController extends Controller
         }
     }
 
-
-
-
     /**
-     * Create report Reference belong to a Lab.
+     * Create report Routine belong to a Lab.
      *
      * @return \Illuminate\Http\Response
      */
@@ -87,13 +86,15 @@ class ReportController extends Controller
             $arr_sp1=Repeatability::getRepeat($icar,$round);
 
             //OUTLIER
-            $outlier=Outlier::getOutliers($icar,$round);
+            $outlier=Outlier::getOutliersRot($icar,$round);
             //return $outlier;
 
             //PAG
             $pag=Pag::getPag("11",'RT0317');
 
             $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
+
+
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             return view('admin.report.report_rot', compact('data','round','lab','outlier','arr_sp1','zscorept',

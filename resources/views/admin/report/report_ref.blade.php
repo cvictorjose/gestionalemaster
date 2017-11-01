@@ -476,7 +476,6 @@ if (count($data) > 0){
                     <td>g/100g</td>
                     <td>mg/dl</td>
                     <td>SCC*1000/ml</td>
-
                 </tr>
                 <!-- se il test è attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
                 <!-- se il test è attivato ma non ho righe con sample_number = 1, cella vuota verde -->
@@ -494,7 +493,8 @@ if (count($data) > 0){
                         if ($outlier[$v]->fat_ref!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
                         if ($outlier[$v]->protein_ref!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
                         if ($outlier[$v]->lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
-                        if ($outlier[$v]->urea_ref!="" && $l_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref=="" && $l_a==1) $class_u="green"; else $class_u="";
+                        if ($outlier[$v]->urea_ref!="" && $u_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref==""
+                                && $u_a==1) $class_u="green"; else $class_u="";
 
                         echo "<td  class=".$class_f.">".$outlier[$v]->fat_ref."</td>";
                         echo "<td  class=".$class_p.">".$outlier[$v]->protein_ref."</td>";

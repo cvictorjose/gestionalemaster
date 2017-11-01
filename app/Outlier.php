@@ -57,18 +57,36 @@ class Outlier extends Model
 
 
 
-    /*public static function getOutliers($icar,$round)
+    public static function getOutliersRot($icar,$round)
     {
+        $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','bhb','pag');
+        $arr_sp1=array();
 
-        $sn_1=$sn_2=$sn_3=$sn_4=$sn_5=$sn_6=$sn_7=$sn_8=$sn_9=$sn_10=array();
+        $round="RT0316";
+
         $outliers= Outlier::where('round',$round)->where('lab_code',$icar)->orderBy('sample_number')->get();
-        foreach($outliers as $o)
-        {
+        for ($i=1; $i<11; $i++) {
             $item= new \stdClass();
-            $item->code  =$o->type;
-            $item->outlier=$o->outlier_type;
-            if($o->sample_number==1){$sn_1[]=$item;}
+            $item->fat_rout ="";
+            $item->protein_rout ="";
+            $item->lactose_rout ="";
+            $item->urea_rout ="";
+            $item->bhb ="";
+            $item->pag ="";
+
+            foreach($outliers as $rp)
+            {
+                foreach ($code_arr as $t){
+                    if ($rp->sample_number==$i && $rp->type==$t){
+                        $sample = $rp->outlier_type;
+                        $item->{$t} =$sample;
+                        $item->riga =$rp->sample_number;
+                    }
+                }
+            }
+            array_push($arr_sp1,$item);
         }
-        return $sn_1;
-    }*/
+        return $arr_sp1;
+    }
+
 }
