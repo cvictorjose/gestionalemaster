@@ -32,8 +32,6 @@
 </head>
 <body class="page-header-fixed">
 
-   
-
     <div class="container-fluid">
         @yield('content')
     </div>

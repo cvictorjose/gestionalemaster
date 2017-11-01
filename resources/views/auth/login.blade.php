@@ -36,7 +36,6 @@
                         @endif
                     </div>
 
-
                     <div class="form-bottom">
                         <form role="form" action="{{ url('login') }}" method="post" class="login-form">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
