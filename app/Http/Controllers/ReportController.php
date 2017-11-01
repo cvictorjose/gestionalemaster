@@ -77,13 +77,13 @@ class ReportController extends Controller
             $lab_id =$inputData['lab_id'];
 
             //ZscorePT
-            $zscorept=Zscorept::getZScorePt($icar,$round);
+            $zscorept=Zscorept::getZScorePtRot($icar,$round);
 
             //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFix($icar,$round);
+            $zscorefix=Zscorefix::getZScoreFixRot($icar,$round);
 
             //REPEAT
-            $arr_sp1=Repeatability::getRepeat($icar,$round);
+            $arr_sp1=Repeatability::getRepeatRot($icar,$round);
 
             //OUTLIER
             $outlier=Outlier::getOutliersRot($icar,$round);
