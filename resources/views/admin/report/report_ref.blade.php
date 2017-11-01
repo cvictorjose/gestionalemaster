@@ -190,7 +190,7 @@ if (count($data) > 0){
             <table cellspacing="0" id="a">
                 <tr>
                     <td rowspan="7" class="tabcode">A</td>
-                    <td colspan="7" class="bold title2">Your participation Codes </td>
+                    <td colspan="7" class="bold title2">Your participation Codes</td>
                 </tr>
                 <tr>
                     <td rowspan="2" class="left bold">Subscription</td>
@@ -212,7 +212,7 @@ if (count($data) > 0){
                     <td class=@if ($lac_ref_sub=='Yes') {{$class}} @endif>{{$lac_ref_sub}}</td>
                     <td class=@if ($u_ref_sub=='Yes') {{$class}} @endif>{{$u_ref_sub}}</td>
                     <td class=@if ($scc_ref_sub=='Yes') {{$class}} @endif>{{$scc_ref_sub}}</td>
-                    {{--<td class=@if ($bhb_ref_sub=='Yes') {{$class}} @endif>{{$bhb_ref_sub}}</td>--}}
+
                 </tr>
                 <tr>
                     <td class="left bold">Participation Codes</td>
@@ -226,7 +226,7 @@ if (count($data) > 0){
                     <td>{{$lactose_ref_labcode}}</td>			<!-- stampo valore di rank quando type = lactose_ref -->
                     <td>{{$urea_ref_labcode}}</td>			<!-- stampo valore di rank quando type = urea_ref -->
                     <td>{{$scc_ref_labcode}}</td>				<!-- stampo valore di rank quando type = scc_ref -->
-                    {{--<td>{{$bhb_ref_labcode}}</td>			<!-- stampo valore di rank quando type = bhb -->--}}
+
                 </tr>
                 <tr> </tr>
                 <tr> </tr>
@@ -278,7 +278,6 @@ if (count($data) > 0){
                     <td>g/100g</td>
                     <td>mg/dl</td>
                     <td>SCC*1000/ml</td>
-
                 </tr>
                 <tr>
                     <!-- può essere Yes con classe "green", No con classe "red", vuoto senza classe -->
@@ -593,8 +592,8 @@ if (count($data) > 0){
                     <td>SCC*1000/ml</td>
                 </tr>
                 <tr class="grey">
-                    <td>ISO 1211<br />IDF 1D </td>
-                    <td>ISO 8968<br />IDF 20 </td>
+                    <td>ISO 1211<br />IDF 1D</td>
+                    <td>ISO 8968<br />IDF 20</td>
                     <td>ISO 22662<br />IDF 198</td>
                     <td>ISO 14637<br />IDF 195</td>
                     <td>ISO 13366-2<br />IDF 148-2</td>
