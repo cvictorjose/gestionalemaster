@@ -48,8 +48,6 @@ class ReportController extends Controller
             $pag=Pag::getPag("11",'RT0317');
 
             $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
-
-
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             return view('admin.report.report_ref', compact('data','round','lab','outlier','arr_sp1','zscorept',
@@ -93,8 +91,6 @@ class ReportController extends Controller
             $pag=Pag::getPag("11",'RT0317');
 
             $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
-
-
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             return view('admin.report.report_rot', compact('data','round','lab','outlier','arr_sp1','zscorept',
@@ -129,8 +125,6 @@ class ReportController extends Controller
             return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],
                 404);
         }
-
-
         $ordinamento_sample=$dataCurrentRound['positions'];
 
         //return $dataCurrentRound;
@@ -163,7 +157,6 @@ class ReportController extends Controller
                             if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
                                 $block2fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
                             }
-
                             $round2=$r;
                             break;
                         case 2:
@@ -175,7 +168,6 @@ class ReportController extends Controller
                             if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
                                 $block3fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
                             }
-
                             $round3=$r;
                             break;
                     }

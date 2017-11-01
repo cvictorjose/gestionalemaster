@@ -497,7 +497,7 @@ if (count($data) > 0){
                         if ($outlier[$v]->fat_rout!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_rout=="" && $f_a==1) $class_f="green"; else $class_f="";
                         if ($outlier[$v]->protein_rout!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_rout=="" && $p_a==1) $class_p="green"; else $class_p="";
                         if ($outlier[$v]->lactose_rout!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_rout=="" && $l_a==1) $class_l="green"; else $class_l="";
-                        if ($outlier[$v]->urea_rout!="" && $u_a_a==1)  $class_u="red"; elseif ($outlier[$v]->urea_rout=="" && $u_a==1) $class_u="green"; else $class_u="";
+                        if ($outlier[$v]->urea_rout!="" && $u_a==1)  $class_u="red"; elseif ($outlier[$v]->urea_rout=="" && $u_a==1) $class_u="green"; else $class_u="";
 
                         if ($outlier[$v]->bhb!="" && $bhb_a==1)  $class_bhb="red"; elseif($outlier[$v]->bhb=="" && $bhb_a==1) $class_bhb="green"; else $class_bhb="";
                         if ($outlier[$v]->pag!="" && $pag_a==1)  $class_pag="red"; elseif($outlier[$v]->pag=="" && $pag_a==1) $class_pag="green"; else $class_pag="";
@@ -694,10 +694,7 @@ if (count($data) > 0){
                     <td class="bold">SCC</td>
                 </tr>
 
-
                 <!-- identica cosa di zscore-pt ma questa volta su tabella zscore-fix-->
-
-
                 <?php
                 $numsample=1;
                 ?>
@@ -754,7 +751,6 @@ if (count($data) > 0){
             </table>
 
             @if($pag_a==1)
-
                 <table cellspacing="0">
                     <tr>
                         <td colspan="7" class="bold title">PAG</td>
@@ -813,8 +809,8 @@ if (count($data) > 0){
                     ?>
                 </table>
             @endif
-            </body>
-            </html>
+           </body>
+          </html>
         </div>
     </div>
 @stop
