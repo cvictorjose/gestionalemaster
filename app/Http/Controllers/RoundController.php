@@ -54,7 +54,6 @@ class RoundController extends Controller
      */
     public function roundlab()
     {
-
         try {
             $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
             $round=$inputData['round_id'];
@@ -168,12 +167,15 @@ class RoundController extends Controller
                             );
 
                             $checkData2=Round::TestChecked($checkData);
+
+                            $receive_date=Input::get('date');
                             if ($checkData2<1){
                                 $test_spuntati=1;
                                 $item = new Round();
                                 $item->laboratory_id         = Input::get('laboratory_id');
                                 $item->code_round            = Input::get('code_round');
                                 $item->results_received      = Input::get('results_received')? '1' : '0';
+                                $item->results_received_date = $receive_date;
                                 $item->code_test   = $ct->code;
                                 $item->question1   = Input::get('question1_'.$ct->code)? '1' : '0';
                                 $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
@@ -275,7 +277,7 @@ class RoundController extends Controller
     public function destroySingleTest()
     {
         $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-        $id=$inputData['id'];
+        $id=$inputData['lab_id'];
 
         try {
             $t = Round::find($id);
@@ -284,7 +286,7 @@ class RoundController extends Controller
                 'flashType'    => 'success',
                 'flashMessage' => 'Test eliminato con successo!'
             ];
-            return redirect()->route('round_labs')->with($message);
+            return redirect()->route('round_labs')->withInput($inputData)->with($message);
 
         } catch (Exception $e) {
             //log

@@ -50,7 +50,8 @@
                                         'route' => ['round_destroy_test'])) !!}
                                 {{ csrf_field() }}
 
-                                <input name="id" type="hidden" value={{$lab->id}}>
+                                <input name="lab_round" type="hidden" value={{$lab->code_round}}>
+                                <input name="lab_id" type="hidden" value={{$lab->id}}>
                                 {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
                                 {!! Form::close() !!}
                             </td>

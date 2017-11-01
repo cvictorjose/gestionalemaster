@@ -24,7 +24,7 @@ class CreateRoundTable extends Migration
             $table->string('code_round')->length(6);
             $table->integer('results_received')->default(0);
 
-            $table->timestamp('results_received_date')->useCurrent();
+            $table->timestamp('results_received_date')->nullable();
 
             $table->string('code_test')->length(50);
             $table->integer('question1')->default(0);
