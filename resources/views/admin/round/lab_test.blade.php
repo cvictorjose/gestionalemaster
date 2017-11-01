@@ -3,10 +3,6 @@
 
 @section('content')
 
-
-
-
-
     {{--<a href="{{ route('round.create') }}" class="btn btn-success pull-right">@lang('global.app_add_new')</a>--}}
     <div class="panel panel-default">
         <div class="panel-heading">

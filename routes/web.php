@@ -42,11 +42,10 @@ Route::group(['middleware' => ['auth']], function () {
    //REPORT
     Route::post('round_report',array('as'=>'round_report','uses'=>'ReportController@roundReport'));
 
-    //REPORT
+    //CHART
 
 });
 
-
-Route::get('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));
+Route::post('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));
 //AUTOCOMPLETE
 Route::get('typeahead-response',array('as'=>'typeahead.response','uses'=>'LaboratoryController@ajaxData'));

@@ -18,7 +18,7 @@ return [
     'FORBIDDEN'                 => 'FORBIDDEN',
     'NOT_FOUND'                 => 'NOT FOUND',
 
-    'NOT_RESULTS_DB'            => 'NOT_RESULTS_DB',
+    'NOT_RESULTS_DB'            => 'IL SISTEMA NON HA TROVATO NESSUN REGISTRO',
     'UNAUTHENTICATED'           => 'UNAUTHENTICATED',
     'INTERNAL_SERVER_ERROR'     => 'INTERNAL_SERVER_ERROR',
 

@@ -17,6 +17,7 @@
                     <tr>
                         <th>Codice Round</th>
                         <th>Laboratorio</th>
+                        <th><i class="fa fa-line-chart"></i> Grafico ZscorePt vs Fx</th>
                         <th>Report</th>
                         <th>Azione</th>
                     </tr>
@@ -27,6 +28,20 @@
                         <tr data-entry-id="{{ $lab->laboratory_id }}">
                             <td>{{ $lab->code_round }}</td>
                             <td>{{ $lab->lab_name }}</td>
+
+                            <td>
+                                {!! Form::open(array(
+                                           'style' => 'display: inline-block;',
+                                           'method' => 'POST',
+                                           'route' => ['grafico'])) !!}
+                                {{ csrf_field() }}
+                                <input name="icar" type="hidden" value={{ $lab->icar_code }}>
+                                <input name="round" type="hidden" value={{ $lab->code_round }}>
+
+                                {!! Form::submit(trans('global.chart.title'), array('class' => 'btn btn-xs btn-primary')
+                                ) !!}
+                                {!! Form::close() !!}
+                            </td>
                             <td>
                                 {{--REPORT BUTTON--}}
                                 {!! Form::open(array(

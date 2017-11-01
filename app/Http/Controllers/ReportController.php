@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Input;
 class ReportController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create report Reference belong to a Lab.
      *
      * @return \Illuminate\Http\Response
      */
@@ -59,14 +59,32 @@ class ReportController extends Controller
         }
     }
 
+
+    /**
+     * Create Chart ZscorePt vs ZscoreFx belong to a Lab.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function grafico()
     {
-        $icar="1";
-        $round="RF0316";
+        /*$icar="1";
+        $round="RF0316";*/
+
+        $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+        $icar  = $inputData['icar'];
+        $round = $inputData['round'];
+
         $dataCurrentRound=Repeatability::getDataCurrentRound($icar,$round);
+
+        if (!$dataCurrentRound){
+            return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],
+                404);
+        }
+
+
         $ordinamento_sample=$dataCurrentRound['positions'];
 
-        //return $dataCurrentRound['currentRound'];
+        //return $dataCurrentRound;
         //return $dataCurrentRound['currentRound']['base'];
         //return  $dataCurrentRound['rounds'];
         //return $dataCurrentRound['currentRound']['fat_ref']['base'];
@@ -74,28 +92,48 @@ class ReportController extends Controller
 
         //creo un chart array[test]
         $chart=array();
+        $block2=$block3=$block2fx=$block3fx=$this->resetRound();
+        $round2=$round3="n/a";
+
         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
         foreach ($code_arr as $type) {
             $p=1;
             $base=$dataCurrentRound['currentRound']['zscorept'][$type]['base'];
             $basefx=$dataCurrentRound['currentRound']['zscorefix'][$type]['base'];
 
-            foreach($dataCurrentRound['rounds'] as $r)
-            {
-                switch ($p) {
-                    case 1:
-                        $block2 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
-                        $block2fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
-                        $round2=$r;
-                        break;
-                    case 2:
-                        $block3 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
-                        $block3fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
-                        $round3=$r;
-                        break;
+            if (count($dataCurrentRound['rounds']>0)){
+
+                foreach($dataCurrentRound['rounds'] as $r)
+                {
+                    switch ($p) {
+                        case 1:
+                            if ($dataCurrentRound['currentRound']['zscorept'][$type][$r]){
+                                $block2 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
+                            }
+
+                            if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
+                                $block2fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
+                            }
+
+                            $round2=$r;
+                            break;
+                        case 2:
+
+                            if ($dataCurrentRound['currentRound']['zscorept'][$type][$r]){
+                                $block3 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
+                            }
+
+                            if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
+                                $block3fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
+                            }
+
+                            $round3=$r;
+                            break;
+                    }
+                    $p++;
                 }
-                $p++;
             }
+
 
             $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3,
                 $ordinamento_sample);
@@ -131,5 +169,17 @@ class ReportController extends Controller
             // Setup what the values mean
             ->labels($ordinamento_sample);
         return $chart;
+    }
+
+
+    /**
+     * Return a block empty
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function resetRound()
+    {
+        $block= array(0,0,0,0,0,0,0,0,0,0);
+        return $block;
     }
 }

@@ -91,11 +91,15 @@ class Repeatability extends Model
 
     public static function getDataCurrentRound($icar,$round)
     {
-        $round="RF0317";
+        //$round="RF0317";
 
         //INIZIO Blocco Base
         $positions=array();
         $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
+
+        if (count($repeat)<1){
+            return false;
+        }
 
         $fruits = array(
             "sp1" => number_format($repeat->sample01,4),

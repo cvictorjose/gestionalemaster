@@ -51,7 +51,8 @@ class Handler extends ExceptionHandler
     {
         if($exception instanceof  MethodNotAllowedHttpException){
             //Not Login or Bad Auth
-            return response()->json(['error' => trans('error.UNAUTHORIZED'), 'code' => 401], 401);
+
+            return response()->view('errors.custom', ['code' => 401, 'error' => trans('error.UNAUTHORIZED')], 401);
         }
         if($exception instanceof NotFoundResourceException){
 
