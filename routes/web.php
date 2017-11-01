@@ -40,7 +40,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('round_destroy_test',array('as'=>'round_destroy_test','uses'=>'RoundController@destroySingleTest'));
 
    //REPORT
-    Route::post('round_report',array('as'=>'round_report','uses'=>'ReportController@roundReport'));
+    Route::post('round_report_ref',array('as'=>'round_report_ref','uses'=>'ReportController@roundReportRef'));
+    Route::post('round_report_rot',array('as'=>'round_report_rot','uses'=>'ReportController@roundReportRef'));
 
     //CHART
 

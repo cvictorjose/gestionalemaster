@@ -17,7 +17,7 @@
                     <tr>
                         <th>Codice Round</th>
                         <th>Laboratorio</th>
-                        <th><i class="fa fa-line-chart"></i> Grafico ZscorePt vs Fx</th>
+                        <th><i class="fa fa-line-chart"></i> Grafico</th>
                         <th>Report</th>
                         <th>Azione</th>
                     </tr>
@@ -43,16 +43,29 @@
                                 {!! Form::close() !!}
                             </td>
                             <td>
-                                {{--REPORT BUTTON--}}
+                                {{--REF REPORT BUTTON--}}
                                 {!! Form::open(array(
                                        'style' => 'display: inline-block;',
                                        'method' => 'POST',
-                                       'route' => ['round_report'])) !!}
+                                       'route' => ['round_report_ref'])) !!}
                                 {{ csrf_field() }}
                                 <input name="lab_id" type="hidden" value={{ $lab->laboratory_id }}>
                                 <input name="icar" type="hidden" value={{ $lab->icar_code }}>
                                 <input name="round" type="hidden" value={{ $lab->code_round }}>
-                                {!! Form::submit(trans('global.app_report'), array('class' => 'btn btn-xs btn-success')) !!}
+                                {!! Form::submit(trans('global.report.ref'), array('class' => 'btn btn-xs btn-success')) !!}
+                                {!! Form::close() !!}
+
+                                {{--ROT REPORT BUTTON--}}
+                                {!! Form::open(array(
+                                       'style' => 'display: inline-block;',
+                                       'method' => 'POST',
+                                       'route' => ['round_report_rot'])) !!}
+                                {{ csrf_field() }}
+                                <input name="lab_id" type="hidden" value={{ $lab->laboratory_id }}>
+                                <input name="icar" type="hidden" value={{ $lab->icar_code }}>
+                                <input name="round" type="hidden" value={{ $lab->code_round }}>
+                                {!! Form::submit(trans('global.report.rot'), array('class' => 'btn btn-xs
+                                btn-success')) !!}
                                 {!! Form::close() !!}
 
                             </td>
