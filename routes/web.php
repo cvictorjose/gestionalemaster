@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
 
    //REPORT
     Route::post('round_report_ref',array('as'=>'round_report_ref','uses'=>'ReportController@roundReportRef'));
-    Route::post('round_report_rot',array('as'=>'round_report_rot','uses'=>'ReportController@roundReportRef'));
+    Route::post('round_report_rot',array('as'=>'round_report_rot','uses'=>'ReportController@roundReportRot'));
 
     //CHART
 
