@@ -2,7 +2,6 @@
 
 namespace App;
 
-use ArrayObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Response;
 
@@ -87,78 +86,4 @@ class Repeatability extends Model
         return $arr_sp1;
     }
 
-
-
-    public static function getDataCurrentRound($icar,$round)
-    {
-        //$round="RF0317";
-
-        //INIZIO Blocco Base
-        $positions=array();
-        $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
-
-        if (count($repeat)<1){
-            return false;
-        }
-
-        $fruits = array(
-            "sp1" => number_format($repeat->sample01,4),
-            "sp2" => number_format($repeat->sample02,4),
-            "sp3" => number_format($repeat->sample03,4),
-            "sp4" => number_format($repeat->sample04,4),
-            "sp5" => number_format($repeat->sample05,4),
-            "sp6" => number_format($repeat->sample06,4),
-            "sp7" => number_format($repeat->sample07,4),
-            "sp8" => number_format($repeat->sample08,4),
-            "sp9" => number_format($repeat->sample09,4),
-            "sp10" => number_format($repeat->sample10,4)
-        );
-        $fruitArrayObject = new ArrayObject($fruits);
-        //ordino array ASC
-        $fruitArrayObject->asort();
-
-        //Prendo il numero di sample, sp3,sp1,sp10 ecc
-        foreach ($fruitArrayObject as $key => $val) {
-            $positions[]=$key;
-        }
-        //FINE Blocco Base
-
-       //Prendo 2 round precendenti
-        $round_precedenti=array();
-        $words = substr($round, 0, -4);
-        $getIds= Zscorept::where('round',$round)->where('lab_code',$icar)->orderBy('id','desc')->first();
-        $getIds2= Zscorept::where('id','<',$getIds->id)->where('round', 'like', $words.'%')->orderBy('id','desc')->get();
-        $crash=0;
-        foreach($getIds2 as $g)
-        {
-            if($crash==2) break;
-            if (!in_array($g->round, $round_precedenti)) {
-                if ($round!=$g->round) {
-                    $round_precedenti[]= $g->round;
-                    $crash++;
-                }
-            }
-        }
-
-
-        $final=array();
-        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
-
-        foreach ($code_arr as $type) {
-            $final['zscorept'][$type]['base']=Zscorept::getBlocksRoundPt($icar,$round,$positions,$type);
-            $final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($icar,$round,$positions,$type);
-            //prendo 2 round precendenti a quello attuale
-            foreach($round_precedenti as $round)
-            {
-              $final['zscorept'][$type][$round]=Zscorept::getBlocksRoundPt($icar,$round,$positions,$type);
-              $final['zscorefix'][$type][$round]=Zscorefix::getBlocksRoundFx($icar,$round,$positions,$type);
-            }
-        }
-
-        //ritono CurrentRound=Base,Round1,Round2
-        return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti));
-
-
-
-    }
 }

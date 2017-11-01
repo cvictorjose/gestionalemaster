@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data;
 use App\Laboratory;
+use App\Means;
 use App\Outlier;
 use App\Pag;
 use App\Repeatability;
@@ -74,7 +75,7 @@ class ReportController extends Controller
         $icar  = $inputData['icar'];
         $round = $inputData['round'];
 
-        $dataCurrentRound=Repeatability::getDataCurrentRound($icar,$round);
+        $dataCurrentRound=Means::getDataCurrentRound($icar,$round);
 
         if (!$dataCurrentRound){
             return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],
