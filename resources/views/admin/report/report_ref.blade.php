@@ -76,9 +76,9 @@ if (count($data) > 0){
             case 'protein_ref':
                 $protein_ref_labcode = $d->lab_code;
                 $protein_ref_x100    = $d->percent;
-                $protein_ref_dev     = number_format($d->dev,3)*100;
-                $protein_ref_sdev    = number_format($d->s_dev,3)*100;
-                $protein_ref_dist    = number_format($d->dist,3)*100;
+                $protein_ref_dev     = number_format($d->dev,3);
+                $protein_ref_sdev    = number_format($d->s_dev,3);
+                $protein_ref_dist    = number_format($d->dist,3);
                 $protein_ref_m       = $d->method;
                 if ($d->method=="A")$protein_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$protein_ref_m="ISO
                 2446?IDF 226";
@@ -86,9 +86,9 @@ if (count($data) > 0){
             case 'fat_ref':
                 $fat_ref_labcode = $d->lab_code;
                 $fat_ref_x100    = $d->percent;
-                $fat_ref_dev     = number_format($d->dev,3)*100;
-                $fat_ref_sdev    = number_format($d->s_dev,3)*100;
-                $fat_ref_dist    = number_format($d->dist,3)*100;
+                $fat_ref_dev     = number_format($d->dev,3);
+                $fat_ref_sdev    = number_format($d->s_dev,3);
+                $fat_ref_dist    = number_format($d->dist,3);
                 $fat_ref_m       = $d->method;
                 if ($d->method=="A")$fat_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$fat_ref_m="ISO
                 2446?IDF 226";
@@ -96,9 +96,9 @@ if (count($data) > 0){
             case 'lactose_ref':
                 $lactose_ref_labcode = $d->lab_code;
                 $lactose_ref_x100    = $d->percent;
-                $lactose_ref_dev     = number_format($d->dev,3)*100;
-                $lactose_ref_sdev    = number_format($d->s_dev,3)*100;
-                $lactose_ref_dist    = number_format($d->dist,3)*100;
+                $lactose_ref_dev     = number_format($d->dev,3);
+                $lactose_ref_sdev    = number_format($d->s_dev,3);
+                $lactose_ref_dist    = number_format($d->dist,3);
                 $lactose_ref_m       = $d->method;
                 if ($d->method=="A")$lactose_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$lactose_ref_m="ISO
                 2446?IDF 226";
@@ -106,9 +106,9 @@ if (count($data) > 0){
             case 'urea_ref':
                 $urea_ref_labcode = $d->lab_code;
                 $urea_ref_x100    = $d->percent;
-                $urea_ref_dev     = number_format($d->dev,3)*100;
-                $urea_ref_sdev    = number_format($d->s_dev,3)*100;
-                $urea_ref_dist    = number_format($d->dist,3)*100;
+                $urea_ref_dev     = number_format($d->dev,3);
+                $urea_ref_sdev    = number_format($d->s_dev,3);
+                $urea_ref_dist    = number_format($d->dist,3);
                 $urea_ref_m       = $d->method;
                 if ($d->method=="A")$urea_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$urea_ref_m="ISO
                 2446?IDF 226";

@@ -50,5 +50,11 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::post('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));
+
+
+Route::get('report_pdf_ref',array('as'=>'report_pdf_ref','uses'=>'ReportController@reportPdfRef'));
+
+
+
 //AUTOCOMPLETE
 Route::get('typeahead-response',array('as'=>'typeahead.response','uses'=>'LaboratoryController@ajaxData'));

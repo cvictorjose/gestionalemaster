@@ -30,18 +30,11 @@
                             <td>{{ $lab->lab_name }}</td>
 
                             <td>
-                                {!! Form::open(array(
-                                           'style' => 'display: inline-block;',
-                                           'method' => 'POST',
-                                           'route' => ['grafico'])) !!}
-                                {{ csrf_field() }}
-                                <input name="lab_id" type="hidden" value={{ $lab->laboratory_id }}>
-                                <input name="icar" type="hidden" value={{ $lab->icar_code }}>
-                                <input name="round" type="hidden" value={{ $lab->code_round }}>
-
-                                {!! Form::submit(trans('global.chart.title'), array('class' => 'btn btn-xs btn-primary')
-                                ) !!}
-                                {!! Form::close() !!}
+                                <?php
+                                $url = action('ReportController@reportPdfRef', ['lab_id' => $lab->laboratory_id,
+                                'icar_code' => $lab->icar_code,'code_round' => $lab->code_round])
+                                ?>
+                                <a href="{{ $url }}" target="_blank">REF - Report/Grafico</a>
                             </td>
                             <td>
                                 {{--REF REPORT BUTTON--}}

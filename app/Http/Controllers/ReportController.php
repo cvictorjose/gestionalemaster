@@ -19,86 +19,48 @@ use Illuminate\Support\Facades\Input;
 class ReportController extends Controller
 {
     /**
-     * Create report Reference belong to a Lab.
+     * Create report + Chart into empty page.
      *
      * @return \Illuminate\Http\Response
      */
-    public function roundReportRef()
+    public function reportPdfRef(Request $request)
     {
+        //{"lab_id":"3","icar_code":"1","code_round":"RF0316"}
+
         try {
-            $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-            $icar  = $inputData['icar'];
-            $round = $inputData['round'];
-            $lab_id =$inputData['lab_id'];
+            //$inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+            $icar  = request()->icar_code;
+            $round = request()->code_round;
+            $lab_id =request()->lab_id;
 
             $code_arr= Round::checkTestAttivate($lab_id,$round,"ref");
-
-            //ZscorePT
-            $zscorept=Zscorept::getZScorePt($icar,$round,$code_arr);
-
-            //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFix($icar,$round,$code_arr);
 
             //REPEAT
             $arr_sp1=Repeatability::getRepeat($icar,$round,$code_arr);
 
-            //OUTLIER
-            $outlier=Outlier::getOutliers($icar,$round,$code_arr);
-            //return $outlier;
-
-            //PAG
-            $pag=Pag::getPag("11",'RT0317');
-
-            $data= Data::getData($icar,$round,$code_arr);
-            $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
-            $lab   = Laboratory::find($lab_id);
-            return view('admin.report.report_ref', compact('data','round','lab','outlier','arr_sp1','zscorept',
-                'zscorefix','pag','code_arr'));
-
-        } catch (\Exception $e) {
-            $message = [
-                'flashType'    => 'danger',
-                'flashMessage' => 'Errore! Laboratorio'
-            ];
-        }
-    }
-
-    /**
-     * Create report Routine belong to a Lab.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function roundReportRot()
-    {
-        try {
-            $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-            $icar  = $inputData['icar'];
-            $round = $inputData['round'];
-            $lab_id =$inputData['lab_id'];
-
-            $code_arr= Round::checkTestAttivate($lab_id,$round,"rot");
-
             //ZscorePT
-            $zscorept=Zscorept::getZScorePtRot($icar,$round,$code_arr);
+            $zscorept=Zscorept::getZScorePt($lab_id,$round,$code_arr);
 
             //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFixRot($icar,$round,$code_arr);
-
-            //REPEAT
-            $arr_sp1=Repeatability::getRepeatRot($icar,$round,$code_arr);
+            $zscorefix=Zscorefix::getZScoreFix($lab_id,$round,$code_arr);
 
             //OUTLIER
-            $outlier=Outlier::getOutliersRot($icar,$round,$code_arr);
+            $outlier=Outlier::getOutliers($lab_id,$round,$code_arr);
             //return $outlier;
 
             //PAG
-            $pag=Pag::getPag("11",'RT0317');
+            $pag=Pag::getPag($icar,$round);
+
+            $grafico= $this->grafico($icar,$round,$lab_id);
+            $chart  =$grafico['chart']['zscorept'];
+            $chartfix  =$grafico['chartfx']['zscorefix'];
 
             $data= Data::getData($icar,$round,$code_arr);
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
-            return view('admin.report.report_rot', compact('data','round','lab','outlier','arr_sp1','zscorept',
-                'zscorefix','pag'));
+
+            return view('admin.report.pdf_ref', compact('data','round','lab','outlier','arr_sp1','zscorept',
+                'zscorefix','pag','code_arr','chart','chartfix'));
 
         } catch (\Exception $e) {
             $message = [
@@ -107,22 +69,14 @@ class ReportController extends Controller
             ];
         }
     }
-
 
     /**
      * Create Chart ZscorePt vs ZscoreFx belong to a Lab.
      *
      * @return \Illuminate\Http\Response
      */
-    public function grafico()
+    public function grafico($icar,$round,$lab_id)
     {
-        /*$icar="1";
-        $round="RF0316";*/
-
-        $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-        $icar  = $inputData['icar'];
-        $round = $inputData['round'];
-        $lab_id = $inputData['lab_id'];
 
         $dataCurrentRound=Means::getDataCurrentRound($icar,$round,$lab_id);
         //return $dataCurrentRound;
@@ -190,7 +144,11 @@ class ReportController extends Controller
             $chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3,
                 $ordinamento_sample);
         }
-        return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
+
+        $chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
+
+        return $chart;
+        //return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
     }
 
 
@@ -234,9 +192,12 @@ class ReportController extends Controller
 
 
 
-
-    //BackUP
-    /*public function roundReportRef()
+    /**
+     * Create report Reference belong to a Lab.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function roundReportRef()
     {
         try {
             $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
@@ -244,26 +205,29 @@ class ReportController extends Controller
             $round = $inputData['round'];
             $lab_id =$inputData['lab_id'];
 
-            //ZscorePT
-            $zscorept=Zscorept::getZScorePt($icar,$round);
-
-            //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFix($icar,$round);
+            $code_arr= Round::checkTestAttivate($lab_id,$round,"ref");
 
             //REPEAT
-            $arr_sp1=Repeatability::getRepeat($icar,$round);
+            $arr_sp1=Repeatability::getRepeat($icar,$round,$code_arr);
+
+            //ZscorePT
+            $zscorept=Zscorept::getZScorePt($lab_id,$round,$code_arr);
+
+            //ZscoreFIX
+            $zscorefix=Zscorefix::getZScoreFix($lab_id,$round,$code_arr);
 
             //OUTLIER
-            $outlier=Outlier::getOutliers($icar,$round);
+            $outlier=Outlier::getOutliers($lab_id,$round,$code_arr);
             //return $outlier;
 
             //PAG
-            $pag=Pag::getPag("11",'RT0317');
+            $pag=Pag::getPag($icar,$round);
 
-            $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
+            $data= Data::getData($icar,$round,$code_arr);
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
-            return view('admin.report.report', compact('data','round','lab','outlier','arr_sp1','zscorept','zscorefix','pag'));
+            return view('admin.report.report_ref', compact('data','round','lab','outlier','arr_sp1','zscorept',
+                'zscorefix','pag','code_arr'));
 
         } catch (\Exception $e) {
             $message = [
@@ -271,5 +235,49 @@ class ReportController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-    }*/
+    }
+
+    /**
+     * Create report Routine belong to a Lab.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function roundReportRot()
+    {
+        try {
+            $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+            $icar  = $inputData['icar'];
+            $round = $inputData['round'];
+            $lab_id =$inputData['lab_id'];
+
+            $code_arr= Round::checkTestAttivate($lab_id,$round,"rot");
+
+            //REPEAT
+            $arr_sp1=Repeatability::getRepeatRot($icar,$round,$code_arr);
+
+            //ZscorePT
+            $zscorept=Zscorept::getZScorePtRot($lab_id,$round,$code_arr);
+
+            //ZscoreFIX
+            $zscorefix=Zscorefix::getZScoreFixRot($lab_id,$round,$code_arr);
+
+            //OUTLIER
+            $outlier=Outlier::getOutliersRot($lab_id,$round,$code_arr);
+
+            //PAG
+            $pag=Pag::getPag($icar,$round);
+
+            $data= Data::getData($icar,$round,$code_arr);
+            $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
+            $lab   = Laboratory::find($lab_id);
+            return view('admin.report.report_rot', compact('data','round','lab','outlier','arr_sp1','zscorept',
+                'zscorefix','pag'));
+
+        } catch (\Exception $e) {
+            $message = [
+                'flashType'    => 'danger',
+                'flashMessage' => 'Errore! Laboratorio'
+            ];
+        }
+    }
 }
