@@ -28,9 +28,9 @@ class Zscorept extends Model
 
 
 
-    public static function getZScorePt($icar,$round)
+    public static function getZScorePt($icar,$round,$code_arr)
     {
-        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+
         $arr_zscorept=array();
         $repeat= Zscorept::where('round',$round)->where('lab_code',$icar)->get();
 
@@ -40,9 +40,8 @@ class Zscorept extends Model
             $item->fat_ref ="";
             $item->protein_ref ="";
             $item->lactose_ref ="";
-            $item->scc_ref ="";
             $item->urea_ref ="";
-            $item->bhb_ref ="";
+            $item->scc_ref ="";
 
             foreach($repeat as $rp)
             {
@@ -88,21 +87,20 @@ class Zscorept extends Model
     }
 
 
-    public static function getZScorePtRot($icar,$round)
+    public static function getZScorePtRot($icar,$round,$code_arr)
     {
-
-        $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','scc_rout');
         $arr_zscorept=array();
         $repeat= Zscorept::where('round',$round)->where('lab_code',$icar)->get();
-
 
         for ($i=1; $i<11; $i++) {
             $item= new \stdClass();
             $item->fat_rout ="";
             $item->protein_rout ="";
             $item->lactose_rout ="";
-            $item->urea_rout ="";
             $item->scc_rout ="";
+            $item->urea_rout ="";
+            $item->bhb ="";
+            $item->pag ="";
 
             foreach($repeat as $rp)
             {

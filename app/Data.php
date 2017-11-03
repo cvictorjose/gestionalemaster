@@ -22,4 +22,21 @@ class Data extends Model
 //    protected $hidden = [
 //        'created_at', 'updated_at',
 //    ];
+
+    public static function getData($icar,$round,$code_arr)
+    {
+        //$code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+        $arr_data=array();
+
+        $results= Data::where('icar_code',$icar)->Where('round', $round)->get();
+        foreach($results as $rp)
+        {
+            foreach ($code_arr as $t){
+                if ($rp->type==$t){
+                    $arr_data[]=$rp;
+                }
+            }
+        }
+        return $arr_data;
+    }
 }

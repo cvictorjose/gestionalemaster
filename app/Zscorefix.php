@@ -28,14 +28,11 @@ class Zscorefix extends Model
 
 
 
-    public static function getZScoreFix($icar,$round)
+    public static function getZScoreFix($icar,$round,$code_arr)
     {
-        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
 
-        //Inizio REPEAT
         $arr_zscorefix=array();
         $repeat= Zscorefix::where('round',$round)->where('lab_code',$icar)->get();
-
 
         for ($i=1; $i<11; $i++) {
             $item= new \stdClass();
@@ -44,7 +41,6 @@ class Zscorefix extends Model
             $item->lactose_ref ="";
             $item->scc_ref ="";
             $item->urea_ref ="";
-            $item->bhb_ref ="";
 
             foreach($repeat as $rp)
             {
@@ -89,22 +85,21 @@ class Zscorefix extends Model
         return $arr_zscorefix;
     }
 
-    public static function getZScoreFixRot($icar,$round)
+    public static function getZScoreFixRot($icar,$round,$code_arr)
     {
-        $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','scc_rout');
 
-        //Inizio REPEAT
         $arr_zscorefix=array();
         $repeat= Zscorefix::where('round',$round)->where('lab_code',$icar)->get();
-
 
         for ($i=1; $i<11; $i++) {
             $item= new \stdClass();
             $item->fat_rout ="";
             $item->protein_rout ="";
             $item->lactose_rout ="";
-            $item->urea_rout ="";
             $item->scc_rout ="";
+            $item->urea_rout ="";
+            $item->bhb ="";
+            $item->pag ="";
 
             foreach($repeat as $rp)
             {

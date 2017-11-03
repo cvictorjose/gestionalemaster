@@ -31,27 +31,29 @@ class ReportController extends Controller
             $round = $inputData['round'];
             $lab_id =$inputData['lab_id'];
 
+            $code_arr= Round::checkTestAttivate($lab_id,$round,"ref");
+
             //ZscorePT
-            $zscorept=Zscorept::getZScorePt($icar,$round);
+            $zscorept=Zscorept::getZScorePt($icar,$round,$code_arr);
 
             //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFix($icar,$round);
+            $zscorefix=Zscorefix::getZScoreFix($icar,$round,$code_arr);
 
             //REPEAT
-            $arr_sp1=Repeatability::getRepeat($icar,$round);
+            $arr_sp1=Repeatability::getRepeat($icar,$round,$code_arr);
 
             //OUTLIER
-            $outlier=Outlier::getOutliers($icar,$round);
+            $outlier=Outlier::getOutliers($icar,$round,$code_arr);
             //return $outlier;
 
             //PAG
             $pag=Pag::getPag("11",'RT0317');
 
-            $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
+            $data= Data::getData($icar,$round,$code_arr);
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             return view('admin.report.report_ref', compact('data','round','lab','outlier','arr_sp1','zscorept',
-                'zscorefix','pag'));
+                'zscorefix','pag','code_arr'));
 
         } catch (\Exception $e) {
             $message = [
@@ -74,23 +76,25 @@ class ReportController extends Controller
             $round = $inputData['round'];
             $lab_id =$inputData['lab_id'];
 
+            $code_arr= Round::checkTestAttivate($lab_id,$round,"rot");
+
             //ZscorePT
-            $zscorept=Zscorept::getZScorePtRot($icar,$round);
+            $zscorept=Zscorept::getZScorePtRot($icar,$round,$code_arr);
 
             //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFixRot($icar,$round);
+            $zscorefix=Zscorefix::getZScoreFixRot($icar,$round,$code_arr);
 
             //REPEAT
-            $arr_sp1=Repeatability::getRepeatRot($icar,$round);
+            $arr_sp1=Repeatability::getRepeatRot($icar,$round,$code_arr);
 
             //OUTLIER
-            $outlier=Outlier::getOutliersRot($icar,$round);
+            $outlier=Outlier::getOutliersRot($icar,$round,$code_arr);
             //return $outlier;
 
             //PAG
             $pag=Pag::getPag("11",'RT0317');
 
-            $data  = Data::where('icar_code',$icar)->Where('round', $round)->get();
+            $data= Data::getData($icar,$round,$code_arr);
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             return view('admin.report.report_rot', compact('data','round','lab','outlier','arr_sp1','zscorept',
@@ -118,8 +122,10 @@ class ReportController extends Controller
         $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
         $icar  = $inputData['icar'];
         $round = $inputData['round'];
+        $lab_id = $inputData['lab_id'];
 
-        $dataCurrentRound=Means::getDataCurrentRound($icar,$round);
+        $dataCurrentRound=Means::getDataCurrentRound($icar,$round,$lab_id);
+        //return $dataCurrentRound;
 
         if (!$dataCurrentRound){
             return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],
@@ -127,7 +133,7 @@ class ReportController extends Controller
         }
         $ordinamento_sample=$dataCurrentRound['positions'];
 
-        //return $dataCurrentRound;
+
         //return $dataCurrentRound['currentRound']['base'];
         //return  $dataCurrentRound['rounds'];
         //return $dataCurrentRound['currentRound']['fat_ref']['base'];
@@ -138,7 +144,9 @@ class ReportController extends Controller
         $block2=$block3=$block2fx=$block3fx=$this->resetRound();
         $round2=$round3="n/a";
 
-        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+        //array di codeTest attivati
+        $code_arr=$dataCurrentRound['codetest'];
+
         foreach ($code_arr as $type) {
             $p=1;
             $base=$dataCurrentRound['currentRound']['zscorept'][$type]['base'];
@@ -168,6 +176,7 @@ class ReportController extends Controller
                             if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
                                 $block3fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
                             }
+
                             $round3=$r;
                             break;
                     }
@@ -175,14 +184,13 @@ class ReportController extends Controller
                 }
             }
 
-
             $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3,
                 $ordinamento_sample);
 
             $chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3,
                 $ordinamento_sample);
         }
-        return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx]);
+        return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
     }
 
 

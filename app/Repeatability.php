@@ -28,9 +28,8 @@ class Repeatability extends Model
     ];
 
 
-    public static function getRepeat($icar,$round)
+    public static function getRepeat($icar,$round,$code_arr)
     {
-        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
 
         $arr_sp1=array();
         $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->get();
@@ -41,7 +40,6 @@ class Repeatability extends Model
             $item->lactose_ref ="";
             $item->scc_ref ="";
             $item->urea_ref ="";
-            $item->bhb_ref ="";
 
             foreach($repeat as $rp)
             {
@@ -88,9 +86,8 @@ class Repeatability extends Model
 
 
 
-    public static function getRepeatRot($icar,$round)
+    public static function getRepeatRot($icar,$round,$code_arr)
     {
-        $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','bhb','pag');
 
         $arr_sp1=array();
         $repeat= Repeatability::where('round',$round)->where('lab_code',$icar)->get();
@@ -99,6 +96,7 @@ class Repeatability extends Model
             $item->fat_rout ="";
             $item->protein_rout ="";
             $item->lactose_rout ="";
+            $item->scc_rout ="";
             $item->urea_rout ="";
             $item->bhb ="";
             $item->pag ="";

@@ -68,48 +68,60 @@ if (count($round) > 0){
     }
 }
 
+
+
 if (count($data) > 0){
     foreach ($data as $d){
         switch ($d->type) {
             case 'protein_ref':
                 $protein_ref_labcode = $d->lab_code;
                 $protein_ref_x100    = $d->percent;
-                $protein_ref_dev     = number_format($d->dev,3);
-                $protein_ref_sdev    = number_format($d->s_dev,3);
-                $protein_ref_dist    = number_format($d->dist,3);;
+                $protein_ref_dev     = number_format($d->dev,3)*100;
+                $protein_ref_sdev    = number_format($d->s_dev,3)*100;
+                $protein_ref_dist    = number_format($d->dist,3)*100;
                 $protein_ref_m       = $d->method;
+                if ($d->method=="A")$protein_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$protein_ref_m="ISO
+                2446?IDF 226";
                 break;
             case 'fat_ref':
                 $fat_ref_labcode = $d->lab_code;
                 $fat_ref_x100    = $d->percent;
-                $fat_ref_dev     = number_format($d->dev,3);
-                $fat_ref_sdev    = number_format($d->s_dev,3);
-                $fat_ref_dist    = number_format($d->dist,3);;
+                $fat_ref_dev     = number_format($d->dev,3)*100;
+                $fat_ref_sdev    = number_format($d->s_dev,3)*100;
+                $fat_ref_dist    = number_format($d->dist,3)*100;
                 $fat_ref_m       = $d->method;
+                if ($d->method=="A")$fat_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$fat_ref_m="ISO
+                2446?IDF 226";
                 break;
             case 'lactose_ref':
                 $lactose_ref_labcode = $d->lab_code;
                 $lactose_ref_x100    = $d->percent;
-                $lactose_ref_dev     = number_format($d->dev,3);
-                $lactose_ref_sdev    = number_format($d->s_dev,3);
-                $lactose_ref_dist    = number_format($d->dist,3);;
+                $lactose_ref_dev     = number_format($d->dev,3)*100;
+                $lactose_ref_sdev    = number_format($d->s_dev,3)*100;
+                $lactose_ref_dist    = number_format($d->dist,3)*100;
                 $lactose_ref_m       = $d->method;
+                if ($d->method=="A")$lactose_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$lactose_ref_m="ISO
+                2446?IDF 226";
                 break;
             case 'urea_ref':
                 $urea_ref_labcode = $d->lab_code;
                 $urea_ref_x100    = $d->percent;
-                $urea_ref_dev     = number_format($d->dev,3);
-                $urea_ref_sdev    = number_format($d->s_dev,3);
-                $urea_ref_dist    = number_format($d->dist,3);;
+                $urea_ref_dev     = number_format($d->dev,3)*100;
+                $urea_ref_sdev    = number_format($d->s_dev,3)*100;
+                $urea_ref_dist    = number_format($d->dist,3)*100;
                 $urea_ref_m       = $d->method;
+                if ($d->method=="A")$urea_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$urea_ref_m="ISO
+                2446?IDF 226";
                 break;
             case 'scc_ref':
                 $scc_ref_labcode = $d->lab_code;
                 $scc_ref_x100    = $d->percent;
-                $scc_ref_dev     = number_format($d->dev,3);
-                $scc_ref_sdev    = number_format($d->s_dev,3);
-                $scc_ref_dist    = number_format($d->dist,3);;
+                $scc_ref_dev     = number_format($d->dev,3)*100;
+                $scc_ref_sdev    = number_format($d->s_dev,3)*100;
+                $scc_ref_dist    = number_format($d->dist,3)*100;
                 $scc_ref_m       = $d->method;
+                if ($d->method=="A")$scc_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$scc_ref_m="ISO
+                2446?IDF 226";
                 break;
 
         }
@@ -493,14 +505,17 @@ if (count($data) > 0){
                         if ($outlier[$v]->fat_ref!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
                         if ($outlier[$v]->protein_ref!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
                         if ($outlier[$v]->lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
-                        if ($outlier[$v]->urea_ref!="" && $u_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref==""
-                                && $u_a==1) $class_u="green"; else $class_u="";
+                        if ($outlier[$v]->urea_ref!="" && $u_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref==""&& $u_a==1) $class_u="green"; else $class_u="";
+
+                        if ($outlier[$v]->scc_ref!="" && $s_a==1)  $class_s="red"; elseif($outlier[$v]->scc_ref==""&&
+                                $s_a==1) $class_s="green"; else $class_s="";
 
                         echo "<td  class=".$class_f.">".$outlier[$v]->fat_ref."</td>";
                         echo "<td  class=".$class_p.">".$outlier[$v]->protein_ref."</td>";
                         echo "<td  class=".$class_l.">".$outlier[$v]->lactose_ref."</td>";
                         echo "<td  class=".$class_u.">".$outlier[$v]->urea_ref."</td>";
-                        echo "<td>".$outlier[$v]->scc_ref."</td>";
+                        echo "<td  class=".$class_s.">".$outlier[$v]->scc_ref."</td>";
+
                         ?>
                     </tr>
                     <?php
@@ -545,24 +560,27 @@ if (count($data) > 0){
                         <td>Sample {{$numsample}}</td>
                         <?php
 
-                        if ($arr_sp1[$v]->fat_ref>'0.043')  $class1="red"; elseif($arr_sp1[$v]->fat_ref<'0.043')
-                            $class1="green"; else $class1="";
+                        if ($arr_sp1[$v]->fat_ref>'0.043')  $class1="red";
+                        elseif ($arr_sp1[$v]->fat_ref=="") $class1="";
+                        elseif($arr_sp1[$v]->fat_ref<'0.043') $class1="green"; else $class1="";
 
-                        if ($arr_sp1[$v]->protein_ref>'0.038')  $class2="red"; elseif($arr_sp1[$v]->protein_ref<'0.038')
-                            $class2="green"; else $class2="";
+                        if ($arr_sp1[$v]->protein_ref>'0.038')  $class2="red";
+                        elseif ($arr_sp1[$v]->protein_ref=="") $class2="";
+                        elseif($arr_sp1[$v]->protein_ref<'0.038') $class2="green"; else $class2="";
 
-                        if ($arr_sp1[$v]->lactose_ref>'0.06')  $class3="red"; elseif($arr_sp1[$v]->lactose_ref<'0.06')
-                            $class3="green"; else $class3="";
+                        if ($arr_sp1[$v]->lactose_ref>'0.06')  $class3="red";
+                        elseif ($arr_sp1[$v]->lactose_ref=="") $class3="";
+                        elseif($arr_sp1[$v]->lactose_ref<'0.06') $class3="green"; else $class3="";
 
-                        if ($arr_sp1[$v]->urea_ref>'1.52')  $class4="red"; elseif($arr_sp1[$v]->urea_ref<'1.52')
-                            $class4="green"; else $class4="";
+                        if ($arr_sp1[$v]->urea_ref>'1.52')   $class4="red";
+                        elseif ($arr_sp1[$v]->urea_ref=="") $class4="";
+                        elseif($arr_sp1[$v]->urea_ref<'1.52') $class4="green"; else $class4="";
 
                         echo "<td  class=".$class1.">".$arr_sp1[$v]->fat_ref."</td>";
                         echo "<td  class=".$class2.">".$arr_sp1[$v]->protein_ref."</td>";
                         echo "<td  class=".$class3.">".$arr_sp1[$v]->lactose_ref."</td>";
                         echo "<td  class=".$class4.">".$arr_sp1[$v]->urea_ref."</td>";
                         echo "<td>".$arr_sp1[$v]->scc_ref."</td>";
-
                         ?>
                     </tr>
                     <?php
@@ -674,10 +692,12 @@ if (count($data) > 0){
                     <tr>
                         <td>Sample {{$numsample}}</td>
                         <?php
+
                         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
                         foreach ($code_arr as $t){
                             $class="";
-                            $valor=$zscorept[$v]->{$t};
+
+                            $valor=($zscorept[$v]->{$t})? $zscorept[$v]->{$t} : "";
                             if ($valor!=""){
                                 if ($valor <'-3') $class="red";
                                 if ($valor >'-3' && $valor<'-2')$class="yellow";
@@ -715,16 +735,16 @@ if (count($data) > 0){
                         <?php
                         $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
                         foreach ($code_arr as $t){
-                        $class="";
-                        $valor=$zscorefix[$v]->{$t};
-                        if ($valor!=""){
-                            if ($valor <'-3') $class="red";
-                            if ($valor >'-3' && $valor<'-2')$class="yellow";
-                            if ($valor >'-2' && $valor<'2')$class="green";
-                            if ($valor >'2'  && $valor<'3')$class="yellow";
-                            if ($valor >'3') $class="red";
-                        }
-                            echo "<td  class=".$class.">".$valor."</td>";
+                            $class="";
+                            $valor=($zscorefix[$v]->{$t})? $zscorefix[$v]->{$t} : "";
+                            if ($valor!=""){
+                                if ($valor <'-3') $class="red";
+                                if ($valor >'-3' && $valor<'-2')$class="yellow";
+                                if ($valor >'-2' && $valor<'2')$class="green";
+                                if ($valor >'2'  && $valor<'3')$class="yellow";
+                                if ($valor >'3') $class="red";
+                            }
+                                echo "<td  class=".$class.">".$valor."</td>";
                         }
                         ?>
                     </tr>

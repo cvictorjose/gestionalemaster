@@ -25,11 +25,9 @@ class Outlier extends Model
         'created_at', 'updated_at',
     ];
 
-    public static function getOutliers($icar,$round)
+    public static function getOutliers($icar,$round,$code_arr)
     {
-        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
         $arr_sp1=array();
-
         $outliers= Outlier::where('round',$round)->where('lab_code',$icar)->orderBy('sample_number')->get();
         for ($i=1; $i<11; $i++) {
             $item= new \stdClass();
@@ -38,7 +36,6 @@ class Outlier extends Model
             $item->lactose_ref ="";
             $item->scc_ref ="";
             $item->urea_ref ="";
-            $item->bhb_ref ="";
 
             foreach($outliers as $rp)
             {
@@ -57,19 +54,16 @@ class Outlier extends Model
 
 
 
-    public static function getOutliersRot($icar,$round)
+    public static function getOutliersRot($icar,$round,$code_arr)
     {
-        $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','bhb','pag');
         $arr_sp1=array();
-
-        $round="RT0316";
-
         $outliers= Outlier::where('round',$round)->where('lab_code',$icar)->orderBy('sample_number')->get();
         for ($i=1; $i<11; $i++) {
             $item= new \stdClass();
             $item->fat_rout ="";
             $item->protein_rout ="";
             $item->lactose_rout ="";
+            $item->scc_rout ="";
             $item->urea_rout ="";
             $item->bhb ="";
             $item->pag ="";

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
@@ -47,6 +48,37 @@ class Round extends Model
                 if ($data['test']==$r->code_test) return 1;
             }
             return 0;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Controlla se un Test è stato attivato e ritorna un array
+     *
+     * @var array
+     */
+    public static function checkTestAttivate($lab_id,$round,$test){
+
+        switch ($test) {
+            case 'ref':
+                $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
+                break;
+            case 'rot':
+                $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','scc_rout','bhb');
+                break;
+        }
+
+
+        $array_attivate=array();
+        try {
+            $results = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
+            foreach ($results as $r){
+                foreach ($code_arr as $t){
+                    if ($r->code_test==$t) $array_attivate[]=$t;
+                }
+            }
+            return $array_attivate;
         } catch (Exception $e) {
             return false;
         }

@@ -35,6 +35,7 @@
                                            'method' => 'POST',
                                            'route' => ['grafico'])) !!}
                                 {{ csrf_field() }}
+                                <input name="lab_id" type="hidden" value={{ $lab->laboratory_id }}>
                                 <input name="icar" type="hidden" value={{ $lab->icar_code }}>
                                 <input name="round" type="hidden" value={{ $lab->code_round }}>
 

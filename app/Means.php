@@ -28,7 +28,7 @@ class Means extends Model
     ];
 
 
-    public static function getDataCurrentRound($icar,$round)
+    public static function getDataCurrentRound($icar,$round,$lab_id)
     {
         //$round="RF0317";
 
@@ -81,7 +81,8 @@ class Means extends Model
 
 
         $final=array();
-        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+        $code_arr= Round::checkTestAttivate($lab_id,$round,'ref');
+        //return $code_arr;
 
         foreach ($code_arr as $type) {
             $final['zscorept'][$type]['base']=Zscorept::getBlocksRoundPt($icar,$round,$positions,$type);
@@ -95,6 +96,10 @@ class Means extends Model
         }
 
         //ritono CurrentRound=Base,Round1,Round2
-        return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti));
+        return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti,'codetest'=>$code_arr));
     }
+
+
+
+
 }
