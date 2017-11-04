@@ -467,7 +467,6 @@ if (count($data) > 0){
                 </tr>
             </table>
 
-
             <table cellspacing="0" id="e">
                 <tr>
                     <td rowspan="13" class="tabcode">E</td>
@@ -480,7 +479,6 @@ if (count($data) > 0){
                     <td class="bold">Lactose<sub>ref</sub></td>
                     <td class="bold">Urea<sub>ref</sub></td>
                     <td class="bold">SCC<sub>ref/alt</sub></td>
-
                 </tr>
                 <tr>
                     <td>g/100g</td>
@@ -497,7 +495,7 @@ if (count($data) > 0){
                 //print_r($arr_sp1);
                 $numsample=1;
                 ?>
-                @for($v=0; $v<10; $v++)
+                @for($v=1; $v<11; $v++)
                     <tr>
                         <td>Sample {{$numsample}}</td>
                         <?php
@@ -515,7 +513,6 @@ if (count($data) > 0){
                         echo "<td  class=".$class_l.">".$outlier[$v]->lactose_ref."</td>";
                         echo "<td  class=".$class_u.">".$outlier[$v]->urea_ref."</td>";
                         echo "<td  class=".$class_s.">".$outlier[$v]->scc_ref."</td>";
-
                         ?>
                     </tr>
                     <?php
@@ -527,259 +524,8 @@ if (count($data) > 0){
 
             <div class="newpage"></div>
 
-            <table cellspacing="0" id="f">
-                <tr>
-                    <td rowspan="26" class="tabcode">F</td>
-                    <td colspan="7" class="bold title2">Repeatability</td>
-                </tr>
-                <tr>
-                    <td colspan="7" class="bold">Your &quot;r&quot; performance</td>
-                </tr>
-                <tr>
-                    <td rowspan="2">&nbsp;</td>
-                    <td class="bold">Fat</td>
-                    <td class="bold">Protein</td>
-                    <td class="bold">Lactose</td>
-                    <td class="bold">Urea</td>
-                    <td class="bold">SCC</td>
-                </tr>
-                <tr>
-                    <td>g/100g</td>
-                    <td>nitrogen g/100g</td>
-                    <td>g/100g</td>
-                    <td>mg/dl</td>
-                    <td>SCC*1000/ml</td>
-                </tr>
-
-                <?php
-               //print_r($arr_sp1);
-                $numsample=1;
-                ?>
-                @for($v=0; $v<10; $v++)
-                    <tr>
-                        <td>Sample {{$numsample}}</td>
-                        <?php
-
-                        if ($arr_sp1[$v]->fat_ref>'0.043')  $class1="red";
-                        elseif ($arr_sp1[$v]->fat_ref=="") $class1="";
-                        elseif($arr_sp1[$v]->fat_ref<'0.043') $class1="green"; else $class1="";
-
-                        if ($arr_sp1[$v]->protein_ref>'0.038')  $class2="red";
-                        elseif ($arr_sp1[$v]->protein_ref=="") $class2="";
-                        elseif($arr_sp1[$v]->protein_ref<'0.038') $class2="green"; else $class2="";
-
-                        if ($arr_sp1[$v]->lactose_ref>'0.06')  $class3="red";
-                        elseif ($arr_sp1[$v]->lactose_ref=="") $class3="";
-                        elseif($arr_sp1[$v]->lactose_ref<'0.06') $class3="green"; else $class3="";
-
-                        if ($arr_sp1[$v]->urea_ref>'1.52')   $class4="red";
-                        elseif ($arr_sp1[$v]->urea_ref=="") $class4="";
-                        elseif($arr_sp1[$v]->urea_ref<'1.52') $class4="green"; else $class4="";
-
-                        echo "<td  class=".$class1.">".$arr_sp1[$v]->fat_ref."</td>";
-                        echo "<td  class=".$class2.">".$arr_sp1[$v]->protein_ref."</td>";
-                        echo "<td  class=".$class3.">".$arr_sp1[$v]->lactose_ref."</td>";
-                        echo "<td  class=".$class4.">".$arr_sp1[$v]->urea_ref."</td>";
-                        echo "<td>".$arr_sp1[$v]->scc_ref."</td>";
-                        ?>
-                    </tr>
-                    <?php
-                    $numsample++;
-                    ?>
-                @endfor
-
-                <tr class="grey">
-                    <td colspan="7" class="note">If the repeatability in smaller than the limit the cell is in green if there is a sample with a &quot;r&quot; bigger than the limit the cell is in red.    Please check table II in correspondence of the parameter and your lab code.</td>
-                </tr>
-                <tr class="grey">
-                    <td colspan="7" class="bold">Limits</td>
-                </tr>
-                <tr class="grey">
-                    <td rowspan="9">&nbsp;</td>
-                    <td class="bold">Fat</td>
-                    <td class="bold">Protein</td>
-                    <td class="bold">Lactose</td>
-                    <td class="bold">Urea</td>
-                    <td class="bold">SCC</td>
-                </tr>
-                <tr class="grey">
-                    <td>g/100g</td>
-                    <td>g/100g</td>
-                    <td>g/100g</td>
-                    <td>mg/dl</td>
-                    <td>SCC*1000/ml</td>
-                </tr>
-                <tr class="grey">
-                    <td>ISO 1211<br />IDF 1D</td>
-                    <td>ISO 8968<br />IDF 20</td>
-                    <td>ISO 22662<br />IDF 198</td>
-                    <td>ISO 14637<br />IDF 195</td>
-                    <td>ISO 13366-2<br />IDF 148-2</td>
-                </tr>
-                <tr class="grey">
-                    <td>0,043</td>
-                    <td>0,038</td>
-                    <td>0,06</td>
-                    <td>1,52</td>
-                    <td>
-                        <span class="half_l">Level</span>
-                        <span class="half_r">r</span>
-                    </td>
-                </tr>
-                <tr class="grey">
-                    <td rowspan="5" class="grey">&nbsp;</td>
-                    <td rowspan="5" class="grey">&nbsp;</td>
-                    <td rowspan="5" class="grey">&nbsp;</td>
-                    <td rowspan="5" class="grey">&nbsp;</td>
-                    <td>
-                        <span class="half_l">150</span>
-                        <span class="half_r">25</span>
-                    </td>
-                </tr>
-                <tr class="grey">
-                    <td>
-                        <span class="half_l">300</span>
-                        <span class="half_r">42</span>
-                    </td>
-                </tr>
-                <tr class="grey">
-                    <td>
-                        <span class="half_l">450</span>
-                        <span class="half_r">51</span>
-                    </td>
-                </tr>
-                <tr class="grey">
-                    <td>
-                        <span class="half_l">750</span>
-                        <span class="half_r">64</span>
-                    </td>
-                </tr>
-                <tr class="grey">
-                    <td>
-                        <span class="half_l">1500</span>
-                        <span class="half_r">126</span>
-                    </td>
-                </tr>
-
-            </table>
 
 
-            <table cellspacing="0" id="g">
-                <tr>
-                    <td rowspan="25" class="tabcode">G</td>
-                    <td colspan="6" class="bold title2">Your Z-Score PT</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td class="bold">Fat</td>
-                    <td class="bold">Protein</td>
-                    <td class="bold">Lactose</td>
-                    <td class="bold">Urea</td>
-                    <td class="bold">SCC</td>
-                </tr>
-                {{-- Classi da assegnare alle celle:
-                  se la cella è vuota, nessuna classe
-                  se valore minore di -3 : classe red
-                  se valore tra -3 e -2 : classe yellow
-                  se valore tra -2 e +2 : classe green
-                  se valore tra 2 e 3 : classe yellow
-                  se valore maggiore di 3: classe red
-                  --}}
-                <?php
-                $numsample=1;
-                ?>
-                @for($v=0; $v<10; $v++)
-                    <tr>
-                        <td>Sample {{$numsample}}</td>
-                        <?php
-
-                        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
-                        foreach ($code_arr as $t){
-                            $class="";
-
-                            $valor=($zscorept[$v]->{$t})? $zscorept[$v]->{$t} : "";
-                            if ($valor!=""){
-                                if ($valor <'-3') $class="red";
-                                if ($valor >'-3' && $valor<'-2')$class="yellow";
-                                if ($valor >'-2' && $valor<'2')$class="green";
-                                if ($valor >'2'  && $valor<'3')$class="yellow";
-                                if ($valor >'3') $class="red";
-                            }
-                            echo "<td  class=".$class.">".$valor."</td>";
-                        }
-                        ?>
-                    </tr>
-                    <?php
-                    $numsample++;
-                    ?>
-                @endfor
-                <tr>
-                    <td colspan="6" class="bold title2">Your Z-Score Fix</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td class="bold">Fat</td>
-                    <td class="bold">Protein</td>
-                    <td class="bold">Lactose</td>
-                    <td class="bold">Urea</td>
-                    <td class="bold">SCC</td>
-                </tr>
-
-
-                <?php
-                $numsample=1;
-                ?>
-                @for($v=0; $v<10; $v++)
-                    <tr>
-                        <td>Sample {{$numsample}}</td>
-                        <?php
-                        $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
-                        foreach ($code_arr as $t){
-                            $class="";
-                            $valor=($zscorefix[$v]->{$t})? $zscorefix[$v]->{$t} : "";
-                            if ($valor!=""){
-                                if ($valor <'-3') $class="red";
-                                if ($valor >'-3' && $valor<'-2')$class="yellow";
-                                if ($valor >'-2' && $valor<'2')$class="green";
-                                if ($valor >'2'  && $valor<'3')$class="yellow";
-                                if ($valor >'3') $class="red";
-                            }
-                                echo "<td  class=".$class.">".$valor."</td>";
-                        }
-                        ?>
-                    </tr>
-                    <?php
-                    $numsample++;
-                    ?>
-                @endfor
-
-
-                <tr class="grey">
-                    <td colspan="6">
-                        <p class="note">If there is a sample with a &quot;z-score&quot; in the yellow or red area please check table VI and VII in correspondence of your lab code.</p>
-
-                        <table cellspacing="0" id="info">
-                            <tr>
-                                <td colspan="5">Interpretation Z-Score</td>
-                            </tr>
-                            <tr>
-                                <td>Z-Score&lt;-3</td>
-                                <td>-3&lt;Z-Score&lt;-2</td>
-                                <td>-2&lt;Z-Score&lt;2</td>
-                                <td>2&lt;Z-Score&lt;3</td>
-                                <td>Z-Score&gt;3</td>
-                            </tr>
-                            <tr>
-                                <td class="red">Poor</td>
-                                <td class="yellow">Moderate</td>
-                                <td class="green">Good</td>
-                                <td class="yellow">Moderate</td>
-                                <td class="red">Poor</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
             </body>
             </html>
         </div>

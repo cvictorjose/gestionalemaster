@@ -34,6 +34,9 @@ class ReportController extends Controller
             $lab_id =request()->lab_id;
 
             $code_arr= Round::checkTestAttivate($lab_id,$round,"ref");
+            //data
+            $data= Data::getData($lab_id,$round,$code_arr);
+
 
             //REPEAT
             $arr_sp1=Repeatability::getRepeat($icar,$round,$code_arr);
@@ -55,7 +58,7 @@ class ReportController extends Controller
             $chart  =$grafico['chart']['zscorept'];
             $chartfix  =$grafico['chartfx']['zscorefix'];
 
-            $data= Data::getData($icar,$round,$code_arr);
+
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
 
@@ -77,13 +80,11 @@ class ReportController extends Controller
      */
     public function grafico($icar,$round,$lab_id)
     {
-
         $dataCurrentRound=Means::getDataCurrentRound($icar,$round,$lab_id);
         //return $dataCurrentRound;
 
         if (!$dataCurrentRound){
-            return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],
-                404);
+            return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],404);
         }
         $ordinamento_sample=$dataCurrentRound['positions'];
 
@@ -207,27 +208,34 @@ class ReportController extends Controller
 
             $code_arr= Round::checkTestAttivate($lab_id,$round,"ref");
 
-            //REPEAT
-            $arr_sp1=Repeatability::getRepeat($icar,$round,$code_arr);
-
-            //ZscorePT
-            $zscorept=Zscorept::getZScorePt($lab_id,$round,$code_arr);
-
-            //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFix($lab_id,$round,$code_arr);
+            //DATA
+            $datas= Data::getData($lab_id,$round,$code_arr);
+            //Array composto di LabCode con CodeTest = Blocco A participation code
+            $data2=$datas['d2'];
 
             //OUTLIER
-            $outlier=Outlier::getOutliers($lab_id,$round,$code_arr);
+            $outlier=Outlier::getOutliers($data2,$round);
             //return $outlier;
 
-            //PAG
-            $pag=Pag::getPag($icar,$round);
+            //REPEAT
+            $repeat=Repeatability::getRepeat($data2,$round);
 
-            $data= Data::getData($icar,$round,$code_arr);
+            //ZscorePT
+            $zscorept=Zscorept::getZScorePt($data2,$round);
+            //return $zscorept;
+
+             //ZscoreFIX
+             $zscorefix=Zscorefix::getZScoreFix($data2,$round);
+
+            //PAG
+            //$pag=Pag::getPag($icar,$round);
+
+
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
-            return view('admin.report.report_ref', compact('data','round','lab','outlier','arr_sp1','zscorept',
-                'zscorefix','pag','code_arr'));
+            $data  = $datas['d'];
+
+            return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix'));
 
         } catch (\Exception $e) {
             $message = [
@@ -242,7 +250,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function roundReportRot()
+    /*public function roundReportRot()
     {
         try {
             $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
@@ -252,14 +260,18 @@ class ReportController extends Controller
 
             $code_arr= Round::checkTestAttivate($lab_id,$round,"rot");
 
+
             //REPEAT
             $arr_sp1=Repeatability::getRepeatRot($icar,$round,$code_arr);
+
 
             //ZscorePT
             $zscorept=Zscorept::getZScorePtRot($lab_id,$round,$code_arr);
 
+
             //ZscoreFIX
             $zscorefix=Zscorefix::getZScoreFixRot($lab_id,$round,$code_arr);
+            return $zscorefix;
 
             //OUTLIER
             $outlier=Outlier::getOutliersRot($lab_id,$round,$code_arr);
@@ -279,5 +291,5 @@ class ReportController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-    }
+    }*/
 }

@@ -53,6 +53,7 @@ Route::post('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'))
 
 
 Route::get('report_pdf_ref',array('as'=>'report_pdf_ref','uses'=>'ReportController@reportPdfRef'));
+Route::get('report_pdf_rout',array('as'=>'report_pdf_rout','uses'=>'ReportController@reportPdfRout'));
 
 
 

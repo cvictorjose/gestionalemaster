@@ -17,7 +17,7 @@
                     <tr>
                         <th>Codice Round</th>
                         <th>Laboratorio</th>
-                        <th><i class="fa fa-line-chart"></i> Grafico</th>
+                        <th>Report/Grafico</th>
                         <th>Report</th>
                         <th>Azione</th>
                     </tr>
@@ -31,10 +31,14 @@
 
                             <td>
                                 <?php
-                                $url = action('ReportController@reportPdfRef', ['lab_id' => $lab->laboratory_id,
-                                'icar_code' => $lab->icar_code,'code_round' => $lab->code_round])
+                                $url_ref = action('ReportController@reportPdfRef', ['lab_id' => $lab->laboratory_id,
+                                'icar_code' => $lab->icar_code,'code_round' => $lab->code_round]);
+
+                                $url_rout = action('ReportController@reportPdfRout', ['lab_id' => $lab->laboratory_id,
+                                        'icar_code' => $lab->icar_code,'code_round' => $lab->code_round]);
                                 ?>
-                                <a href="{{ $url }}" target="_blank">REF - Report/Grafico</a>
+                                <a href="{{ $url_ref }}"  target="_blank">{{trans('global.report.ref')}}</a><br>
+                                <a href="{{ $url_rout }}" target="_blank">{{trans('global.report.rot')}}</a>
                             </td>
                             <td>
                                 {{--REF REPORT BUTTON--}}

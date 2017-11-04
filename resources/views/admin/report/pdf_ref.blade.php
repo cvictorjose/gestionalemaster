@@ -442,9 +442,8 @@ if (count($data) > 0){
         <td>1,5</td>
         <td>10%</td>
     </tr>
+
 </table>
-
-
 <table cellspacing="0" id="e">
     <tr>
         <td rowspan="13" class="tabcode">E</td>
@@ -473,24 +472,40 @@ if (count($data) > 0){
     //print_r($arr_sp1);
     $numsample=1;
     ?>
-    @for($v=0; $v<10; $v++)
+    @for($v=1; $v<11; $v++)
         <tr>
             <td>Sample {{$numsample}}</td>
             <?php
-            $class_f=$class_p=$class_l=$class_u=$class_s=$class_b="";
-            if ($outlier[$v]->fat_ref!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
-            if ($outlier[$v]->protein_ref!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
-            if ($outlier[$v]->lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
-            if ($outlier[$v]->urea_ref!="" && $u_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref==""&& $u_a==1) $class_u="green"; else $class_u="";
+            $class_f=$class_p=$class_l=$class_u=$class_s="";
 
-            if ($outlier[$v]->scc_ref!="" && $s_a==1)  $class_s="red"; elseif($outlier[$v]->scc_ref==""&&
-                    $s_a==1) $class_s="green"; else $class_s="";
+            if (isset($outlier[$v])){
+                if ($outlier[$v]->fat_ref!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
+                if ($outlier[$v]->protein_ref!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
+                if ($outlier[$v]->lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
+                if ($outlier[$v]->urea_ref!="" && $u_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref==""&& $u_a==1) $class_u="green"; else $class_u="";
 
-            echo "<td  class=".$class_f.">".$outlier[$v]->fat_ref."</td>";
-            echo "<td  class=".$class_p.">".$outlier[$v]->protein_ref."</td>";
-            echo "<td  class=".$class_l.">".$outlier[$v]->lactose_ref."</td>";
-            echo "<td  class=".$class_u.">".$outlier[$v]->urea_ref."</td>";
-            echo "<td  class=".$class_s.">".$outlier[$v]->scc_ref."</td>";
+                if ($outlier[$v]->scc_ref!="" && $s_a==1)  $class_s="red"; elseif($outlier[$v]->scc_ref==""&&
+                        $s_a==1) $class_s="green"; else $class_s="";
+
+                echo "<td  class=".$class_f.">".$outlier[$v]->fat_ref."</td>";
+                echo "<td  class=".$class_p.">".$outlier[$v]->protein_ref."</td>";
+                echo "<td  class=".$class_l.">".$outlier[$v]->lactose_ref."</td>";
+                echo "<td  class=".$class_u.">".$outlier[$v]->urea_ref."</td>";
+                echo "<td  class=".$class_s.">".$outlier[$v]->scc_ref."</td>";
+
+            }else{
+                if ($f_a==1)  $class_f="green";
+                if ($p_a==1)  $class_p="green";
+                if ($l_a==1)  $class_l="green";
+                if ($u_a==1)  $class_u="green";
+                if ($s_a==1)  $class_s="green";
+
+                echo "<td  class=".$class_f."></td>";
+                echo "<td  class=".$class_p."></td>";
+                echo "<td  class=".$class_l."></td>";
+                echo "<td  class=".$class_u."></td>";
+                echo "<td  class=".$class_s."></td>";
+            }
             ?>
         </tr>
         <?php
@@ -499,6 +514,9 @@ if (count($data) > 0){
     @endfor
 
 </table>
+
+<div class="newpage"></div>
+
 
 <div class="newpage"></div>
 
@@ -527,35 +545,35 @@ if (count($data) > 0){
     </tr>
 
     <?php
-   //print_r($arr_sp1);
+    //print_r($arr_sp1);
     $numsample=1;
     ?>
-    @for($v=0; $v<10; $v++)
+    @for($v=1; $v<11; $v++)
         <tr>
             <td>Sample {{$numsample}}</td>
             <?php
 
-            if ($arr_sp1[$v]->fat_ref>'0.043')  $class1="red";
-            elseif ($arr_sp1[$v]->fat_ref=="") $class1="";
-            elseif($arr_sp1[$v]->fat_ref<'0.043') $class1="green"; else $class1="";
+            if ($repeat['fat_ref']['sp'.$v]>'0.043')  $class1="red";
+            elseif ($repeat['fat_ref']['sp'.$v]=="") $class1="";
+            elseif($repeat['fat_ref']['sp'.$v]<'0.043') $class1="green"; else $class1="";
 
-            if ($arr_sp1[$v]->protein_ref>'0.038')  $class2="red";
-            elseif ($arr_sp1[$v]->protein_ref=="") $class2="";
-            elseif($arr_sp1[$v]->protein_ref<'0.038') $class2="green"; else $class2="";
+            if ($repeat['protein_ref']['sp'.$v]>'0.038')  $class2="red";
+            elseif ($repeat['protein_ref']['sp'.$v]=="") $class2="";
+            elseif($repeat['protein_ref']['sp'.$v]<'0.038') $class2="green"; else $class2="";
 
-            if ($arr_sp1[$v]->lactose_ref>'0.06')  $class3="red";
-            elseif ($arr_sp1[$v]->lactose_ref=="") $class3="";
-            elseif($arr_sp1[$v]->lactose_ref<'0.06') $class3="green"; else $class3="";
+            if ($repeat['lactose_ref']['sp'.$v]>'0.06')  $class3="red";
+            elseif ($repeat['lactose_ref']['sp'.$v]=="") $class3="";
+            elseif($repeat['lactose_ref']['sp'.$v]<'0.06') $class3="green"; else $class3="";
 
-            if ($arr_sp1[$v]->urea_ref>'1.52')   $class4="red";
-            elseif ($arr_sp1[$v]->urea_ref=="") $class4="";
-            elseif($arr_sp1[$v]->urea_ref<'1.52') $class4="green"; else $class4="";
+            if ($repeat['urea_ref']['sp'.$v]>'1.52')   $class4="red";
+            elseif ($repeat['urea_ref']['sp'.$v]=="") $class4="";
+            elseif($repeat['urea_ref']['sp'.$v]<'1.52') $class4="green"; else $class4="";
 
-            echo "<td  class=".$class1.">".$arr_sp1[$v]->fat_ref."</td>";
-            echo "<td  class=".$class2.">".$arr_sp1[$v]->protein_ref."</td>";
-            echo "<td  class=".$class3.">".$arr_sp1[$v]->lactose_ref."</td>";
-            echo "<td  class=".$class4.">".$arr_sp1[$v]->urea_ref."</td>";
-            echo "<td>".$arr_sp1[$v]->scc_ref."</td>";
+            echo "<td class=".$class1.">".$repeat['fat_ref']['sp'.$v]."</td>";
+            echo "<td class=".$class2.">".$repeat['protein_ref']['sp'.$v]."</td>";
+            echo "<td class=".$class3.">".$repeat['lactose_ref']['sp'.$v]."</td>";
+            echo "<td class=".$class4.">".$repeat['urea_ref']['sp'.$v]."</td>";
+            echo "<td>".$repeat['scc_ref']['sp'.$v]."</td>";
             ?>
         </tr>
         <?php
@@ -635,13 +653,14 @@ if (count($data) > 0){
             <span class="half_r">126</span>
         </td>
     </tr>
+
 </table>
 
 
 <table cellspacing="0" id="g">
     <tr>
         <td rowspan="25" class="tabcode">G</td>
-        <td colspan="6" class="bold title2">Your Z-Score PT</td>
+        <td colspan="6" class="bold title">Your Z-Score PT</td>
     </tr>
     <tr>
         <td>&nbsp;</td>
@@ -651,44 +670,89 @@ if (count($data) > 0){
         <td class="bold">Urea</td>
         <td class="bold">SCC</td>
     </tr>
-    {{-- Classi da assegnare alle celle:
-      se la cella è vuota, nessuna classe
-      se valore minore di -3 : classe red
-      se valore tra -3 e -2 : classe yellow
-      se valore tra -2 e +2 : classe green
-      se valore tra 2 e 3 : classe yellow
-      se valore maggiore di 3: classe red
-      --}}
+
+    <!--
+    Classi da assegnare alle celle:
+    se la cella è vuota, nessuna classe
+    se valore minore di -3 : classe red
+    se valore tra -3 e -2 : classe yellow
+    se valore tra -2 e +2 : classe green
+    se valore tra 2 e 3 : classe yellow
+    se valore maggiore di 3: classe red
+
+    Tabella: zscore-pt
+    Query: cerco lab_code e round
+
+    -->
+
     <?php
+    //print_r($arr_sp1);
     $numsample=1;
     ?>
-    @for($v=0; $v<10; $v++)
+    @for($v=1; $v<11; $v++)
         <tr>
             <td>Sample {{$numsample}}</td>
             <?php
 
-            $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
-            foreach ($code_arr as $t){
-                $class="";
-
-                $valor=($zscorept[$v]->{$t})? $zscorept[$v]->{$t} : "";
-                if ($valor!=""){
-                    if ($valor <'-3') $class="red";
-                    if ($valor >'-3' && $valor<'-2')$class="yellow";
-                    if ($valor >'-2' && $valor<'2')$class="green";
-                    if ($valor >'2'  && $valor<'3')$class="yellow";
-                    if ($valor >'3') $class="red";
-                }
-                echo "<td  class=".$class.">".$valor."</td>";
+            $fat=$zscorept['fat_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($fat <'-3') $class1="red";
+                if ($fat >'-3' && $fat<'-2')$class1="yellow";
+                if ($fat >'-2' && $fat<'2')$class1="green";
+                if ($fat >'2'  && $fat<'3')$class1="yellow";
+                if ($fat >'3') $class1="red";
             }
+
+            $protein=$zscorept['protein_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($protein <'-3') $class2="red";
+                if ($protein >'-3' && $protein<'-2')$class2="yellow";
+                if ($protein >'-2' && $protein<'2')$class2="green";
+                if ($protein >'2'  && $protein<'3')$class2="yellow";
+                if ($protein >'3') $class2="red";
+            }
+
+            $lactose=$zscorept['lactose_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($lactose <'-3') $class3="red";
+                if ($lactose >'-3' && $lactose<'-2')$class3="yellow";
+                if ($lactose >'-2' && $lactose<'2')$class3="green";
+                if ($lactose >'2'  && $lactose<'3')$class3="yellow";
+                if ($lactose >'3') $class3="red";
+            }
+
+            $urea=$zscorept['urea_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($urea <'-3') $class4="red";
+                if ($urea >'-3' && $urea<'-2')$class4="yellow";
+                if ($urea >'-2' && $urea<'2')$class4="green";
+                if ($urea >'2'  && $urea<'3')$class4="yellow";
+                if ($urea >'3') $class4="red";
+            }
+
+            $scc=$zscorept['scc_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($scc <'-3') $class5="red";
+                if ($scc >'-3' && $scc<'-2')$class5="yellow";
+                if ($scc >'-2' && $scc<'2')$class5="green";
+                if ($scc >'2'  && $scc<'3')$class5="yellow";
+                if ($scc >'3') $class5="red";
+            }
+
+            echo "<td class=".$class1.">".$fat."</td>";
+            echo "<td class=".$class2.">".$protein."</td>";
+            echo "<td class=".$class3.">".$lactose."</td>";
+            echo "<td class=".$class4.">".$urea."</td>";
+            echo "<td>".$scc."</td>";
             ?>
         </tr>
         <?php
         $numsample++;
         ?>
     @endfor
+
     <tr>
-        <td colspan="6" class="bold title2">Your Z-Score Fix</td>
+        <td colspan="6" class="bold title">Your Z-Score Fix</td>
     </tr>
     <tr>
         <td>&nbsp;</td>
@@ -700,26 +764,68 @@ if (count($data) > 0){
     </tr>
 
 
+    <!-- identica cosa di zscore-pt ma questa volta su tabella zscore-fix-->
+
+
     <?php
+    //print_r($arr_sp1);
     $numsample=1;
     ?>
-    @for($v=0; $v<10; $v++)
+    @for($v=1; $v<11; $v++)
         <tr>
             <td>Sample {{$numsample}}</td>
             <?php
-            $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
-            foreach ($code_arr as $t){
-                $class="";
-                $valor=($zscorefix[$v]->{$t})? $zscorefix[$v]->{$t} : "";
-                if ($valor!=""){
-                    if ($valor <'-3') $class="red";
-                    if ($valor >'-3' && $valor<'-2')$class="yellow";
-                    if ($valor >'-2' && $valor<'2')$class="green";
-                    if ($valor >'2'  && $valor<'3')$class="yellow";
-                    if ($valor >'3') $class="red";
-                }
-                    echo "<td  class=".$class.">".$valor."</td>";
+
+            $fat=$zscorefix['fat_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($fat <'-3') $class1="red";
+                if ($fat >'-3' && $fat<'-2')$class1="yellow";
+                if ($fat >'-2' && $fat<'2')$class1="green";
+                if ($fat >'2'  && $fat<'3')$class1="yellow";
+                if ($fat >'3') $class1="red";
             }
+
+            $protein=$zscorefix['protein_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($protein <'-3') $class2="red";
+                if ($protein >'-3' && $protein<'-2')$class2="yellow";
+                if ($protein >'-2' && $protein<'2')$class2="green";
+                if ($protein >'2'  && $protein<'3')$class2="yellow";
+                if ($protein >'3') $class2="red";
+            }
+
+            $lactose=$zscorefix['lactose_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($lactose <'-3') $class3="red";
+                if ($lactose >'-3' && $lactose<'-2')$class3="yellow";
+                if ($lactose >'-2' && $lactose<'2')$class3="green";
+                if ($lactose >'2'  && $lactose<'3')$class3="yellow";
+                if ($lactose >'3') $class3="red";
+            }
+
+            $urea=$zscorefix['urea_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($urea <'-3') $class4="red";
+                if ($urea >'-3' && $urea<'-2')$class4="yellow";
+                if ($urea >'-2' && $urea<'2')$class4="green";
+                if ($urea >'2'  && $urea<'3')$class4="yellow";
+                if ($urea >'3') $class4="red";
+            }
+
+            $scc=$zscorefix['scc_ref']['sp'.$v];
+            if ($fat!=""){
+                if ($scc <'-3') $class5="red";
+                if ($scc >'-3' && $scc<'-2')$class5="yellow";
+                if ($scc >'-2' && $scc<'2')$class5="green";
+                if ($scc >'2'  && $scc<'3')$class5="yellow";
+                if ($scc >'3') $class5="red";
+            }
+
+            echo "<td class=".$class1.">".$fat."</td>";
+            echo "<td class=".$class2.">".$protein."</td>";
+            echo "<td class=".$class3.">".$lactose."</td>";
+            echo "<td class=".$class4.">".$urea."</td>";
+            echo "<td>".$scc."</td>";
             ?>
         </tr>
         <?php
@@ -731,6 +837,7 @@ if (count($data) > 0){
     <tr class="grey">
         <td colspan="6">
             <p class="note">If there is a sample with a &quot;z-score&quot; in the yellow or red area please check table VI and VII in correspondence of your lab code.</p>
+
             <table cellspacing="0" id="info">
                 <tr>
                     <td colspan="5">Interpretation Z-Score</td>
@@ -750,64 +857,13 @@ if (count($data) > 0){
                     <td class="red">Poor</td>
                 </tr>
             </table>
+
         </td>
     </tr>
 </table>
 
-<table>
-    @foreach($code_arr as $who)
-    <tr>
-        <td style="width: 50%;">
 
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bar-chart-o"></i>
-                            <h3 class="box-title">ZSCORE-PT - {{$who}}</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="app">
-                                <center>
-                                    {!! $chart[$who]->html() !!}
-                                </center>
-                            </div>
-                            {!! Charts::scripts() !!}
-                            {!! $chart[$who]->script() !!}
-                        </div>
-                    </div>
-
-            </td>
-        <td style="width: 50%;">
-
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bar-chart-o"></i>
-                            <h3 class="box-title">ZSCORE-FX - {{$who}}</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="app">
-                                <center>
-                                    {!! $chartfix[$who]->html() !!}
-                                </center>
-                            </div>
-                            {!! Charts::scripts() !!}
-                            {!! $chartfix[$who]->script() !!}
-                        </div>
-                    </div>
-
-        </td>
-    </tr>
-    @endforeach
 </table>
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
 

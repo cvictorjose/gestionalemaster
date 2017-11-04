@@ -25,11 +25,13 @@ class Outlier extends Model
         'created_at', 'updated_at',
     ];
 
-    public static function getOutliers($icar,$round,$code_arr)
+    public static function getOutliers($data,$round)
     {
-        $arr_sp1=array();
-        $outliers= Outlier::where('round',$round)->where('lab_code',$icar)->orderBy('sample_number')->get();
-        for ($i=1; $i<11; $i++) {
+        $out_labs=array();
+        foreach($data as $dt)
+        {
+            $outliers= Outlier::where('round',$round)->where('lab_code',$dt->lab_code)->where('type',$dt->type)->get();
+
             $item= new \stdClass();
             $item->fat_ref ="";
             $item->protein_ref ="";
@@ -37,50 +39,17 @@ class Outlier extends Model
             $item->scc_ref ="";
             $item->urea_ref ="";
 
-            foreach($outliers as $rp)
-            {
-                foreach ($code_arr as $t){
-                    if ($rp->sample_number==$i && $rp->type==$t){
-                         $sample = $rp->outlier_type;
-                         $item->{$t} =$sample;
-                         $item->riga =$rp->sample_number;
+            for ($i=1; $i<11; $i++) {
+                foreach($outliers as $rp)
+                {
+                    if ($rp->sample_number==$i){
+                        $item->{$dt->type}        = $rp->outlier_type;
+                        $out_labs[$i]=$item;
                     }
                 }
             }
-            array_push($arr_sp1,$item);
         }
-        return $arr_sp1;
-    }
-
-
-
-    public static function getOutliersRot($icar,$round,$code_arr)
-    {
-        $arr_sp1=array();
-        $outliers= Outlier::where('round',$round)->where('lab_code',$icar)->orderBy('sample_number')->get();
-        for ($i=1; $i<11; $i++) {
-            $item= new \stdClass();
-            $item->fat_rout ="";
-            $item->protein_rout ="";
-            $item->lactose_rout ="";
-            $item->scc_rout ="";
-            $item->urea_rout ="";
-            $item->bhb ="";
-            $item->pag ="";
-
-            foreach($outliers as $rp)
-            {
-                foreach ($code_arr as $t){
-                    if ($rp->sample_number==$i && $rp->type==$t){
-                        $sample = $rp->outlier_type;
-                        $item->{$t} =$sample;
-                        $item->riga =$rp->sample_number;
-                    }
-                }
-            }
-            array_push($arr_sp1,$item);
-        }
-        return $arr_sp1;
+        return $out_labs;
     }
 
 }
