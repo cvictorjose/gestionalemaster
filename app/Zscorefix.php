@@ -59,10 +59,10 @@ class Zscorefix extends Model
     }
 
 
-    public static function getBlocksRoundFx($icar,$round,$positions,$type)
+    public static function getBlocksRoundFx($lab_id,$round,$positions,$type)
     {
         $currentRound=array();
-        $results= Zscorefix::where('round',$round)->where('lab_code',$icar)->where('type',$type)->first();
+        $results= Zscorefix::where('round',$round)->where('lab_code',$lab_id)->where('type',$type)->first();
 
         if ($results){
             foreach ($positions as $p){

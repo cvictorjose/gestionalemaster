@@ -23,7 +23,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function reportPdfRef(Request $request)
+    /*public function reportPdfRef(Request $request)
     {
         //{"lab_id":"3","icar_code":"1","code_round":"RF0316"}
 
@@ -71,16 +71,20 @@ class ReportController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-    }
+    }*/
+
+
 
     /**
      * Create Chart ZscorePt vs ZscoreFx belong to a Lab.
      *
      * @return \Illuminate\Http\Response
      */
-    public function grafico($icar,$round,$lab_id)
+    public function graficoReport($lab_id,$round)
     {
-        $dataCurrentRound=Means::getDataCurrentRound($icar,$round,$lab_id);
+
+
+        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round);
         //return $dataCurrentRound;
 
         if (!$dataCurrentRound){
@@ -146,13 +150,11 @@ class ReportController extends Controller
                 $ordinamento_sample);
         }
 
-        $chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
+         $chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
 
         return $chart;
         //return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
     }
-
-
 
     /**
      * Create Chart with 3 blocks data
@@ -198,20 +200,26 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function roundReportRef()
+    public function roundReportRef(Request $request)
     {
         try {
             $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-            $icar  = $inputData['icar'];
+            /*$icar  = $inputData['icar'];
             $round = $inputData['round'];
-            $lab_id =$inputData['lab_id'];
+            $lab_id =$inputData['lab_id'];*/
+
+            $icar  = request()->icar_code;
+            $round = request()->code_round;
+            $lab_id =request()->lab_id;
 
             $code_arr= Round::checkTestAttivate($lab_id,$round,"ref");
 
             //DATA
             $datas= Data::getData($lab_id,$round,$code_arr);
             //Array composto di LabCode con CodeTest = Blocco A participation code
+
             $data2=$datas['d2'];
+            if (empty($data2))return "Non ci sono dati nella tabella DATA";
 
             //OUTLIER
             $outlier=Outlier::getOutliers($data2,$round);
@@ -230,12 +238,16 @@ class ReportController extends Controller
             //PAG
             //$pag=Pag::getPag($icar,$round);
 
+            $grafico   = $this->graficoReport($lab_id,$round);
+            $chart     = $grafico['chart'];
+            $chartfx = $grafico['chartfx'];
+
 
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             $data  = $datas['d'];
 
-            return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix'));
+            return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr'));
 
         } catch (\Exception $e) {
             $message = [
@@ -245,51 +257,89 @@ class ReportController extends Controller
         }
     }
 
+
+
+
     /**
-     * Create report Routine belong to a Lab.
+     * Create Chart ZscorePt vs ZscoreFx belong to a Lab.
      *
      * @return \Illuminate\Http\Response
      */
-    /*public function roundReportRot()
+    public function grafico()
     {
-        try {
-            $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-            $icar  = $inputData['icar'];
-            $round = $inputData['round'];
-            $lab_id =$inputData['lab_id'];
 
-            $code_arr= Round::checkTestAttivate($lab_id,$round,"rot");
+        $lab_id="12";
+        $round="RF0917";
+        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round);
+        //return $dataCurrentRound;
 
-
-            //REPEAT
-            $arr_sp1=Repeatability::getRepeatRot($icar,$round,$code_arr);
-
-
-            //ZscorePT
-            $zscorept=Zscorept::getZScorePtRot($lab_id,$round,$code_arr);
-
-
-            //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFixRot($lab_id,$round,$code_arr);
-            return $zscorefix;
-
-            //OUTLIER
-            $outlier=Outlier::getOutliersRot($lab_id,$round,$code_arr);
-
-            //PAG
-            $pag=Pag::getPag($icar,$round);
-
-            $data= Data::getData($icar,$round,$code_arr);
-            $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
-            $lab   = Laboratory::find($lab_id);
-            return view('admin.report.report_rot', compact('data','round','lab','outlier','arr_sp1','zscorept',
-                'zscorefix','pag'));
-
-        } catch (\Exception $e) {
-            $message = [
-                'flashType'    => 'danger',
-                'flashMessage' => 'Errore! Laboratorio'
-            ];
+        if (!$dataCurrentRound){
+            return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],404);
         }
-    }*/
+        $ordinamento_sample=$dataCurrentRound['positions'];
+
+
+        //return $dataCurrentRound['currentRound']['base'];
+        //return  $dataCurrentRound['rounds'];
+        //return $dataCurrentRound['currentRound']['fat_ref']['base'];
+
+
+        //creo un chart array[test]
+        $chart=array();
+        $block2=$block3=$block2fx=$block3fx=$this->resetRound();
+        $round2=$round3="n/a";
+
+        //array di codeTest attivati
+        $code_arr=$dataCurrentRound['codetest'];
+
+        foreach ($code_arr as $type) {
+            $p=1;
+            $base=$dataCurrentRound['currentRound']['zscorept'][$type]['base'];
+            $basefx=$dataCurrentRound['currentRound']['zscorefix'][$type]['base'];
+
+            if (count($dataCurrentRound['rounds']>0)){
+
+                foreach($dataCurrentRound['rounds'] as $r)
+                {
+                    switch ($p) {
+                        case 1:
+                            if ($dataCurrentRound['currentRound']['zscorept'][$type][$r]){
+                                $block2 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
+                            }
+
+                            if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
+                                $block2fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
+                            }
+                            $round2=$r;
+                            break;
+                        case 2:
+
+                            if ($dataCurrentRound['currentRound']['zscorept'][$type][$r]){
+                                $block3 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
+                            }
+
+                            if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
+                                $block3fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
+                            }
+
+                            $round3=$r;
+                            break;
+                    }
+                    $p++;
+                }
+            }
+
+            $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3,
+                $ordinamento_sample);
+
+            $chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3,
+                $ordinamento_sample);
+        }
+
+        // $chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
+
+        // return $chart;
+        return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
+    }
+
 }

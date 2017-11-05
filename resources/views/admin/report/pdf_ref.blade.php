@@ -130,7 +130,7 @@ if (count($data) > 0){
 ?>
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -360,7 +360,7 @@ if (count($data) > 0){
         <!-- range: tra -0,10 e +0,10  -->
         <td class=
         @if ($lactose_ref_dev == '&nbsp;') {{''}} @elseif (('-0,10' <= $lactose_ref_dev) && ($lactose_ref_dev <= '0,10')) {{$class}}
-        @else {{$class_red}} @endif>{{$lactose_ref_dev}}
+                @else {{$class_red}} @endif>{{$lactose_ref_dev}}
         </td>
 
         <!-- range: tra -2,5 e +2,5  -->
@@ -390,8 +390,8 @@ if (count($data) > 0){
 
         <!-- limite: 0,010 -->
         <td class=
-            @if ($lactose_ref_sdev == '0,010' || $lactose_ref_sdev == '&nbsp;') {{''}} @elseif ($lactose_ref_sdev >'0,010') {{$class_red}}
-            @elseif($lactose_ref_sdev < '0,010'){{$class}} @endif>{{$lactose_ref_sdev}}</td>
+        @if ($lactose_ref_sdev == '0,010' || $lactose_ref_sdev == '&nbsp;') {{''}} @elseif ($lactose_ref_sdev >'0,010') {{$class_red}}
+                @elseif($lactose_ref_sdev < '0,010'){{$class}} @endif>{{$lactose_ref_sdev}}</td>
 
         <!-- limite: 1,5 -->
         <td class=
@@ -512,11 +512,7 @@ if (count($data) > 0){
         $numsample++;
         ?>
     @endfor
-
 </table>
-
-<div class="newpage"></div>
-
 
 <div class="newpage"></div>
 
@@ -552,28 +548,46 @@ if (count($data) > 0){
         <tr>
             <td>Sample {{$numsample}}</td>
             <?php
+            $r_fat=$r_pro=$r_lac=$r_ure=$r_scc="";
+            $class1=$class2=$class3=$class4="";
 
-            if ($repeat['fat_ref']['sp'.$v]>'0.043')  $class1="red";
-            elseif ($repeat['fat_ref']['sp'.$v]=="") $class1="";
-            elseif($repeat['fat_ref']['sp'.$v]<'0.043') $class1="green"; else $class1="";
+            if (isset($repeat['fat_ref'])){
+                $r_fat=$repeat['fat_ref']['sp'.$v];
+                if ($r_fat>'0.043')  $class1="red";
+                elseif ($r_fat=="") $class1="";
+                elseif($r_fat<'0.043') $class1="green"; else $class1="";
+            }
 
-            if ($repeat['protein_ref']['sp'.$v]>'0.038')  $class2="red";
-            elseif ($repeat['protein_ref']['sp'.$v]=="") $class2="";
-            elseif($repeat['protein_ref']['sp'.$v]<'0.038') $class2="green"; else $class2="";
+            if (isset($repeat['protein_ref'])){
+                $r_pro=$repeat['protein_ref']['sp'.$v];
+                if ($r_pro>'0.038')  $class2="red";
+                elseif ($r_pro=="") $class2="";
+                elseif($r_pro<'0.038') $class2="green"; else $class2="";
+            }
 
-            if ($repeat['lactose_ref']['sp'.$v]>'0.06')  $class3="red";
-            elseif ($repeat['lactose_ref']['sp'.$v]=="") $class3="";
-            elseif($repeat['lactose_ref']['sp'.$v]<'0.06') $class3="green"; else $class3="";
+            if (isset($repeat['lactose_ref'])){
+                $r_lac=$repeat['lactose_ref']['sp'.$v];
+                if ($r_lac>'0.06')  $class3="red";
+                elseif ($r_lac=="") $class3="";
+                elseif($r_lac<'0.06') $class3="green"; else $class3="";
+            }
 
-            if ($repeat['urea_ref']['sp'.$v]>'1.52')   $class4="red";
-            elseif ($repeat['urea_ref']['sp'.$v]=="") $class4="";
-            elseif($repeat['urea_ref']['sp'.$v]<'1.52') $class4="green"; else $class4="";
+            if (isset($repeat['urea_ref'])){
+                $r_ure=$repeat['urea_ref']['sp'.$v];
+                if ($r_ure>'1.52')   $class4="red";
+                elseif ($r_ure=="") $class4="";
+                elseif($r_ure<'1.52') $class4="green"; else $class4="";
+            }
 
-            echo "<td class=".$class1.">".$repeat['fat_ref']['sp'.$v]."</td>";
-            echo "<td class=".$class2.">".$repeat['protein_ref']['sp'.$v]."</td>";
-            echo "<td class=".$class3.">".$repeat['lactose_ref']['sp'.$v]."</td>";
-            echo "<td class=".$class4.">".$repeat['urea_ref']['sp'.$v]."</td>";
-            echo "<td>".$repeat['scc_ref']['sp'.$v]."</td>";
+            if (isset($repeat['scc_ref'])){
+                $r_scc=$repeat['scc_ref']['sp'.$v];
+            }
+
+            echo "<td class=".$class1.">".$r_fat."</td>";
+            echo "<td class=".$class2.">".$r_pro."</td>";
+            echo "<td class=".$class3.">".$r_lac."</td>";
+            echo "<td class=".$class4.">".$r_ure."</td>";
+            echo "<td>".$r_scc."</td>";
             ?>
         </tr>
         <?php
@@ -694,56 +708,69 @@ if (count($data) > 0){
             <td>Sample {{$numsample}}</td>
             <?php
 
-            $fat=$zscorept['fat_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($fat <'-3') $class1="red";
-                if ($fat >'-3' && $fat<'-2')$class1="yellow";
-                if ($fat >'-2' && $fat<'2')$class1="green";
-                if ($fat >'2'  && $fat<'3')$class1="yellow";
-                if ($fat >'3') $class1="red";
+            $fat_pt=$pro_pt=$lac_pt=$ure_pt=$scc_pt="";
+            $class1=$class2=$class3=$class4=$class5="";
+
+            if (isset($zscorept['fat_ref'])){
+                $fat_pt=$zscorept['fat_ref']['sp'.$v];
+                if ($fat_pt!=""){
+                    if ($fat_pt <'-3') $class1="red";
+                    if ($fat_pt >'-3' && $fat_pt<'-2')$class1="yellow";
+                    if ($fat_pt >'-2' && $fat_pt<'2')$class1="green";
+                    if ($fat_pt >'2'  && $fat_pt<'3')$class1="yellow";
+                    if ($fat_pt >'3') $class1="red";
+                }
             }
 
-            $protein=$zscorept['protein_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($protein <'-3') $class2="red";
-                if ($protein >'-3' && $protein<'-2')$class2="yellow";
-                if ($protein >'-2' && $protein<'2')$class2="green";
-                if ($protein >'2'  && $protein<'3')$class2="yellow";
-                if ($protein >'3') $class2="red";
+            if (isset($zscorept['protein_ref'])){
+                $pro_pt=$zscorept['protein_ref']['sp'.$v];
+                if ($pro_pt!=""){
+                    if ($pro_pt <'-3') $class2="red";
+                    if ($pro_pt >'-3' && $pro_pt<'-2')$class2="yellow";
+                    if ($pro_pt >'-2' && $pro_pt<'2')$class2="green";
+                    if ($pro_pt >'2'  && $pro_pt<'3')$class2="yellow";
+                    if ($pro_pt >'3') $class2="red";
+                }
             }
 
-            $lactose=$zscorept['lactose_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($lactose <'-3') $class3="red";
-                if ($lactose >'-3' && $lactose<'-2')$class3="yellow";
-                if ($lactose >'-2' && $lactose<'2')$class3="green";
-                if ($lactose >'2'  && $lactose<'3')$class3="yellow";
-                if ($lactose >'3') $class3="red";
+            if (isset($zscorept['lactose_ref'])){
+                $lac_pt=$zscorept['lactose_ref']['sp'.$v];
+                if ($lac_pt!=""){
+                    if ($lac_pt <'-3') $class3="red";
+                    if ($lac_pt >'-3' && $lac_pt<'-2')$class3="yellow";
+                    if ($lac_pt >'-2' && $lac_pt<'2')$class3="green";
+                    if ($lac_pt >'2'  && $lac_pt<'3')$class3="yellow";
+                    if ($lac_pt >'3') $class3="red";
+                }
             }
 
-            $urea=$zscorept['urea_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($urea <'-3') $class4="red";
-                if ($urea >'-3' && $urea<'-2')$class4="yellow";
-                if ($urea >'-2' && $urea<'2')$class4="green";
-                if ($urea >'2'  && $urea<'3')$class4="yellow";
-                if ($urea >'3') $class4="red";
+            if (isset($zscorept['urea_ref'])){
+                $ure_pt=$zscorept['urea_ref']['sp'.$v];
+                if ($ure_pt!=""){
+                    if ($ure_pt <'-3') $class4="red";
+                    if ($ure_pt >'-3' && $ure_pt<'-2')$class4="yellow";
+                    if ($ure_pt >'-2' && $ure_pt<'2')$class4="green";
+                    if ($ure_pt >'2'  && $ure_pt<'3')$class4="yellow";
+                    if ($ure_pt >'3') $class4="red";
+                }
             }
 
-            $scc=$zscorept['scc_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($scc <'-3') $class5="red";
-                if ($scc >'-3' && $scc<'-2')$class5="yellow";
-                if ($scc >'-2' && $scc<'2')$class5="green";
-                if ($scc >'2'  && $scc<'3')$class5="yellow";
-                if ($scc >'3') $class5="red";
+            if (isset($zscorept['scc_ref'])){
+                $scc_pt=$zscorept['scc_ref']['sp'.$v];
+                if ($scc_pt!=""){
+                    if ($scc_pt <'-3') $class5="red";
+                    if ($scc_pt >'-3' && $scc_pt<'-2')$class5="yellow";
+                    if ($scc_pt >'-2' && $scc_pt<'2')$class5="green";
+                    if ($scc_pt >'2'  && $scc_pt<'3')$class5="yellow";
+                    if ($scc_pt >'3') $class5="red";
+                }
             }
 
-            echo "<td class=".$class1.">".$fat."</td>";
-            echo "<td class=".$class2.">".$protein."</td>";
-            echo "<td class=".$class3.">".$lactose."</td>";
-            echo "<td class=".$class4.">".$urea."</td>";
-            echo "<td>".$scc."</td>";
+            echo "<td class=".$class1.">".$fat_pt."</td>";
+            echo "<td class=".$class2.">".$pro_pt."</td>";
+            echo "<td class=".$class3.">".$lac_pt."</td>";
+            echo "<td class=".$class4.">".$ure_pt."</td>";
+            echo "<td>".$scc_pt."</td>";
             ?>
         </tr>
         <?php
@@ -776,56 +803,69 @@ if (count($data) > 0){
             <td>Sample {{$numsample}}</td>
             <?php
 
-            $fat=$zscorefix['fat_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($fat <'-3') $class1="red";
-                if ($fat >'-3' && $fat<'-2')$class1="yellow";
-                if ($fat >'-2' && $fat<'2')$class1="green";
-                if ($fat >'2'  && $fat<'3')$class1="yellow";
-                if ($fat >'3') $class1="red";
+            $fat_fx=$pro_fx=$lac_fx=$ure_fx=$scc_fx="";
+            $class1=$class2=$class3=$class4=$class5="";
+
+            if (isset($zscorept['fat_ref'])){
+                $fat_fx=$zscorept['fat_ref']['sp'.$v];
+                if ($fat_fx!=""){
+                    if ($fat_fx <'-3') $class1="red";
+                    if ($fat_fx >'-3' && $fat_fx<'-2')$class1="yellow";
+                    if ($fat_fx >'-2' && $fat_fx<'2')$class1="green";
+                    if ($fat_fx >'2'  && $fat_fx<'3')$class1="yellow";
+                    if ($fat_fx >'3') $class1="red";
+                }
             }
 
-            $protein=$zscorefix['protein_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($protein <'-3') $class2="red";
-                if ($protein >'-3' && $protein<'-2')$class2="yellow";
-                if ($protein >'-2' && $protein<'2')$class2="green";
-                if ($protein >'2'  && $protein<'3')$class2="yellow";
-                if ($protein >'3') $class2="red";
+            if (isset($zscorept['protein_ref'])){
+                $pro_fx=$zscorept['protein_ref']['sp'.$v];
+                if ($pro_fx!=""){
+                    if ($pro_fx <'-3') $class2="red";
+                    if ($pro_fx >'-3' && $pro_fx<'-2')$class2="yellow";
+                    if ($pro_fx >'-2' && $pro_fx<'2')$class2="green";
+                    if ($pro_fx >'2'  && $pro_fx<'3')$class2="yellow";
+                    if ($pro_fx >'3') $class2="red";
+                }
             }
 
-            $lactose=$zscorefix['lactose_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($lactose <'-3') $class3="red";
-                if ($lactose >'-3' && $lactose<'-2')$class3="yellow";
-                if ($lactose >'-2' && $lactose<'2')$class3="green";
-                if ($lactose >'2'  && $lactose<'3')$class3="yellow";
-                if ($lactose >'3') $class3="red";
+            if (isset($zscorept['lactose_ref'])){
+                $lac_fx=$zscorept['lactose_ref']['sp'.$v];
+                if ($lac_fx!=""){
+                    if ($lac_fx <'-3') $class3="red";
+                    if ($lac_fx >'-3' && $lac_fx<'-2')$class3="yellow";
+                    if ($lac_fx >'-2' && $lac_fx<'2')$class3="green";
+                    if ($lac_fx >'2'  && $lac_fx<'3')$class3="yellow";
+                    if ($lac_fx >'3') $class3="red";
+                }
             }
 
-            $urea=$zscorefix['urea_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($urea <'-3') $class4="red";
-                if ($urea >'-3' && $urea<'-2')$class4="yellow";
-                if ($urea >'-2' && $urea<'2')$class4="green";
-                if ($urea >'2'  && $urea<'3')$class4="yellow";
-                if ($urea >'3') $class4="red";
+            if (isset($zscorept['urea_ref'])){
+                $ure_fx=$zscorept['urea_ref']['sp'.$v];
+                if ($ure_fx!=""){
+                    if ($ure_fx <'-3') $class4="red";
+                    if ($ure_fx >'-3' && $ure_fx<'-2')$class4="yellow";
+                    if ($ure_fx >'-2' && $ure_fx<'2')$class4="green";
+                    if ($ure_fx >'2'  && $ure_fx<'3')$class4="yellow";
+                    if ($ure_fx >'3') $class4="red";
+                }
             }
 
-            $scc=$zscorefix['scc_ref']['sp'.$v];
-            if ($fat!=""){
-                if ($scc <'-3') $class5="red";
-                if ($scc >'-3' && $scc<'-2')$class5="yellow";
-                if ($scc >'-2' && $scc<'2')$class5="green";
-                if ($scc >'2'  && $scc<'3')$class5="yellow";
-                if ($scc >'3') $class5="red";
+            if (isset($zscorept['scc_ref'])){
+                $scc_fx=$zscorept['scc_ref']['sp'.$v];
+                if ($scc_fx!=""){
+                    if ($scc_fx <'-3') $class5="red";
+                    if ($scc_fx >'-3' && $scc_fx<'-2')$class5="yellow";
+                    if ($scc_fx >'-2' && $scc_fx<'2')$class5="green";
+                    if ($scc_fx >'2'  && $scc_fx<'3')$class5="yellow";
+                    if ($scc_fx >'3') $class5="red";
+                }
             }
 
-            echo "<td class=".$class1.">".$fat."</td>";
-            echo "<td class=".$class2.">".$protein."</td>";
-            echo "<td class=".$class3.">".$lactose."</td>";
-            echo "<td class=".$class4.">".$urea."</td>";
-            echo "<td>".$scc."</td>";
+            echo "<td class=".$class1.">".$fat_fx."</td>";
+            echo "<td class=".$class2.">".$pro_fx."</td>";
+            echo "<td class=".$class3.">".$lac_fx."</td>";
+            echo "<td class=".$class4.">".$ure_fx."</td>";
+            echo "<td>".$scc_fx."</td>";
             ?>
         </tr>
         <?php
@@ -837,7 +877,6 @@ if (count($data) > 0){
     <tr class="grey">
         <td colspan="6">
             <p class="note">If there is a sample with a &quot;z-score&quot; in the yellow or red area please check table VI and VII in correspondence of your lab code.</p>
-
             <table cellspacing="0" id="info">
                 <tr>
                     <td colspan="5">Interpretation Z-Score</td>
@@ -857,12 +896,51 @@ if (count($data) > 0){
                     <td class="red">Poor</td>
                 </tr>
             </table>
-
         </td>
     </tr>
 </table>
 
+<table>
+    @foreach($code_arr as $who)
+        <tr>
+            <td style="width: 50%;">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <h3 class="box-title">ZSCORE-PT - {{$who}}</h3>
 
+                    </div>
+                    <div class="box-body">
+                        <div class="app">
+                            <center>
+                                {!! $chart['zscorept'][$who]->html() !!}
+                            </center>
+                        </div>
+                        {!! Charts::scripts() !!}
+                        {!! $chart['zscorept'][$who]->script() !!}
+                    </div>
+                </div>
+            </td>
+            <td style="width: 50%;">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <h3 class="box-title">ZSCORE-FX - {{$who}}</h3>
+
+                    </div>
+                    <div class="box-body">
+                        <div class="app">
+                            <center>
+                                {!! $chartfx['zscorefix'][$who]->html() !!}
+                            </center>
+                        </div>
+                        {!! Charts::scripts() !!}
+                        {!! $chartfx['zscorefix'][$who]->script() !!}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    @endforeach
 </table>
 </body>
 </html>

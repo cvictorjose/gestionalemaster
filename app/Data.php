@@ -26,7 +26,7 @@ class Data extends Model
 
     public static function getData($icar,$round,$code_arr)
     {
-        //$code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref','bhb');
+
         $arr_data=array();
         $arr_data2=array();
 

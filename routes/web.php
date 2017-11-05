@@ -42,20 +42,19 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('round_destroy_test',array('as'=>'round_destroy_test','uses'=>'RoundController@destroySingleTest'));
 
    //REPORT
-    Route::post('round_report_ref',array('as'=>'round_report_ref','uses'=>'ReportController@roundReportRef'));
-    Route::post('round_report_rot',array('as'=>'round_report_rot','uses'=>'ReportController@roundReportRot'));
+    // Route::post('round_report_ref',array('as'=>'round_report_ref','uses'=>'ReportController@roundReportRef'));
 
-    //CHART
+
+
 
 });
 
-Route::post('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));
+
+//OPEN NEW TAB
+Route::get('round_report_ref',array('as'=>'report_pdf_ref','uses'=>'ReportController@roundReportRef'));
 
 
-Route::get('report_pdf_ref',array('as'=>'report_pdf_ref','uses'=>'ReportController@reportPdfRef'));
-Route::get('report_pdf_rout',array('as'=>'report_pdf_rout','uses'=>'ReportController@reportPdfRout'));
-
-
-
+//CHART
+Route::get('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));
 //AUTOCOMPLETE
 Route::get('typeahead-response',array('as'=>'typeahead.response','uses'=>'LaboratoryController@ajaxData'));

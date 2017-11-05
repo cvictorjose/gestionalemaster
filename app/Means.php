@@ -28,13 +28,13 @@ class Means extends Model
     ];
 
 
-    public static function getDataCurrentRound($icar,$round,$lab_id)
+    public static function getDataCurrentRound($lab_id,$round)
     {
         //$round="RF0317";
 
         //INIZIO Blocco Base
         $positions=array();
-        $result= Means::where('round',$round)->where('lab_code',$icar)->where('type','fat_ref')->first();
+        $result= Means::where('round',$round)->where('lab_code',$lab_id)->where('type','fat_ref')->first();
 
         if (count($result)<1){
             return false;
@@ -65,7 +65,7 @@ class Means extends Model
         //Prendo 2 round precendenti
         $round_precedenti=array();
         $words = substr($round, 0, -4);
-        $getIds= Zscorept::where('round',$round)->where('lab_code',$icar)->orderBy('id','desc')->first();
+        $getIds= Zscorept::where('round',$round)->where('lab_code',$lab_id)->orderBy('id','desc')->first();
         $getIds2= Zscorept::where('id','<',$getIds->id)->where('round', 'like', $words.'%')->orderBy('id','desc')->get();
         $crash=0;
         foreach($getIds2 as $g)
@@ -85,21 +85,17 @@ class Means extends Model
         //return $code_arr;
 
         foreach ($code_arr as $type) {
-            $final['zscorept'][$type]['base']=Zscorept::getBlocksRoundPt($icar,$round,$positions,$type);
-            $final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($icar,$round,$positions,$type);
+            $final['zscorept'][$type]['base']=Zscorept::getBlocksRoundPt($lab_id,$round,$positions,$type);
+            $final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
             //prendo 2 round precendenti a quello attuale
             foreach($round_precedenti as $round)
             {
-                $final['zscorept'][$type][$round]=Zscorept::getBlocksRoundPt($icar,$round,$positions,$type);
-                $final['zscorefix'][$type][$round]=Zscorefix::getBlocksRoundFx($icar,$round,$positions,$type);
+                $final['zscorept'][$type][$round]=Zscorept::getBlocksRoundPt($lab_id,$round,$positions,$type);
+                $final['zscorefix'][$type][$round]=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
             }
         }
 
         //ritono CurrentRound=Base,Round1,Round2
         return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti,'codetest'=>$code_arr));
     }
-
-
-
-
 }

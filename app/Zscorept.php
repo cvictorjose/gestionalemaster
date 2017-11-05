@@ -59,10 +59,10 @@ class Zscorept extends Model
     }
 
 
-    public static function getBlocksRoundPt($icar,$round,$positions,$type)
+    public static function getBlocksRoundPt($lab_id,$round,$positions,$type)
     {
         $currentRound=array();
-        $dataZscorePT= Zscorept::where('round',$round)->where('lab_code',$icar)->where('type',$type)->first();
+        $dataZscorePT= Zscorept::where('round',$round)->where('lab_code',$lab_id)->where('type',$type)->first();
 
         if ($dataZscorePT){
             foreach ($positions as $p){
