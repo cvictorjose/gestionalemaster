@@ -18,81 +18,21 @@ use Illuminate\Support\Facades\Input;
 
 class ReportController extends Controller
 {
-    /**
-     * Create report + Chart into empty page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /*public function reportPdfRef(Request $request)
-    {
-        //{"lab_id":"3","icar_code":"1","code_round":"RF0316"}
-
-        try {
-            //$inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-            $icar  = request()->icar_code;
-            $round = request()->code_round;
-            $lab_id =request()->lab_id;
-
-            $code_arr= Round::checkTestAttivate($lab_id,$round,"ref");
-            //data
-            $data= Data::getData($lab_id,$round,$code_arr);
-
-
-            //REPEAT
-            $arr_sp1=Repeatability::getRepeat($icar,$round,$code_arr);
-
-            //ZscorePT
-            $zscorept=Zscorept::getZScorePt($lab_id,$round,$code_arr);
-
-            //ZscoreFIX
-            $zscorefix=Zscorefix::getZScoreFix($lab_id,$round,$code_arr);
-
-            //OUTLIER
-            $outlier=Outlier::getOutliers($lab_id,$round,$code_arr);
-            //return $outlier;
-
-            //PAG
-            $pag=Pag::getPag($icar,$round);
-
-            $grafico= $this->grafico($icar,$round,$lab_id);
-            $chart  =$grafico['chart']['zscorept'];
-            $chartfix  =$grafico['chartfx']['zscorefix'];
-
-
-            $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
-            $lab   = Laboratory::find($lab_id);
-
-            return view('admin.report.pdf_ref', compact('data','round','lab','outlier','arr_sp1','zscorept',
-                'zscorefix','pag','code_arr','chart','chartfix'));
-
-        } catch (\Exception $e) {
-            $message = [
-                'flashType'    => 'danger',
-                'flashMessage' => 'Errore! Laboratorio'
-            ];
-        }
-    }*/
-
-
 
     /**
      * Create Chart ZscorePt vs ZscoreFx belong to a Lab.
      *
      * @return \Illuminate\Http\Response
      */
-    public function graficoReport($lab_id,$round)
+    public function graficoReport($lab_id,$round,$type)
     {
-
-
-        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round);
+        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round,$type);
         //return $dataCurrentRound;
 
         if (!$dataCurrentRound){
             return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],404);
         }
         $ordinamento_sample=$dataCurrentRound['positions'];
-
-
         //return $dataCurrentRound['currentRound']['base'];
         //return  $dataCurrentRound['rounds'];
         //return $dataCurrentRound['currentRound']['fat_ref']['base'];
@@ -150,8 +90,7 @@ class ReportController extends Controller
                 $ordinamento_sample);
         }
 
-         $chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
-
+        $chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
         return $chart;
         //return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
     }
@@ -193,8 +132,6 @@ class ReportController extends Controller
         return $block;
     }
 
-
-
     /**
      * Create report Reference belong to a Lab.
      *
@@ -203,27 +140,35 @@ class ReportController extends Controller
     public function roundReportRef(Request $request)
     {
         try {
-            $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
-            /*$icar  = $inputData['icar'];
+            /*$inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+            $icar  = $inputData['icar'];
             $round = $inputData['round'];
             $lab_id =$inputData['lab_id'];*/
 
             $icar  = request()->icar_code;
             $round = request()->code_round;
             $lab_id =request()->lab_id;
+            $type =request()->type;
 
-            $code_arr= Round::checkTestAttivate($lab_id,$round,"ref");
+            $code_arr= Round::checkTestAttivate($lab_id,$round,$type);
+            if (empty($code_arr))return response()->view('errors.custom', ['code' => 404, 'error' => "NON CI SONO TEST ATTIVATI"],404);
 
             //DATA
             $datas= Data::getData($lab_id,$round,$code_arr);
-            //Array composto di LabCode con CodeTest = Blocco A participation code
 
+            //Array composto di LabCode con CodeTest = Blocco A participation code
             $data2=$datas['d2'];
-            if (empty($data2))return "Non ci sono dati nella tabella DATA";
+            if (empty($data2))return response()->view('errors.custom', ['code' => 404, 'error' => "DATA EMPTY"],404);
 
             //OUTLIER
-            $outlier=Outlier::getOutliers($data2,$round);
-            //return $outlier;
+            if ($type=="ref"){
+                $outlier=Outlier::getOutliers($data2,$round);
+            }else{
+                $outlier=Outlier::getOutliersRot($data2,$round);
+            }
+            if (empty($outlier))return response()->view('errors.custom', ['code' => 404, 'error' => "OUTLIER $type
+            EMPTY"],404);
+
 
             //REPEAT
             $repeat=Repeatability::getRepeat($data2,$round);
@@ -236,18 +181,28 @@ class ReportController extends Controller
              $zscorefix=Zscorefix::getZScoreFix($data2,$round);
 
             //PAG
-            //$pag=Pag::getPag($icar,$round);
+            if ($type=="rot"){
+                //$icar="2";
+                $pag=Pag::getPag($icar,$round);
 
-            $grafico   = $this->graficoReport($lab_id,$round);
+            }
+
+            $grafico   = $this->graficoReport($lab_id,$round,$type);
+            if (empty($grafico))return response()->view('errors.custom', ['code' => 404, 'error' => "CHART EMPTY"],404);
             $chart     = $grafico['chart'];
-            $chartfx = $grafico['chartfx'];
+            $chartfx   = $grafico['chartfx'];
 
 
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             $data  = $datas['d'];
 
-            return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr'));
+            if ($type=="ref"){
+                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr'));
+            }else{
+                return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
+                    'zscorefix','pag','chart','chartfx','code_arr'));
+            }
 
         } catch (\Exception $e) {
             $message = [

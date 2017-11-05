@@ -901,7 +901,6 @@ if (count($data) > 0){
 </table>
 
 <table>
-    {!! Charts::scripts() !!}
     @foreach($code_arr as $who)
         <tr>
             <td style="width: 50%;">
@@ -917,7 +916,7 @@ if (count($data) > 0){
                                 {!! $chart['zscorept'][$who]->html() !!}
                             </center>
                         </div>
-
+                        {!! Charts::scripts() !!}
                         {!! $chart['zscorept'][$who]->script() !!}
                     </div>
                 </div>
@@ -935,7 +934,7 @@ if (count($data) > 0){
                                 {!! $chartfx['zscorefix'][$who]->html() !!}
                             </center>
                         </div>
-
+                        {!! Charts::scripts() !!}
                         {!! $chartfx['zscorefix'][$who]->script() !!}
                     </div>
                 </div>

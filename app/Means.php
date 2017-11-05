@@ -28,13 +28,16 @@ class Means extends Model
     ];
 
 
-    public static function getDataCurrentRound($lab_id,$round)
+    public static function getDataCurrentRound($lab_id,$round,$type)
     {
         //$round="RF0317";
 
         //INIZIO Blocco Base
         $positions=array();
-        $result= Means::where('round',$round)->where('lab_code',$lab_id)->where('type','fat_ref')->first();
+        $fat_who="";
+        if($type=="ref")$fat_who="fat_ref";else $fat_who="fat_rout";
+
+        $result= Means::where('round',$round)->where('lab_code',$lab_id)->where('type',$fat_who)->first();
 
         if (count($result)<1){
             return false;
@@ -81,7 +84,7 @@ class Means extends Model
 
 
         $final=array();
-        $code_arr= Round::checkTestAttivate($lab_id,$round,'ref');
+        $code_arr= Round::checkTestAttivate($lab_id,$round,$type);
         //return $code_arr;
 
         foreach ($code_arr as $type) {

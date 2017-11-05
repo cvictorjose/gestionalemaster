@@ -31,11 +31,15 @@
 
                                 <?php
                                 $url_ref = action('ReportController@roundReportRef', ['lab_id' => $lab->laboratory_id,
-                                'icar_code' => $lab->icar_code,'code_round' => $lab->code_round]);
+                                'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'ref']);
+
+                                $url_rout = action('ReportController@roundReportRef', ['lab_id' => $lab->laboratory_id,
+                                        'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'rot']);
 
 
                                 ?>
                                 <a href="{{ $url_ref }}"  target="_blank">{{trans('global.report.ref')}}</a><br>
+                                <a href="{{ $url_rout }}"  target="_blank">{{trans('global.report.rot')}}</a>
 
 
                                 {{--REF REPORT BUTTON--}}

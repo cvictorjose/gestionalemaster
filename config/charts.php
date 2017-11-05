@@ -27,7 +27,7 @@ return [
         'y_axis_title' => null, // The title of the y-axis (When set to null will use element_label value).
         'loader' => [
             'active' => true, // Determines the if loader is active by default.
-            'duration' => 500, // In milliseconds.
+            'duration' => 300, // In milliseconds.
             'color' => '#000000', // Determines the default loader color.
         ],
     ],
@@ -72,9 +72,7 @@ return [
 
     'assets' => [
         'global' => [
-            'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js',
-            ],
+            'scripts' => ['chart/jquery.min.js',],
         ],
 
         'canvas-gauges' => [
@@ -84,31 +82,28 @@ return [
         ],
 
         'chartist' => [
-            'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/chartist/0.10.1/chartist.min.js',
-            ],
-            'styles' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/chartist/0.10.1/chartist.min.css',
+            'scripts' => ['chart/chartist/chartist.min.js',],
+            'styles' =>  ['chart/chartist/chartist.min.css',
             ],
         ],
 
         'chartjs' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js',
+                'chart/Chart.min.js',
             ],
         ],
 
         'fusioncharts' => [
             'scripts' => [
-                'https://static.fusioncharts.com/code/latest/fusioncharts.js',
-                'https://static.fusioncharts.com/code/latest/themes/fusioncharts.theme.fint.js',
+                'chart/fusioncharts/fusioncharts.js',
+                'chart/fusioncharts/fusioncharts.theme.fint.js',
             ],
         ],
 
         'google' => [
             'scripts' => [
                 'https://www.google.com/jsapi',
-                'https://www.gstatic.com/charts/loader.js',
+                'chart/google/loader.js',
                 "google.charts.load('current', {'packages':['corechart', 'gauge', 'geochart', 'bar', 'line']})",
             ],
         ],
@@ -119,28 +114,28 @@ return [
                 // 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/css/highcharts.css',
             ],
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/highcharts.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/js/modules/offline-exporting.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/highmaps/5.0.7/js/modules/map.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/highmaps/5.0.7/js/modules/data.js',
-                'https://code.highcharts.com/mapdata/custom/world.js',
+                'chart/highcharts/highcharts.js',
+                'chart/highcharts/offline-exporting.js',
+                'chart/highcharts/map.js',
+                'chart/highcharts/data.js',
+                'chart/highcharts/world.js',
             ],
         ],
 
         'justgage' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.6/raphael.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.2/justgage.min.js',
+                'chart/justgage/raphael.min.js',
+                'chart/justgage/justgage.min.js',
             ],
         ],
 
         'morris' => [
             'styles' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css',
+                'chart/morris/morris.css',
             ],
             'scripts' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.6/raphael.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js',
+                'chart/morris/morris.min.js',
             ],
         ],
 
@@ -176,7 +171,7 @@ return [
             ],
         ],
 
-        'amcharts' => [
+        /*'amcharts' => [
             'scripts' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/amcharts.js',
                 'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/serial.js',
@@ -186,6 +181,6 @@ return [
             'styles' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/plugins/export/export.css',
             ],
-        ],
+        ],*/
     ],
 ];

@@ -40,6 +40,7 @@ class Data extends Model
             }
         }
 
+        //prendo solo type labcode del round
         $data2 = DB::table('data')
             ->select(DB::raw('type, lab_code'))
             ->Where('round', $round)

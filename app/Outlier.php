@@ -25,6 +25,13 @@ class Outlier extends Model
         'created_at', 'updated_at',
     ];
 
+
+
+    /**
+     * Controlla i test che vengo in data, prende lab_id e fa la query, per la categoria REF
+     *
+     * @var array
+     */
     public static function getOutliers($data,$round)
     {
         $out_labs=array();
@@ -38,6 +45,39 @@ class Outlier extends Model
             $item->lactose_ref ="";
             $item->scc_ref ="";
             $item->urea_ref ="";
+
+            for ($i=1; $i<11; $i++) {
+                foreach($outliers as $rp)
+                {
+                    if ($rp->sample_number==$i){
+                        $item->{$dt->type}        = $rp->outlier_type;
+                        $out_labs[$i]=$item;
+                    }
+                }
+            }
+        }
+        return $out_labs;
+    }
+
+    /**
+     * Controlla i test che vengo in data, prende lab_id e fa la query, per la categoria ROUT
+     *
+     * @var array
+     */
+    public static function getOutliersRot($data,$round)
+    {
+        $out_labs=array();
+        foreach($data as $dt)
+        {
+            $outliers= Outlier::where('round',$round)->where('lab_code',$dt->lab_code)->where('type',$dt->type)->get();
+
+            $item= new \stdClass();
+            $item->fat_rout ="";
+            $item->protein_rout ="";
+            $item->lactose_rout ="";
+            $item->urea_rout ="";
+            $item->bhb ="";
+            $item->pag ="";
 
             for ($i=1; $i<11; $i++) {
                 foreach($outliers as $rp)

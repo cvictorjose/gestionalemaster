@@ -65,7 +65,7 @@ class Round extends Model
                 $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
                 break;
             case 'rot':
-                $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','scc_rout','bhb');
+                $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','scc_rout','bhb','pag');
                 break;
         }
 
