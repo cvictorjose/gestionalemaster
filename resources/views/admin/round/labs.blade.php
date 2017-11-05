@@ -30,16 +30,21 @@
                             <td>
 
                                 <?php
+                                $words = substr($lab->code_round, 0, -4);
+
                                 $url_ref = action('ReportController@roundReportRef', ['lab_id' => $lab->laboratory_id,
                                 'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'ref']);
 
                                 $url_rout = action('ReportController@roundReportRef', ['lab_id' => $lab->laboratory_id,
                                         'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'rot']);
 
-
                                 ?>
-                                <a href="{{ $url_ref }}"  target="_blank">{{trans('global.report.ref')}}</a><br>
-                                <a href="{{ $url_rout }}"  target="_blank">{{trans('global.report.rot')}}</a>
+
+                                @if($words=="RF")
+                                    <a href="{{ $url_ref }}"  target="_blank">{{trans('global.report.ref')}}</a>
+                                @else
+                                    <a href="{{ $url_rout }}"  target="_blank">{{trans('global.report.rot')}}</a>
+                                @endif
 
 
                                 {{--REF REPORT BUTTON--}}
