@@ -35,10 +35,11 @@ class Outlier extends Model
     public static function getOutliers($data,$round)
     {
         $out_labs=array();
+
+
         foreach($data as $dt)
         {
             $outliers= Outlier::where('round',$round)->where('lab_code',$dt->lab_code)->where('type',$dt->type)->get();
-
             $item= new \stdClass();
             $item->fat_ref ="";
             $item->protein_ref ="";
@@ -50,7 +51,7 @@ class Outlier extends Model
                 foreach($outliers as $rp)
                 {
                     if ($rp->sample_number==$i){
-                        $item->{$dt->type}        = $rp->outlier_type;
+                        $item->{$dt->type} = $rp->outlier_type;
                         $out_labs[$i]=$item;
                     }
                 }

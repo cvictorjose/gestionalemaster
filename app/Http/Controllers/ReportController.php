@@ -30,7 +30,8 @@ class ReportController extends Controller
         //return $dataCurrentRound;
 
         if (!$dataCurrentRound){
-            return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],404);
+            return response()->view('errors.custom', ['code' => 404, 'error' => "MEANS EMPTY"],404);
+
         }
         $ordinamento_sample=$dataCurrentRound['positions'];
         //return $dataCurrentRound['currentRound']['base'];
@@ -154,10 +155,11 @@ class ReportController extends Controller
             if (empty($code_arr))return response()->view('errors.custom', ['code' => 404, 'error' => "NON CI SONO TEST ATTIVATI"],404);
 
             //DATA
-            $datas= Data::getData($lab_id,$round,$code_arr);
+            $datas= Data::getData($icar,$round,$code_arr);
 
             //Array composto di LabCode con CodeTest = Blocco A participation code
             $data2=$datas['d2'];
+            //return $data2;
             if (empty($data2))return response()->view('errors.custom', ['code' => 404, 'error' => "DATA EMPTY"],404);
 
             //OUTLIER
@@ -166,19 +168,23 @@ class ReportController extends Controller
             }else{
                 $outlier=Outlier::getOutliersRot($data2,$round);
             }
-            if (empty($outlier))return response()->view('errors.custom', ['code' => 404, 'error' => "OUTLIER $type
-            EMPTY"],404);
+            //return $outlier;
+            //if (empty($outlier))return response()->view('errors.custom', ['code' => 404, 'error' => "OUTLIER $type
+            //EMPTY"],404);
 
 
             //REPEAT
             $repeat=Repeatability::getRepeat($data2,$round);
+            //return $repeat;
 
             //ZscorePT
             $zscorept=Zscorept::getZScorePt($data2,$round);
             //return $zscorept;
 
              //ZscoreFIX
-             $zscorefix=Zscorefix::getZScoreFix($data2,$round);
+            $zscorefix=Zscorefix::getZScoreFix($data2,$round);
+            //return $zscorefix;
+
 
             //PAG
             if ($type=="rot"){
@@ -187,10 +193,11 @@ class ReportController extends Controller
 
             }
 
-            $grafico   = $this->graficoReport($lab_id,$round,$type);
+            /*$grafico   = $this->graficoReport($lab_id,$round,$type);
+            //return $grafico;
             if (empty($grafico))return response()->view('errors.custom', ['code' => 404, 'error' => "CHART EMPTY"],404);
             $chart     = $grafico['chart'];
-            $chartfx   = $grafico['chartfx'];
+            $chartfx   = $grafico['chartfx'];*/
 
 
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
@@ -198,10 +205,13 @@ class ReportController extends Controller
             $data  = $datas['d'];
 
             if ($type=="ref"){
-                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr'));
+                //return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr'));
+                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix'));
             }else{
+                //return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
+                // 'zscorefix','pag','chart','chartfx','code_arr'));
                 return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
-                    'zscorefix','pag','chart','chartfx','code_arr'));
+                    'zscorefix','pag'));
             }
 
         } catch (\Exception $e) {

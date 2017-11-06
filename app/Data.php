@@ -30,6 +30,7 @@ class Data extends Model
         $arr_data=array();
         $arr_data2=array();
 
+
         $results= Data::where('icar_code',$icar)->Where('round', $round)->get();
         foreach($results as $rp)
         {
