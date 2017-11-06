@@ -68,7 +68,7 @@ class Zscorept extends Model
         $dataZscorePT= Zscorept::where('round',$round)->where('lab_code',$lab_id)->where('type',$type)->first();
 
         if ($dataZscorePT){
-            foreach ($positions as $p){
+            foreach ($positions[$type] as $p){
                 switch ($p) {
                     case 'sp1':
                         $currentRound[]=number_format($dataZscorePT->sample01,4);

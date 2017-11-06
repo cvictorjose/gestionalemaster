@@ -793,7 +793,8 @@ if (count($data) > 0){
             echo "<td class=".$class2.">".$pro_pt."</td>";
             echo "<td class=".$class3.">".$lac_pt."</td>";
             echo "<td class=".$class4.">".$ure_pt."</td>";
-            echo "<td>".$scc_pt."</td>";
+            echo "<td class=".$class5.">".$scc_pt."</td>";
+
             ?>
         </tr>
         <?php
@@ -900,7 +901,7 @@ if (count($data) > 0){
             echo "<td class=".$class2.">".$pro_fx."</td>";
             echo "<td class=".$class3.">".$lac_fx."</td>";
             echo "<td class=".$class4.">".$ure_fx."</td>";
-            echo "<td>".$scc_fx."</td>";
+            echo "<td class=".$class5.">".$scc_pt."</td>";
             ?>
         </tr>
         <?php

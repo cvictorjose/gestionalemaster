@@ -28,45 +28,54 @@ class Means extends Model
     ];
 
 
-    public static function getDataCurrentRound($lab_id,$round,$type)
+    public static function getDataCurrentRound($lab_id,$round,$type,$code_arr)
     {
-        //$round="RF0317";
+
 
         //INIZIO Blocco Base
         $positions=array();
-        $fat_who="";
-        if($type=="ref")$fat_who="fat_ref";else $fat_who="fat_rout";
+        $code_attivati=array();
 
-        $result= Means::where('round',$round)->where('lab_code',$lab_id)->where('type',$fat_who)->first();
+        foreach ($code_arr as $type) {
+            $result= Means::where('round',$round)->where('lab_code',$lab_id)->where('type',$type)->first();
 
-        if (count($result)<1){
-            return false;
+            if (count($result)>0){
+
+                $code_attivati[]=$type;
+                $fruits = array(
+                    "sp1" => number_format($result->sample01,4),
+                    "sp2" => number_format($result->sample02,4),
+                    "sp3" => number_format($result->sample03,4),
+                    "sp4" => number_format($result->sample04,4),
+                    "sp5" => number_format($result->sample05,4),
+                    "sp6" => number_format($result->sample06,4),
+                    "sp7" => number_format($result->sample07,4),
+                    "sp8" => number_format($result->sample08,4),
+                    "sp9" => number_format($result->sample09,4),
+                    "sp10" => number_format($result->sample10,4)
+                );
+                $fruitArrayObject = new ArrayObject($fruits);
+                //ordino array ASC
+                $fruitArrayObject->asort();
+
+                //Prendo il numero di sample, sp3,sp1,sp10 ecc
+                foreach ($fruitArrayObject as $key => $val) {
+                    $positions[$type][]=$key;
+
+                }
+
+            }
         }
 
-        $fruits = array(
-            "sp1" => number_format($result->sample01,4),
-            "sp2" => number_format($result->sample02,4),
-            "sp3" => number_format($result->sample03,4),
-            "sp4" => number_format($result->sample04,4),
-            "sp5" => number_format($result->sample05,4),
-            "sp6" => number_format($result->sample06,4),
-            "sp7" => number_format($result->sample07,4),
-            "sp8" => number_format($result->sample08,4),
-            "sp9" => number_format($result->sample09,4),
-            "sp10" => number_format($result->sample10,4)
-        );
-        $fruitArrayObject = new ArrayObject($fruits);
-        //ordino array ASC
-        $fruitArrayObject->asort();
+       // return  (array('positions'=>$positions));
 
-        //Prendo il numero di sample, sp3,sp1,sp10 ecc
-        foreach ($fruitArrayObject as $key => $val) {
-            $positions[]=$key;
-        }
+
+
+
         //FINE Blocco Base
 
         //Prendo 2 round precendenti
-        $round_precedenti=array();
+        /*$round_precedenti=array();
         $words = substr($round, 0, -4);
         $getIds= Zscorept::where('round',$round)->where('lab_code',$lab_id)->orderBy('id','desc')->first();
         $getIds2= Zscorept::where('id','<',$getIds->id)->where('round', 'like', $words.'%')->orderBy('id','desc')->get();
@@ -80,25 +89,25 @@ class Means extends Model
                     $crash++;
                 }
             }
-        }
+        }*/
 
 
         $final=array();
-        $code_arr= Round::checkTestAttivate($lab_id,$round,$type);
-        //return $code_arr;
+        foreach ($positions as $type => $val) {
 
-        foreach ($code_arr as $type) {
             $final['zscorept'][$type]['base']=Zscorept::getBlocksRoundPt($lab_id,$round,$positions,$type);
-            $final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
+
+            //$final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
             //prendo 2 round precendenti a quello attuale
-            foreach($round_precedenti as $round)
+            /*foreach($round_precedenti as $round)
             {
                 $final['zscorept'][$type][$round]=Zscorept::getBlocksRoundPt($lab_id,$round,$positions,$type);
                 $final['zscorefix'][$type][$round]=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
-            }
+            }*/
         }
 
         //ritono CurrentRound=Base,Round1,Round2
-        return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti,'codetest'=>$code_arr));
+        //return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti,'codetest'=>$code_arr));
+        return  (array('currentRound'=>$final,'positions'=>$positions,'codetest'=>$code_attivati));
     }
 }

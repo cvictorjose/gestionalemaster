@@ -101,7 +101,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createChart($base,$block2,$block3,$round,$round2,$round3,$ordinamento_sample)
+    public function createChart($base,$block2,$block3,$round,$round2,$round3)
     {
         $chart = Charts::multi('line', 'material')
             // Setup the chart settings
@@ -117,7 +117,7 @@ class ReportController extends Controller
             ->dataset($round2,$block2)
             ->dataset($round3, $block3)
             // Setup what the values mean
-            ->labels($ordinamento_sample);
+            ->labels($block2);
         return $chart;
     }
 
@@ -169,9 +169,6 @@ class ReportController extends Controller
                 $outlier=Outlier::getOutliersRot($data2,$round);
             }
             //return $outlier;
-            //if (empty($outlier))return response()->view('errors.custom', ['code' => 404, 'error' => "OUTLIER $type
-            //EMPTY"],404);
-
 
             //REPEAT
             $repeat=Repeatability::getRepeat($data2,$round);
@@ -235,13 +232,18 @@ class ReportController extends Controller
 
         $lab_id="12";
         $round="RF0917";
-        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round);
+        $type="ref";
+
+        $code_arr= Round::checkTestAttivate($lab_id,$round,$type);
+        //return $code_arr;
+        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round,$type,$code_arr);
         //return $dataCurrentRound;
 
         if (!$dataCurrentRound){
             return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],404);
         }
         $ordinamento_sample=$dataCurrentRound['positions'];
+
 
 
         //return $dataCurrentRound['currentRound']['base'];
@@ -255,14 +257,18 @@ class ReportController extends Controller
         $round2=$round3="n/a";
 
         //array di codeTest attivati
-        $code_arr=$dataCurrentRound['codetest'];
+        $new_code_arr=$dataCurrentRound['codetest'];
 
-        foreach ($code_arr as $type) {
-            $p=1;
+
+
+        foreach ($new_code_arr as $type) {
+            //$p=1;
             $base=$dataCurrentRound['currentRound']['zscorept'][$type]['base'];
-            $basefx=$dataCurrentRound['currentRound']['zscorefix'][$type]['base'];
 
-            if (count($dataCurrentRound['rounds']>0)){
+
+            //$basefx=$dataCurrentRound['currentRound']['zscorefix'][$type]['base'];
+
+            /*if (count($dataCurrentRound['rounds']>0)){
 
                 foreach($dataCurrentRound['rounds'] as $r)
                 {
@@ -292,19 +298,24 @@ class ReportController extends Controller
                     }
                     $p++;
                 }
-            }
+            }*/
 
-            $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3,
-                $ordinamento_sample);
 
-            $chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3,
-                $ordinamento_sample);
+
+            $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3);
+
+            //$chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3,
+            //  $ordinamento_sample);
         }
 
-        // $chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
+        //$chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
+        // return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
 
-        // return $chart;
-        return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
+        // $chart= array('chart' => $chart, 'codetest'=>$code_arr);
+
+        //return $new_code_arr;
+
+        return view('admin.grafico.index', ['chart' => $chart,'codetest'=>$new_code_arr]);
     }
 
 }
