@@ -24,113 +24,40 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function graficoReport($lab_id,$round,$type)
+    public function graficoReport($lab_id,$round,$type,$icar)
     {
-        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round,$type);
+        $code_arr= Round::checkTestAttivate($lab_id,$round,$type);
+
+
+        $dataCurrentRound=Means::getDataCurrentRound($round,$code_arr,$icar);
         //return $dataCurrentRound;
 
         if (!$dataCurrentRound){
-            return response()->view('errors.custom', ['code' => 404, 'error' => "MEANS EMPTY"],404);
-
+            return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],404);
         }
-        $ordinamento_sample=$dataCurrentRound['positions'];
-        //return $dataCurrentRound['currentRound']['base'];
-        //return  $dataCurrentRound['rounds'];
-        //return $dataCurrentRound['currentRound']['fat_ref']['base'];
-
-
-        //creo un chart array[test]
-        $chart=array();
+        //$ordinamento_sample=$dataCurrentRound['positions'];
         $block2=$block3=$block2fx=$block3fx=$this->resetRound();
         $round2=$round3="n/a";
 
         //array di codeTest attivati
-        $code_arr=$dataCurrentRound['codetest'];
-
+        //$new_code_arr=$dataCurrentRound['codetest'];
         foreach ($code_arr as $type) {
-            $p=1;
-            $base=$dataCurrentRound['currentRound']['zscorept'][$type]['base'];
-            $basefx=$dataCurrentRound['currentRound']['zscorefix'][$type]['base'];
+            //$p=1;
+            if ($type!="pag"){
+                $base=$dataCurrentRound['currentRound']['zscorept'][$type]['base'];
+                $basefx=$dataCurrentRound['currentRound']['zscorefix'][$type]['base'];
 
-            if (count($dataCurrentRound['rounds']>0)){
 
-                foreach($dataCurrentRound['rounds'] as $r)
-                {
-                    switch ($p) {
-                        case 1:
-                            if ($dataCurrentRound['currentRound']['zscorept'][$type][$r]){
-                                $block2 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
-                            }
-
-                            if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
-                                $block2fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
-                            }
-                            $round2=$r;
-                            break;
-                        case 2:
-
-                            if ($dataCurrentRound['currentRound']['zscorept'][$type][$r]){
-                                $block3 = $dataCurrentRound['currentRound']['zscorept'][$type][$r];
-                            }
-
-                            if ($dataCurrentRound['currentRound']['zscorefix'][$type][$r]){
-                                $block3fx = $dataCurrentRound['currentRound']['zscorefix'][$type][$r];
-                            }
-
-                            $round3=$r;
-                            break;
-                    }
-                    $p++;
-                }
+                $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3);
+                $chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3);
             }
 
-            $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3,
-                $ordinamento_sample);
 
-            $chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3,
-                $ordinamento_sample);
         }
-
-        $chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
-        return $chart;
-        //return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
-    }
-
-    /**
-     * Create Chart with 3 blocks data
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function createChart($base,$block2,$block3,$round,$round2,$round3)
-    {
-        $chart = Charts::multi('line', 'material')
-            // Setup the chart settings
-            ->title("")
-            // A dimension of 0 means it will take 100% of the space
-            ->dimensions(0, 300) // Width x Height
-            // This defines a preset of colors already done:)
-            ->template("material")
-            // You could always set them manually
-            // ->colors(['#2196F3', '#F44336', '#FFC107'])
-            // Setup the diferent datasets (this is a multi chart)
-            ->dataset($round, $base)
-            ->dataset($round2,$block2)
-            ->dataset($round3, $block3)
-            // Setup what the values mean
-            ->labels($block2);
-        return $chart;
-    }
+        $chart=array("chart"=>$chart, 'chartfx'=>$chartfx);
 
 
-    /**
-     * Return a block empty
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function resetRound()
-    {
-        $block= array(0,0,0,0,0,0,0,0,0,0);
-        return $block;
+       return $chart;
     }
 
     /**
@@ -156,19 +83,16 @@ class ReportController extends Controller
 
             //DATA
             $datas= Data::getData($icar,$round,$code_arr);
-
             //Array composto di LabCode con CodeTest = Blocco A participation code
             $data2=$datas['d2'];
             //return $data2;
             if (empty($data2))return response()->view('errors.custom', ['code' => 404, 'error' => "DATA EMPTY"],404);
 
             //OUTLIER
-            if ($type=="ref"){
-                $outlier=Outlier::getOutliers($data2,$round);
-            }else{
-                $outlier=Outlier::getOutliersRot($data2,$round);
-            }
+            $outlier=Outlier::getOutliers($data2,$round);
             //return $outlier;
+
+
 
             //REPEAT
             $repeat=Repeatability::getRepeat($data2,$round);
@@ -190,25 +114,22 @@ class ReportController extends Controller
 
             }
 
-            /*$grafico   = $this->graficoReport($lab_id,$round,$type);
+            $grafico   = $this->graficoReport($lab_id,$round,$type,$icar);
             //return $grafico;
             if (empty($grafico))return response()->view('errors.custom', ['code' => 404, 'error' => "CHART EMPTY"],404);
-            $chart     = $grafico['chart'];
-            $chartfx   = $grafico['chartfx'];*/
-
+            $chart     = $grafico['chart']['zscorept'];
+            $chartfx   = $grafico['chartfx']['zscorefix'];
 
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
             $data  = $datas['d'];
 
             if ($type=="ref"){
-                //return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr'));
-                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix'));
+                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept',
+                    'zscorefix','chart','chartfx','code_arr'));
             }else{
-                //return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
-                // 'zscorefix','pag','chart','chartfx','code_arr'));
                 return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
-                    'zscorefix','pag'));
+                    'zscorefix','pag','chart','chartfx','code_arr'));
             }
 
         } catch (\Exception $e) {
@@ -217,6 +138,44 @@ class ReportController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
+    }
+
+
+    /**
+     * Create Chart with 3 blocks data
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createChart($base,$block2,$block3,$round,$round2,$round3)
+    {
+        $chart = Charts::multi('line', 'material')
+            // Setup the chart settings
+            ->title("")
+            // A dimension of 0 means it will take 100% of the space
+            ->dimensions(0, 300) // Width x Height
+            // This defines a preset of colors already done:)
+            ->template("material")
+            // You could always set them manually
+            // ->colors(['#2196F3', '#F44336', '#FFC107'])
+            // Setup the diferent datasets (this is a multi chart)
+            ->dataset($round, $base)
+            ->dataset($round2,$block2)
+            ->dataset($round3, $block3)
+            // Setup what the values mean
+            ->labels([1, 2, 3, 4, 5, 6, 7,8,9,10]);
+        return $chart;
+    }
+
+
+    /**
+     * Return a block empty
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function resetRound()
+    {
+        $block= array(0,0,0,0,0,0,0,0,0,0);
+        return $block;
     }
 
 
@@ -236,20 +195,13 @@ class ReportController extends Controller
 
         $code_arr= Round::checkTestAttivate($lab_id,$round,$type);
         //return $code_arr;
-        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round,$type,$code_arr);
+        $dataCurrentRound=Means::getDataCurrentRound($lab_id,$round,$code_arr);
         //return $dataCurrentRound;
 
         if (!$dataCurrentRound){
             return response()->view('errors.custom', ['code' => 404, 'error' => trans('error.NOT_RESULTS_DB')],404);
         }
         $ordinamento_sample=$dataCurrentRound['positions'];
-
-
-
-        //return $dataCurrentRound['currentRound']['base'];
-        //return  $dataCurrentRound['rounds'];
-        //return $dataCurrentRound['currentRound']['fat_ref']['base'];
-
 
         //creo un chart array[test]
         $chart=array();
@@ -258,15 +210,16 @@ class ReportController extends Controller
 
         //array di codeTest attivati
         $new_code_arr=$dataCurrentRound['codetest'];
-
-
-
+        //return $new_code_arr;
         foreach ($new_code_arr as $type) {
             //$p=1;
             $base=$dataCurrentRound['currentRound']['zscorept'][$type]['base'];
-
-
             //$basefx=$dataCurrentRound['currentRound']['zscorefix'][$type]['base'];
+
+            $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3);
+            //$chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3);
+
+
 
             /*if (count($dataCurrentRound['rounds']>0)){
 
@@ -299,23 +252,14 @@ class ReportController extends Controller
                     $p++;
                 }
             }*/
-
-
-
-            $chart['zscorept'][$type]=$this->createChart($base,$block2,$block3,$round,$round2,$round3);
-
-            //$chartfx['zscorefix'][$type]=$this->createChart($basefx,$block2fx,$block3fx,$round,$round2,$round3,
-            //  $ordinamento_sample);
         }
 
-        //$chart= array('chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr);
-        // return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
-
-        // $chart= array('chart' => $chart, 'codetest'=>$code_arr);
-
-        //return $new_code_arr;
 
         return view('admin.grafico.index', ['chart' => $chart,'codetest'=>$new_code_arr]);
+
+        // return view('admin.grafico.index', ['chart' => $chart,'chartfx' => $chartfx, 'codetest'=>$code_arr]);
+        // $chart= array('chart' => $chart, 'codetest'=>$code_arr);
+        //return $new_code_arr;
     }
 
 }

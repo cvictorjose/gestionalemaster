@@ -35,24 +35,17 @@ class Outlier extends Model
     public static function getOutliers($data,$round)
     {
         $out_labs=array();
-
-
         foreach($data as $dt)
         {
             $outliers= Outlier::where('round',$round)->where('lab_code',$dt->lab_code)->where('type',$dt->type)->get();
             $item= new \stdClass();
-            $item->fat_ref ="";
-            $item->protein_ref ="";
-            $item->lactose_ref ="";
-            $item->scc_ref ="";
-            $item->urea_ref ="";
 
-            for ($i=1; $i<11; $i++) {
-                foreach($outliers as $rp)
-                {
+            foreach($outliers as $rp)
+            {
+                for ($i=1; $i<11; $i++) {
                     if ($rp->sample_number==$i){
-                        $item->{$dt->type} = $rp->outlier_type;
-                        $out_labs[$i]=$item;
+                        $item  = $rp->outlier_type;
+                        $out_labs[$i][$dt->type]=$item;
                     }
                 }
             }
@@ -65,7 +58,7 @@ class Outlier extends Model
      *
      * @var array
      */
-    public static function getOutliersRot($data,$round)
+    /*public static function getOutliersRot($data,$round)
     {
         $out_labs=array();
         foreach($data as $dt)
@@ -91,6 +84,6 @@ class Outlier extends Model
             }
         }
         return $out_labs;
-    }
+    }*/
 
 }

@@ -28,19 +28,16 @@ class Means extends Model
     ];
 
 
-    public static function getDataCurrentRound($lab_id,$round,$type,$code_arr)
+    public static function getDataCurrentRound($round,$code_arr,$icar)
     {
-
-
-        //INIZIO Blocco Base
         $positions=array();
         $code_attivati=array();
 
         foreach ($code_arr as $type) {
-            $result= Means::where('round',$round)->where('lab_code',$lab_id)->where('type',$type)->first();
+            $result= Means::where('round',$round)->where('lab_code','REF.')->where('type',$type)->first();
 
             if (count($result)>0){
-
+                //creo new array test attivati
                 $code_attivati[]=$type;
                 $fruits = array(
                     "sp1" => number_format($result->sample01,4),
@@ -61,23 +58,17 @@ class Means extends Model
                 //Prendo il numero di sample, sp3,sp1,sp10 ecc
                 foreach ($fruitArrayObject as $key => $val) {
                     $positions[$type][]=$key;
-
                 }
-
             }
         }
-
        // return  (array('positions'=>$positions));
 
 
 
-
-        //FINE Blocco Base
-
         //Prendo 2 round precendenti
         /*$round_precedenti=array();
         $words = substr($round, 0, -4);
-        $getIds= Zscorept::where('round',$round)->where('lab_code',$lab_id)->orderBy('id','desc')->first();
+        $getIds= Zscorept::where('round',$round)->where('lab_code','3')->orderBy('id','desc')->first();
         $getIds2= Zscorept::where('id','<',$getIds->id)->where('round', 'like', $words.'%')->orderBy('id','desc')->get();
         $crash=0;
         foreach($getIds2 as $g)
@@ -89,15 +80,19 @@ class Means extends Model
                     $crash++;
                 }
             }
-        }*/
+        }
+
+        return $round_precedenti;*/
+
 
 
         $final=array();
         foreach ($positions as $type => $val) {
-
+            $result= Data::where('round',$round)->where('icar_code',$icar)->where('round',$round)->where('type',$type)->first();
+            $lab_id=$result->lab_code;
             $final['zscorept'][$type]['base']=Zscorept::getBlocksRoundPt($lab_id,$round,$positions,$type);
+            $final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
 
-            //$final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
             //prendo 2 round precendenti a quello attuale
             /*foreach($round_precedenti as $round)
             {
@@ -106,7 +101,7 @@ class Means extends Model
             }*/
         }
 
-        //ritono CurrentRound=Base,Round1,Round2
+
         //return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti,'codetest'=>$code_arr));
         return  (array('currentRound'=>$final,'positions'=>$positions,'codetest'=>$code_attivati));
     }

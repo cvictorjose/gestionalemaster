@@ -470,7 +470,7 @@ if (count($data) > 0){
     <?php
     //print_r($arr_sp1);
     $numsample=1;
-
+    $class_f=$class_p=$class_l=$class_u=$class_s="";
     if (count($outlier) > 0){
     ?>
     @for($v=1; $v<11; $v++)
@@ -480,19 +480,25 @@ if (count($data) > 0){
 
             $class_f=$class_p=$class_l=$class_u=$class_s="";
             if (isset($outlier[$v])){
-                if ($outlier[$v]->fat_ref!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
-                if ($outlier[$v]->protein_ref!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
-                if ($outlier[$v]->lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
-                if ($outlier[$v]->urea_ref!="" && $u_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref==""&& $u_a==1) $class_u="green"; else $class_u="";
 
-                if ($outlier[$v]->scc_ref!="" && $s_a==1)  $class_s="red"; elseif($outlier[$v]->scc_ref==""&&
-                        $s_a==1) $class_s="green"; else $class_s="";
+                $fat_ref=(isset($outlier[$v]['fat_ref']))?$outlier[$v]['fat_ref']:"";
+                $protein_ref=(isset($outlier[$v]['protein_ref']))?$outlier[$v]['protein_ref']:"";
+                $lactose_ref=(isset($outlier[$v]['lactose_ref']))?$outlier[$v]['lactose_ref']:"";
+                $urea_ref=(isset($outlier[$v]['urea_ref']))?$outlier[$v]['urea_ref']:"";
+                $scc_ref=(isset($outlier[$v]['scc_ref']))?$outlier[$v]['scc_ref']:"";
 
-                echo "<td  class=".$class_f.">".$outlier[$v]->fat_ref."</td>";
-                echo "<td  class=".$class_p.">".$outlier[$v]->protein_ref."</td>";
-                echo "<td  class=".$class_l.">".$outlier[$v]->lactose_ref."</td>";
-                echo "<td  class=".$class_u.">".$outlier[$v]->urea_ref."</td>";
-                echo "<td  class=".$class_s.">".$outlier[$v]->scc_ref."</td>";
+                if ($fat_ref!="" && $f_a==1)  $class_f="red"; elseif($fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
+                if ($protein_ref!="" && $p_a==1)  $class_p="red"; elseif($protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
+                if ($lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
+                if ($urea_ref!="" && $u_a==1)  $class_u="red"; elseif($urea_ref==""&& $u_a==1) $class_u="green"; else $class_u="";
+                if ($scc_ref!="" && $s_a==1)  $class_s="red"; elseif($scc_ref==""&& $s_a==1) $class_s="green"; else $class_s="";
+
+
+                echo "<td  class=".$class_f.">".$fat_ref."</td>";
+                echo "<td  class=".$class_p.">".$protein_ref."</td>";
+                echo "<td  class=".$class_l.">".$lactose_ref."</td>";
+                echo "<td  class=".$class_u.">".$urea_ref."</td>";
+                echo "<td  class=".$class_s.">".$scc_ref."</td>";
 
             }else{
                 if ($f_a==1)  $class_f="green";
@@ -949,6 +955,52 @@ if (count($data) > 0){
 </table>
 
 <div class="newpage"></div>
+
+<table>
+    {!! Charts::scripts() !!}
+    @foreach($code_arr as $who)
+        <tr>
+            <td style="width: 50%;">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <h3 class="box-title">ZSCORE-PT - {{$who}}</h3>
+
+                    </div>
+                    <div class="box-body">
+                        <div class="app">
+                            <center>
+                                {!! $chart[$who]->html() !!}
+                            </center>
+                        </div>
+
+                        {!! $chart[$who]->script() !!}
+                    </div>
+                </div>
+            </td>
+
+            <td style="width: 50%;">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <h3 class="box-title">ZSCORE-FIX - {{$who}}</h3>
+
+                    </div>
+                    <div class="box-body">
+                        <div class="app">
+                            <center>
+                                {!! $chartfx[$who]->html() !!}
+                            </center>
+                        </div>
+
+                        {!! $chartfx[$who]->script() !!}
+                    </div>
+                </div>
+            </td>
+
+        </tr>
+    @endforeach
+</table>
 </body>
 </html>
 

@@ -69,38 +69,38 @@ class Zscorefix extends Model
         $currentRound=array();
         $results= Zscorefix::where('round',$round)->where('lab_code',$lab_id)->where('type',$type)->first();
 
-        if ($results){
-            foreach ($positions as $p){
+        if (count($results)>0){
+            foreach ($positions[$type] as $p){
                 switch ($p) {
                     case 'sp1':
                         $currentRound[]=number_format($results->sample01,4);
                         break;
                     case 'sp2':
-                        $currentRound[]=$results->sample02;
+                        $currentRound[]=number_format($results->sample02,4);
                         break;
                     case 'sp3':
-                        $currentRound[]=$results->sample03;
+                        $currentRound[]=number_format($results->sample03,4);
                         break;
                     case 'sp4':
-                        $currentRound[]=$results->sample04;
+                        $currentRound[]=number_format($results->sample04,4);
                         break;
                     case 'sp5':
-                        $currentRound[]=$results->sample05;
+                        $currentRound[]=number_format($results->sample05,4);
                         break;
                     case 'sp6':
-                        $currentRound[]=$results->sample06;
+                        $currentRound[]=number_format($results->sample06,4);
                         break;
                     case 'sp7':
-                        $currentRound[]=$results->sample07;
+                        $currentRound[]=number_format($results->sample07,4);
                         break;
                     case 'sp8':
-                        $currentRound[]=$results->sample08;
+                        $currentRound[]=number_format($results->sample08,4);
                         break;
                     case 'sp9':
-                        $currentRound[]=$results->sample09;
+                        $currentRound[]=number_format($results->sample09,4);
                         break;
                     case 'sp10':
-                        $currentRound[]=$results->sample10;
+                        $currentRound[]=number_format($results->sample10,4);
                         break;
                 }
             }

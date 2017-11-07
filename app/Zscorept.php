@@ -74,31 +74,31 @@ class Zscorept extends Model
                         $currentRound[]=number_format($dataZscorePT->sample01,4);
                         break;
                     case 'sp2':
-                        $currentRound[]=$dataZscorePT->sample02;
+                        $currentRound[]=number_format($dataZscorePT->sample02,4);
                         break;
                     case 'sp3':
-                        $currentRound[]=$dataZscorePT->sample03;
+                        $currentRound[]=number_format($dataZscorePT->sample03,4);
                         break;
                     case 'sp4':
-                        $currentRound[]=$dataZscorePT->sample04;
+                        $currentRound[]=number_format($dataZscorePT->sample04,4);
                         break;
                     case 'sp5':
-                        $currentRound[]=$dataZscorePT->sample05;
+                        $currentRound[]=number_format($dataZscorePT->sample05,4);
                         break;
                     case 'sp6':
-                        $currentRound[]=$dataZscorePT->sample06;
+                        $currentRound[]=number_format($dataZscorePT->sample06,4);
                         break;
                     case 'sp7':
-                        $currentRound[]=$dataZscorePT->sample07;
+                        $currentRound[]=number_format($dataZscorePT->sample07,4);
                         break;
                     case 'sp8':
-                        $currentRound[]=$dataZscorePT->sample08;
+                        $currentRound[]=number_format($dataZscorePT->sample08,4);
                         break;
                     case 'sp9':
-                        $currentRound[]=$dataZscorePT->sample09;
+                        $currentRound[]=number_format($dataZscorePT->sample09,4);
                         break;
                     case 'sp10':
-                        $currentRound[]=$dataZscorePT->sample10;
+                        $currentRound[]=number_format($dataZscorePT->sample10,4);
                         break;
                 }
             }
