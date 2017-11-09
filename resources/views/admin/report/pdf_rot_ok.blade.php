@@ -105,8 +105,8 @@ if (count($data) > 0){
                 $lactose_ref_sdev    = number_format($d->s_dev,3);
                 $lactose_ref_dist    = number_format($d->dist,3);
                 $lactose_ref_m       = $d->method;
-                if ($d->method=="A")$lactose_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$lactose_ref_m="ISO
-                2446?IDF 226";
+                if ($d->method=="A")$lactose_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$lactose_ref_m="ISO
+                2446|IDF 226";
                 break;
             case 'urea_rout':
                 $urea_ref_labcode = $d->lab_code;
@@ -115,8 +115,8 @@ if (count($data) > 0){
                 $urea_ref_sdev    = number_format($d->s_dev,3);
                 $urea_ref_dist    = number_format($d->dist,3);
                 $urea_ref_m       = $d->method;
-                if ($d->method=="A")$urea_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$urea_ref_m="ISO
-                2446?IDF 226";
+                if ($d->method=="A")$urea_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$urea_ref_m="ISO
+                2446|IDF 226";
                 break;
             case 'bhb':
                 $bhb_ref_labcode = $d->lab_code;
@@ -125,8 +125,8 @@ if (count($data) > 0){
                 $bhb_ref_sdev    = number_format($d->s_dev,3)*100;
                 $bhb_ref_dist    = number_format($d->dist,3)*100;
                 $bhb_ref_m       = $d->method;
-                if ($d->method=="A")$scc_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$scc_ref_m="ISO
-                2446?IDF 226";
+                if ($d->method=="A")$scc_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$scc_ref_m="ISO
+                2446|IDF 226";
                 break;
             case 'pag':
                 $pag_labcode = $d->lab_code;
@@ -135,8 +135,8 @@ if (count($data) > 0){
                 $pag_sdev    = number_format($d->s_dev,3)*100;
                 $pag_dist    = number_format($d->dist,3)*100;
                 $pag_m       = $d->method;
-                if ($d->method=="A")$scc_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$scc_ref_m="ISO
-                2446?IDF 226";
+                if ($d->method=="A")$scc_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$scc_ref_m="ISO
+                2446|IDF 226";
                 break;
 
         }
@@ -145,11 +145,11 @@ if (count($data) > 0){
 ?>
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Report</title>
+    <title>Report {{$code_round}} - {{$lab->lab_name}}</title>
 
     <style>
         @page {
@@ -157,7 +157,6 @@ if (count($data) > 0){
         }
 
         body { font-family: Arial, Helvetica, sans-serif; font-size:12px; margin-top:0; padding-top:0; }
-
         table { margin-top: 20px; width:775px; border: 1px solid #000; }
         table#info { width: 100% !important; border:none; }
         td { text-align:center; padding: 3px; border:1px solid #ccc; width:94px; font-size: 10px; vertical-align:middle; }
@@ -428,7 +427,7 @@ if (count($data) > 0){
         <!-- limite: 10 -->
         <td class=
         @if ($bhb_ref_sdev == '10' || $bhb_ref_sdev == '&nbsp;') {{''}} @elseif ($bhb_ref_sdev >'10') {{$class_red}}
-                @elseif($scc_ref_sdev < '10'){{$class}} @endif>{{$bhb_ref_sdev}}</td>
+                @elseif($bhb_ref_sdev < '10'){{$class}} @endif>{{$bhb_ref_sdev}}</td>
 
         <td class=
         @if ($pag_sdev == '0,045' || $pag_sdev == '&nbsp;') {{''}} @elseif ($pag_sdev >'0,045') {{$class_red}}
@@ -512,25 +511,30 @@ if (count($data) > 0){
             <td>Sample {{$numsample}}</td>
             <?php
 
-
             if (isset($outlier[$v])){
-                if ($outlier[$v]->fat_rout!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_rout=="" && $f_a==1) $class_f="green"; else $class_f="";
-                if ($outlier[$v]->protein_rout!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_rout=="" && $p_a==1) $class_p="green"; else $class_p="";
-                if ($outlier[$v]->lactose_rout!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_rout=="" && $l_a==1) $class_l="green"; else $class_l="";
-                if ($outlier[$v]->urea_rout!="" && $u_a==1)  $class_u="red"; elseif($outlier[$v]->urea_rout==""&& $u_a==1) $class_u="green"; else $class_u="";
+                $class_f=$class_p=$class_l=$class_u=$class_s=$class_pag="";
 
-                if ($outlier[$v]->bhb!="" && $b_a==1)  $class_s="red"; elseif($outlier[$v]->bhb==""&& $b_a==1)
-                    $class_s="green"; else $class_s="";
+                $fat_rout=(isset($outlier[$v]['fat_rout']))?$outlier[$v]['fat_rout']:"";
+                $protein_rout=(isset($outlier[$v]['protein_rout']))?$outlier[$v]['protein_rout']:"";
+                $lactose_rout=(isset($outlier[$v]['lactose_rout']))?$outlier[$v]['lactose_rout']:"";
+                $urea_rout=(isset($outlier[$v]['urea_rout']))?$outlier[$v]['urea_rout']:"";
+                $bhb=(isset($outlier[$v]['bhb']))?$outlier[$v]['bhb']:"";
+                $pag=(isset($outlier[$v]['pag']))?$outlier[$v]['pag']:"";
 
-                if ($outlier[$v]->pag!="" && $b_a==1)  $class_pag="red"; elseif($outlier[$v]->pag==""&& $b_a==1)
-                    $class_pag="green"; else $class_pag="";
+                if ($fat_rout!="" && $f_a==1)  $class_f="red"; elseif($fat_rout=="" && $f_a==1) $class_f="green"; else $class_f="";
+                if ($protein_rout!="" && $p_a==1)  $class_p="red"; elseif($protein_rout=="" && $p_a==1) $class_p="green"; else $class_p="";
+                if ($lactose_rout!="" && $l_a==1)  $class_l="red"; elseif($lactose_rout=="" && $l_a==1) $class_l="green"; else $class_l="";
+                if ($urea_rout!="" && $u_a==1)  $class_u="red"; elseif($urea_rout==""&& $u_a==1) $class_u="green"; else $class_u="";
+                if ($bhb!="" && $b_a==1)  $class_s="red"; elseif($bhb==""&& $b_a==1) $class_s="green"; else $class_s="";
+                if ($pag!="" && $pag_a==1)  $class_s="red"; elseif($pag==""&& $pag_a==1) $class_s="green"; else $class_s="";
 
-                echo "<td  class=".$class_f.">".$outlier[$v]->fat_rout."</td>";
-                echo "<td  class=".$class_p.">".$outlier[$v]->protein_rout."</td>";
-                echo "<td  class=".$class_l.">".$outlier[$v]->lactose_rout."</td>";
-                echo "<td  class=".$class_u.">".$outlier[$v]->urea_rout."</td>";
-                echo "<td  class=".$class_s.">".$outlier[$v]->bhb."</td>";
-                echo "<td  class=".$class_pag.">".$outlier[$v]->pag."</td>";
+
+                echo "<td  class=".$class_f.">".$fat_rout."</td>";
+                echo "<td  class=".$class_p.">".$protein_rout."</td>";
+                echo "<td  class=".$class_l.">".$lactose_rout."</td>";
+                echo "<td  class=".$class_u.">".$urea_rout."</td>";
+                echo "<td  class=".$class_s.">".$bhb."</td>";
+                echo "<td  class=".$class_pag.">".$pag."</td>";
 
             }else{
                 if ($f_a==1)  $class_f="green";
@@ -722,7 +726,7 @@ if (count($data) > 0){
         <td class="bold">Protein</td>
         <td class="bold">Lactose</td>
         <td class="bold">Urea</td>
-        <td class="bold">SCC</td>
+        <td class="bold">BHB</td>
     </tr>
 
     <!--
@@ -742,13 +746,14 @@ if (count($data) > 0){
     <?php
     //print_r($arr_sp1);
     $numsample=1;
+    if (count($zscorept) > 0){
     ?>
     @for($v=1; $v<11; $v++)
         <tr>
             <td>Sample {{$numsample}}</td>
             <?php
 
-            $fat_pt=$pro_pt=$lac_pt=$ure_pt=$scc_pt="";
+            $fat_pt=$pro_pt=$lac_pt=$ure_pt=$bhb_pt="";
             $class1=$class2=$class3=$class4=$class5="";
 
             if (isset($zscorept['fat_rout'])){
@@ -795,17 +800,42 @@ if (count($data) > 0){
                 }
             }
 
+            if (isset($zscorept['bhb'])){
+                $bhb_pt=$zscorept['bhb']['sp'.$v];
+                if ($bhb_pt!=""){
+                    if ($bhb_pt <'-3') $class5="red";
+                    if ($bhb_pt >'-3' && $bhb_pt<'-2')$class5="yellow";
+                    if ($bhb_pt >'-2' && $bhb_pt<'2')$class5="green";
+                    if ($bhb_pt >'2'  && $bhb_pt<'3')$class5="yellow";
+                    if ($bhb_pt >'3') $class5="red";
+                }
+            }
+
             echo "<td class=".$class1.">".$fat_pt."</td>";
             echo "<td class=".$class2.">".$pro_pt."</td>";
             echo "<td class=".$class3.">".$lac_pt."</td>";
             echo "<td class=".$class4.">".$ure_pt."</td>";
-            echo "<td></td>";
+            echo "<td class=".$class5.">".$bhb_pt."</td>";
             ?>
         </tr>
         <?php
         $numsample++;
         ?>
     @endfor
+    <?php
+    }else{
+        for ($x = 1; $x <= 10; $x++) {
+            echo "<tr>";
+            echo "<td>Sample $x</td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "</tr>";
+        }
+    }
+    ?>
 
     <tr>
         <td colspan="6" class="bold title">Your Z-Score Fix</td>
@@ -816,7 +846,7 @@ if (count($data) > 0){
         <td class="bold">Protein</td>
         <td class="bold">Lactose</td>
         <td class="bold">Urea</td>
-        <td class="bold">SCC</td>
+        <td class="bold">BHB</td>
     </tr>
 
 
@@ -824,13 +854,14 @@ if (count($data) > 0){
     <?php
     //print_r($arr_sp1);
     $numsample=1;
+    if (count($zscorefix) > 0){
     ?>
     @for($v=1; $v<11; $v++)
         <tr>
             <td>Sample {{$numsample}}</td>
             <?php
 
-            $fat_fx=$pro_fx=$lac_fx=$ure_fx=$scc_fx="";
+            $fat_fx=$pro_fx=$lac_fx=$ure_fx=$bhb_fx="";
             $class1=$class2=$class3=$class4=$class5="";
 
             if (isset($zscorefix['fat_rout'])){
@@ -888,17 +919,42 @@ if (count($data) > 0){
                 }
             }
 
+            if (isset($zscorefix['bhb'])){
+                $bhb_fx=$zscorefix['bhb']['sp'.$v];
+                if ($bhb_fx!=""){
+                    if ($bhb_fx <'-3') $class5="red";
+                    if ($bhb_fx >'-3' && $bhb_fx<'-2')$class5="yellow";
+                    if ($bhb_fx >'-2' && $bhb_fx<'2')$class5="green";
+                    if ($bhb_fx >'2'  && $bhb_fx<'3')$class5="yellow";
+                    if ($bhb_fx >'3') $class5="red";
+                }
+            }
+
             echo "<td class=".$class1.">".$fat_fx."</td>";
             echo "<td class=".$class2.">".$pro_fx."</td>";
             echo "<td class=".$class3.">".$lac_fx."</td>";
             echo "<td class=".$class4.">".$ure_fx."</td>";
-            echo "<td></td>";
+            echo "<td class=".$class5.">".$bhb_fx."</td>";
             ?>
         </tr>
         <?php
         $numsample++;
         ?>
     @endfor
+    <?php
+    }else{
+        for ($x = 1; $x <= 10; $x++) {
+            echo "<tr>";
+            echo "<td>Sample $x</td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "</tr>";
+        }
+    }
+    ?>
 
     <tr class="grey">
         <td colspan="6">
@@ -928,115 +984,124 @@ if (count($data) > 0){
 
 <!-- nuova tabella aggiunta PAG -->
 
-@if($pag_a==1)
-    <table cellspacing="0">
-        <tr>
-            <td colspan="7" class="bold title">PAG</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td class="bold">Sample 1</td>
-            <td class="bold">Sample 2</td>
-            <td class="bold">Sample 3</td>
-            <td class="bold">Sample 4</td>
-            <td class="bold">Sample 5</td>
-        </tr>
 
-        <?php
-        $class="";
-        $chi=array(
-                'method'    =>'Method',
-                'results'   =>'Presence of PAG',
-                'accuracy'  =>'Laboratory accuracy',
-                'lactation' =>'Strains',
-                'date'      =>'Date',
-                'Y'=>'Yes','T'=>'True','F'=>'False','N'=>'No'
-        );
-        for($v=0; $v<5; $v++){
-            $a=$pag[$v]->sample01;
-            $b=$pag[$v]->sample02;
-            $c=$pag[$v]->sample03;
-            $d=$pag[$v]->sample04;
-            $e=$pag[$v]->sample05;
-            if ($pag[$v]->row =="results" || $pag[$v]->row =="accuracy" ){
-                $a=$chi[$pag[$v]->sample01];
-                $b=$chi[$pag[$v]->sample02];
-                $c=$chi[$pag[$v]->sample03];
-                $d=$chi[$pag[$v]->sample04];
-                $e=$chi[$pag[$v]->sample05];
-            }
-            if ($pag[$v]->row =="date" ){
-                $a=($a)? date("d-m-Y", strtotime($a)):"";
-                $b=($b)? date("d-m-Y", strtotime($b)):"";
-                $c=($c)? date("d-m-Y", strtotime($c)):"";
-                $d=($d)? date("d-m-Y", strtotime($d)):"";
-                $e=($e)? date("d-m-Y", strtotime($e)):"";
-            }
-            echo "<tr>";
-            echo "<td  class=".$class." bold>".$chi[$pag[$v]->row]."</td>";
-            echo "<td  class=".$class.">".$a."</td>";
-            echo "<td  class=".$class.">".$b."</td>";
-            echo "<td  class=".$class.">".$c."</td>";
-            echo "<td  class=".$class.">".$d."</td>";
-            echo "<td  class=".$class.">".$e."</td>";
-            echo "</tr>";
+
+<div class="newpage"></div>
+
+<?php
+if (count($pag) > 0){
+if($pag_a==1){
+?>
+<table cellspacing="0">
+    <tr>
+        <td colspan="7" class="bold title">PAG</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td class="bold">Sample 1</td>
+        <td class="bold">Sample 2</td>
+        <td class="bold">Sample 3</td>
+        <td class="bold">Sample 4</td>
+        <td class="bold">Sample 5</td>
+    </tr>
+
+    <?php
+    $class="";
+    $chi=array(
+            'method'    =>'Method',
+            'results'   =>'Presence of PAG',
+            'accuracy'  =>'Laboratory accuracy',
+            'lactation' =>'Strains',
+            'date'      =>'Date',
+            'Y'=>'Yes','T'=>'True','F'=>'False','N'=>'No'
+    );
+
+    for($v=0; $v<5; $v++){
+        $a=$pag[$v]->sample01;
+        $b=$pag[$v]->sample02;
+        $c=$pag[$v]->sample03;
+        $d=$pag[$v]->sample04;
+        $e=$pag[$v]->sample05;
+        if ($pag[$v]->row =="results" || $pag[$v]->row =="accuracy" ){
+            $a=$chi[$pag[$v]->sample01];
+            $b=$chi[$pag[$v]->sample02];
+            $c=$chi[$pag[$v]->sample03];
+            $d=$chi[$pag[$v]->sample04];
+            $e=$chi[$pag[$v]->sample05];
         }
-        ?>
-    </table>
-@endif
+        if ($pag[$v]->row =="date" ){
+            $a=($a)? date("d-m-Y", strtotime($a)):"";
+            $b=($b)? date("d-m-Y", strtotime($b)):"";
+            $c=($c)? date("d-m-Y", strtotime($c)):"";
+            $d=($d)? date("d-m-Y", strtotime($d)):"";
+            $e=($e)? date("d-m-Y", strtotime($e)):"";
+        }
+        echo "<tr>";
+        echo "<td  class=".$class." bold>".$chi[$pag[$v]->row]."</td>";
+        echo "<td  class=".$class.">".$a."</td>";
+        echo "<td  class=".$class.">".$b."</td>";
+        echo "<td  class=".$class.">".$c."</td>";
+        echo "<td  class=".$class.">".$d."</td>";
+        echo "<td  class=".$class.">".$e."</td>";
+        echo "</tr>";
+    }
+    ?>
+</table>
 
+<?php
+}
+}
+?>
+
+<div class="newpage"></div>
 
 <table>
     {!! Charts::scripts() !!}
     @foreach($code_arr as $who)
-        <tr>
-            <td style="width: 50%;">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">ZSCORE-PT - {{$who}}</h3>
+        @if($who!=="pag")
+            <tr>
+                <td style="width: 50%;">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bar-chart-o"></i>
+                            <h3 class="box-title">ZSCORE-PT - {{$who}}</h3>
 
-                    </div>
-                    <div class="box-body">
-                        <div class="app">
-                            <center>
-                                {!! $chart['zscorept'][$who]->html() !!}
-                            </center>
                         </div>
+                        <div class="box-body">
+                            <div class="app">
+                                <center>
+                                    {!! $chart[$who]->html() !!}
+                                </center>
+                            </div>
 
-                        {!! $chart['zscorept'][$who]->script() !!}
-                    </div>
-                </div>
-            </td>
-            <td style="width: 50%;">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">ZSCORE-FX - {{$who}}</h3>
-
-                    </div>
-                    <div class="box-body">
-                        <div class="app">
-                            <center>
-                                {!! $chartfx['zscorefix'][$who]->html() !!}
-                            </center>
+                            {!! $chart[$who]->script() !!}
                         </div>
-
-                        {!! $chartfx['zscorefix'][$who]->script() !!}
                     </div>
-                </div>
-            </td>
-        </tr>
+                </td>
+                @if($who!=="bhb")
+                    <td style="width: 50%;">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <i class="fa fa-bar-chart-o"></i>
+                                <h3 class="box-title">ZSCORE-FIX - {{$who}}</h3>
+
+                            </div>
+                            <div class="box-body">
+                                <div class="app">
+                                    <center>
+                                        {!! $chartfx[$who]->html() !!}
+                                    </center>
+                                </div>
+
+                                {!! $chartfx[$who]->script() !!}
+                            </div>
+                        </div>
+                    </td>
+                @endif
+
+            </tr>
+        @endif
     @endforeach
 </table>
-
-
 </body>
 </html>
-
-
-
-
-
-
-

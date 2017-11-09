@@ -66,25 +66,8 @@ class Means extends Model
 
 
         //Prendo 2 round precendenti
-        /*$round_precedenti=array();
-        $words = substr($round, 0, -4);
-        $getIds= Zscorept::where('round',$round)->where('lab_code','3')->orderBy('id','desc')->first();
-        $getIds2= Zscorept::where('id','<',$getIds->id)->where('round', 'like', $words.'%')->orderBy('id','desc')->get();
-        $crash=0;
-        foreach($getIds2 as $g)
-        {
-            if($crash==2) break;
-            if (!in_array($g->round, $round_precedenti)) {
-                if ($round!=$g->round) {
-                    $round_precedenti[]= $g->round;
-                    $crash++;
-                }
-            }
-        }
-
-        return $round_precedenti;*/
-
-
+        $rounds_precedenti=Round::getRoundsPrecedenti($round);
+        //return $rounds_precedenti;
 
         $final=array();
         foreach ($positions as $type => $val) {
@@ -94,15 +77,12 @@ class Means extends Model
             $final['zscorefix'][$type]['base']=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
 
             //prendo 2 round precendenti a quello attuale
-            /*foreach($round_precedenti as $round)
+            foreach($rounds_precedenti as $cr)
             {
-                $final['zscorept'][$type][$round]=Zscorept::getBlocksRoundPt($lab_id,$round,$positions,$type);
-                $final['zscorefix'][$type][$round]=Zscorefix::getBlocksRoundFx($lab_id,$round,$positions,$type);
-            }*/
+                $final['zscorept'][$type][$cr->code_round]=Zscorept::getBlocksRoundPt($lab_id,$cr->code_round,$positions,$type);
+                $final['zscorefix'][$type][$cr->code_round]=Zscorefix::getBlocksRoundFx($lab_id,$cr->code_round,$positions,$type);
+            }
         }
-
-
-        //return  (array('currentRound'=>$final,'positions'=>$positions,'rounds'=>$round_precedenti,'codetest'=>$code_arr));
-        return  (array('currentRound'=>$final,'positions'=>$positions,'codetest'=>$code_attivati));
+        return  (array('currentRound'=>$final,'positions'=>$positions,'codetest'=>$code_attivati,'cr_before'=>$rounds_precedenti));
     }
 }

@@ -22,7 +22,7 @@ class RoundController extends Controller
         try {
 
             $rounds=array();
-            $round = Round::select('code_round')->distinct()->get();
+            $round = Round::select('code_round')->distinct()->where('status',1)->get();
 
             foreach($round as $r){
                 $item= new \stdClass();
@@ -43,6 +43,10 @@ class RoundController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
+
+
+       // return Round::getRoundsPrecedenti('RF0916');
+
      return view('admin.round.index', compact('rounds'));
     }
 
@@ -179,6 +183,7 @@ class RoundController extends Controller
                                 $item->code_test   = $ct->code;
                                 $item->question1   = Input::get('question1_'.$ct->code)? '1' : '0';
                                 $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
+                                $item->status   = 1;
                                 $item->save();
                             }else{
                                 $message = [

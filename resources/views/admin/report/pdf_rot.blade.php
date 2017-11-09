@@ -77,6 +77,7 @@ if (count($round) > 0){
 
 if (count($data) > 0){
     foreach ($data as $d){
+        $icar_code              = $d->icar_code;
         switch ($d->type) {
             case 'protein_rout':
                 $protein_ref_labcode = $d->lab_code;
@@ -149,13 +150,12 @@ if (count($data) > 0){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Report {{$code_round}} - {{$lab->lab_name}}</title>
+    <title>{{$icar}} - Report {{$code_round}} - {{$lab->lab_name}}</title>
 
     <style>
         @page {
             size: A4;
         }
-
         body { font-family: Arial, Helvetica, sans-serif; font-size:12px; margin-top:0; padding-top:0; }
         table { margin-top: 20px; width:775px; border: 1px solid #000; }
         table#info { width: 100% !important; border:none; }
@@ -183,7 +183,6 @@ if (count($data) > 0){
         @media print {
             div.newpage {page-break-after: always;}
         }
-
     </style>
 </head>
 
@@ -234,7 +233,7 @@ if (count($data) > 0){
         <td class=@if ($lac_ref_sub=='Yes') {{$class}} @endif>{{$lac_ref_sub}}</td>
         <td class=@if ($u_ref_sub=='Yes') {{$class}} @endif>{{$u_ref_sub}}</td>
         <td class=@if ($bhb_ref_sub=='Yes') {{$class}} @endif>{{$bhb_ref_sub}}</td>
-        <td class=@if ($bhb_ref_sub=='Yes') {{$class}} @endif>{{$bhb_ref_sub}}</td>
+        <td class=@if ($pag_sub=='Yes') {{$class}} @endif>{{$pag_sub}}</td>
     </tr>
     <tr>
         <td class="left bold">Participation Codes</td>
@@ -376,62 +375,126 @@ if (count($data) > 0){
     <tr>
         <td class="bold">d</td>			<!-- stampo valore di dev per ogni type -->
         <!--  se il valore nella cella è all'interno del range, la cella è verde; se è al di fuori, la cella è rossa  -->
-        <td class=
-        @if ($fat_ref_dev == '&nbsp;') {{''}} @elseif (('-0,020' <= $fat_ref_dev) && ($fat_ref_dev <= '0,020')) {{$class}}
-                @else {{$class_red}} @endif>{{$fat_ref_dev}}
-        </td>
-        <td class=
-        @if ($protein_ref_dev == '&nbsp;') {{''}} @elseif (('-0,025' <= $protein_ref_dev) && ($protein_ref_dev <= '0,025')) {{$class}}
-                @else {{$class_red}} @endif>{{$protein_ref_dev}}
-        </td>
-        <td class=
-        @if ($lactose_ref_dev == '&nbsp;') {{''}} @elseif (('-0,10' <= $lactose_ref_dev) && ($lactose_ref_dev <= '0,10')) {{$class}}
-                @else {{$class_red}} @endif>{{$lactose_ref_dev}}
-        </td>
-        <td class=
-        @if ($urea_ref_dev == '&nbsp;') {{''}} @elseif (('-2,5' <= $urea_ref_dev) && ($urea_ref_dev <= '2,5')) {{$class}}
-                @else {{$class_red}} @endif>{{$urea_ref_dev}}
-        </td>
-        <td class=
-        @if ($bhb_ref_dev == '&nbsp;') {{''}} @elseif (('-10' <= $bhb_ref_dev) && ($bhb_ref_dev <= '10')) {{$class}}
-                @else {{$class_red}} @endif>{{$bhb_ref_dev}}
-        </td>
-        <td class=
-        @if ($pag_dev == '&nbsp;') {{''}} @elseif (('-0,045' <= $pag_dev) && ($pag_dev <= '0,045')) {{$class}}
-                @else {{$class_red}} @endif>{{$pag_dev}}
-        </td>
+
+        <!-- range: tra -0,020 e +0,020  -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($fat_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($fat_ref_dev > -0.020 &&  $fat_ref_dev < 0.020) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$fat_ref_dev}}</td>
+
+
+        <!-- range: tra -0,025 e +0,025  -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($protein_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($protein_ref_dev > -0.025 &&  $protein_ref_dev < 0.025) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$protein_ref_dev}}</td>
+
+
+        <!-- range: tra -0.10 e +0.10  -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($lactose_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($lactose_ref_dev > -0.10 &&  $lactose_ref_dev < 0.10) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$lactose_ref_dev}}</td>
+
+        <!-- range: tra -2,5 e +2,5  -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($urea_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($urea_ref_dev > -2.5 &&  $urea_ref_dev < 2.5) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$urea_ref_dev}}</td>
+
+
+
+        <!-- range: tra -10% e +10%  -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($bhb_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($bhb_ref_dev > -10 &&  $bhb_ref_dev < 10) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$bhb_ref_dev}}</td>
+
+
+        <!-- range: tra -10% e +10%  -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($pag_dev == '&nbsp;') $class_sd="";
+        elseif ($pag_dev > -0.045 &&  $pag_dev < 0.045) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$pag_dev}}</td>
+
+
     </tr>
     <tr>
         <td class="bold">Sd</td>		<!-- stampo valore di s_dev per ogni type -->
         <!-- se il valore è superiore al limite, la cella è rossa; se è inferiore, la cella è verde; se è uguale, è bianca -->
 
-        <td class=
-        @if ($fat_ref_sdev == '0,030' || $fat_ref_sdev == '&nbsp;') {{''}} @elseif ($fat_ref_sdev >'0,030') {{$class_red}}
-                @elseif($fat_ref_sdev < '0,030'){{$class}} @endif>{{$fat_ref_sdev}}</td>
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($fat_ref_sdev == 0.030 || $fat_ref_sdev == '&nbsp;') $class_sd="";
+        elseif ($fat_ref_sdev > -0.030 &&  $fat_ref_sdev < 0.030) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$fat_ref_sdev}}</td>
 
-        <!-- limite: 0,020 -->
-        <td class=
-        @if ($protein_ref_sdev == '0,020' || $protein_ref_sdev == '&nbsp;') {{''}} @elseif ($protein_ref_sdev >'0,020') {{$class_red}}
-                @elseif($protein_ref_sdev < '0,020'){{$class}} @endif>{{$protein_ref_sdev}}</td>
+        <!-- limite: 0.020 -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($protein_ref_sdev == 0.020 || $protein_ref_sdev == '&nbsp;') $class_sd="";
+        elseif ($protein_ref_sdev > -0.020 &&  $protein_ref_sdev < 0.020) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$protein_ref_sdev}}</td>
 
-        <!-- limite: 0,010 -->
-        <td class=
-        @if ($lactose_ref_sdev == '0,010' || $lactose_ref_sdev == '&nbsp;') {{''}} @elseif ($lactose_ref_sdev >'0,010') {{$class_red}}
-                @elseif($lactose_ref_sdev < '0,010'){{$class}} @endif>{{$lactose_ref_sdev}}</td>
+        <!-- limite: 0.010 -->
+        <?php
+        $class_sd="green";
+        if ($lactose_ref_sdev == 0.10 || $lactose_ref_sdev == '&nbsp;') $class_sd="";
+        if ($lactose_ref_sdev < -0.10)$class_sd=$class_red;
+        if ($lactose_ref_sdev > 0.10)$class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$lactose_ref_sdev}}</td>
 
         <!-- limite: 1,5 -->
-        <td class=
-        @if ($urea_ref_sdev == '1,5' || $urea_ref_sdev == '&nbsp;') {{''}} @elseif ($urea_ref_sdev >'1,5') {{$class_red}}
-                @elseif($urea_ref_sdev < '1,5'){{$class}} @endif>{{$urea_ref_sdev}}</td>
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($urea_ref_sdev == 1.5 || $urea_ref_sdev == '&nbsp;') $class_sd="";
+        elseif ($urea_ref_sdev > -1.5 &&  $urea_ref_sdev < 1.5) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$urea_ref_sdev}}</td>
 
         <!-- limite: 10 -->
-        <td class=
-        @if ($bhb_ref_sdev == '10' || $bhb_ref_sdev == '&nbsp;') {{''}} @elseif ($bhb_ref_sdev >'10') {{$class_red}}
-                @elseif($bhb_ref_sdev < '10'){{$class}} @endif>{{$bhb_ref_sdev}}</td>
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($bhb_ref_sdev == 10 || $bhb_ref_sdev == '&nbsp;') $class_sd="";
+        elseif ($bhb_ref_sdev > -10 &&  $bhb_ref_sdev < 10) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$bhb_ref_sdev}}</td>
 
-        <td class=
-        @if ($pag_sdev == '0,045' || $pag_sdev == '&nbsp;') {{''}} @elseif ($pag_sdev >'0,045') {{$class_red}}
-                @elseif($pag_sdev < '0,020'){{$class}} @endif>{{$pag_sdev}}</td>
+        <!-- limite: 045 -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($pag_sdev == 0.045 || $pag_sdev == '&nbsp;') $class_sd="";
+        elseif ($pag_sdev > -0.045 &&  $pag_sdev < 0.045) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$pag_sdev}}</td>
+
+
     </tr>
     <tr>
         <td class="bold">D</td>			<!-- stampo valore di dist per ogni type; le celle sempre bianche -->
@@ -460,8 +523,8 @@ if (count($data) > 0){
         <td>0,025</td>
         <td>0,10</td>
         <td>2,5</td>
+        <td>10</td>
         <td>0,045</td>
-        <td>&nbsp;</td>
     </tr>
     <tr class="grey">
         <td class="bold">Sd</td>
@@ -469,8 +532,8 @@ if (count($data) > 0){
         <td>0,020</td>
         <td>0,10</td>
         <td>1,5</td>
+        <td>10</td>
         <td>0,045</td>
-        <td>&nbsp;</td>
     </tr>
 </table>
 
@@ -526,8 +589,7 @@ if (count($data) > 0){
                 if ($lactose_rout!="" && $l_a==1)  $class_l="red"; elseif($lactose_rout=="" && $l_a==1) $class_l="green"; else $class_l="";
                 if ($urea_rout!="" && $u_a==1)  $class_u="red"; elseif($urea_rout==""&& $u_a==1) $class_u="green"; else $class_u="";
                 if ($bhb!="" && $b_a==1)  $class_s="red"; elseif($bhb==""&& $b_a==1) $class_s="green"; else $class_s="";
-                if ($pag!="" && $pag_a==1)  $class_s="red"; elseif($pag==""&& $pag_a==1) $class_s="green"; else $class_s="";
-
+                if ($pag!="" && $pag_a==1)  $class_pag="red"; elseif($pag==""&& $pag_a==1) $class_pag="green"; else $class_pag="";
 
                 echo "<td  class=".$class_f.">".$fat_rout."</td>";
                 echo "<td  class=".$class_p.">".$protein_rout."</td>";
@@ -568,13 +630,13 @@ if (count($data) > 0){
             if ($b_a==1)  $class_s="green";
             if ($pag_a==1)$class_pag="green";
             echo "<tr>";
-            echo "<td>Sample $x</td>";
-            echo "<td  class=".$class_f."></td>";
-            echo "<td  class=".$class_p."></td>";
-            echo "<td  class=".$class_l."></td>";
-            echo "<td  class=".$class_u."></td>";
-            echo "<td  class=".$class_s."></td>";
-            echo "<td  class=".$class_pag."></td>";
+                echo "<td>Sample $x</td>";
+                echo "<td  class=".$class_f."></td>";
+                echo "<td  class=".$class_p."></td>";
+                echo "<td  class=".$class_l."></td>";
+                echo "<td  class=".$class_u."></td>";
+                echo "<td  class=".$class_s."></td>";
+                echo "<td  class=".$class_pag."></td>";
             echo "</tr>";
         }
     }
@@ -612,6 +674,7 @@ if (count($data) > 0){
     <?php
     //print_r($arr_sp1);
     $numsample=1;
+    if (count($repeat) > 0){
     ?>
     @for($v=1; $v<11; $v++)
         <tr>
@@ -671,6 +734,9 @@ if (count($data) > 0){
         $numsample++;
         ?>
     @endfor
+    <?php
+    }
+    ?>
 
     <tr class="grey">
         <td colspan="7" class="note">If the repeatability in smaller than the limit the cell is in green if there is a sample with a &quot;r&quot; bigger than the limit the cell is in red.    Please check table II in correspondence of the parameter and your lab code.</td>
@@ -989,64 +1055,65 @@ if (count($data) > 0){
 <div class="newpage"></div>
 
 <?php
-if (count($pag) > 0){
+if (count($pagx) > 0){
  if($pag_a==1){
         ?>
-    <table cellspacing="0">
-        <tr>
-            <td colspan="7" class="bold title">PAG</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td class="bold">Sample 1</td>
-            <td class="bold">Sample 2</td>
-            <td class="bold">Sample 3</td>
-            <td class="bold">Sample 4</td>
-            <td class="bold">Sample 5</td>
-        </tr>
 
-        <?php
-        $class="";
-        $chi=array(
-                'method'    =>'Method',
-                'results'   =>'Presence of PAG',
-                'accuracy'  =>'Laboratory accuracy',
-                'lactation' =>'Strains',
-                'date'      =>'Date',
-                'Y'=>'Yes','T'=>'True','F'=>'False','N'=>'No'
-        );
+<table cellspacing="0">
+    <tr>
+        <td colspan="7" class="bold title">PAG</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td class="bold">Sample 1</td>
+        <td class="bold">Sample 2</td>
+        <td class="bold">Sample 3</td>
+        <td class="bold">Sample 4</td>
+        <td class="bold">Sample 5</td>
+    </tr>
 
-        for($v=0; $v<5; $v++){
-            $a=$pag[$v]->sample01;
-            $b=$pag[$v]->sample02;
-            $c=$pag[$v]->sample03;
-            $d=$pag[$v]->sample04;
-            $e=$pag[$v]->sample05;
-            if ($pag[$v]->row =="results" || $pag[$v]->row =="accuracy" ){
-                $a=$chi[$pag[$v]->sample01];
-                $b=$chi[$pag[$v]->sample02];
-                $c=$chi[$pag[$v]->sample03];
-                $d=$chi[$pag[$v]->sample04];
-                $e=$chi[$pag[$v]->sample05];
-            }
-            if ($pag[$v]->row =="date" ){
-                $a=($a)? date("d-m-Y", strtotime($a)):"";
-                $b=($b)? date("d-m-Y", strtotime($b)):"";
-                $c=($c)? date("d-m-Y", strtotime($c)):"";
-                $d=($d)? date("d-m-Y", strtotime($d)):"";
-                $e=($e)? date("d-m-Y", strtotime($e)):"";
-            }
-            echo "<tr>";
-            echo "<td  class=".$class." bold>".$chi[$pag[$v]->row]."</td>";
-            echo "<td  class=".$class.">".$a."</td>";
-            echo "<td  class=".$class.">".$b."</td>";
-            echo "<td  class=".$class.">".$c."</td>";
-            echo "<td  class=".$class.">".$d."</td>";
-            echo "<td  class=".$class.">".$e."</td>";
-            echo "</tr>";
+    <?php
+    $class="";
+    $chi=array(
+            'method'    =>'Method',
+            'results'   =>'Presence of PAG',
+            'accuracy'  =>'Laboratory accuracy',
+            'lactation' =>'Strains',
+            'date'      =>'Date',
+            'Y'=>'Yes','T'=>'True','F'=>'False','N'=>'No'
+    );
+
+    for($v=0; $v<5; $v++){
+        $a=$pagx[$v]->sample01;
+        $b=$pagx[$v]->sample02;
+        $c=$pagx[$v]->sample03;
+        $d=$pagx[$v]->sample04;
+        $e=$pagx[$v]->sample05;
+        if ($pagx[$v]->row =="results" || $pagx[$v]->row =="accuracy" ){
+            $a=$chi[$pagx[$v]->sample01];
+            $b=$chi[$pagx[$v]->sample02];
+            $c=$chi[$pagx[$v]->sample03];
+            $d=$chi[$pagx[$v]->sample04];
+            $e=$chi[$pagx[$v]->sample05];
         }
-        ?>
-    </table>
+        if ($pagx[$v]->row =="date" ){
+            $a=($a)? date("d-m-Y", strtotime($a)):"";
+            $b=($b)? date("d-m-Y", strtotime($b)):"";
+            $c=($c)? date("d-m-Y", strtotime($c)):"";
+            $d=($d)? date("d-m-Y", strtotime($d)):"";
+            $e=($e)? date("d-m-Y", strtotime($e)):"";
+        }
+        echo "<tr>";
+        echo "<td  class=".$class." bold>".$chi[$pagx[$v]->row]."</td>";
+        echo "<td  class=".$class.">".$a."</td>";
+        echo "<td  class=".$class.">".$b."</td>";
+        echo "<td  class=".$class.">".$c."</td>";
+        echo "<td  class=".$class.">".$d."</td>";
+        echo "<td  class=".$class.">".$e."</td>";
+        echo "</tr>";
+    }
+    ?>
+</table>
 
 <?php
 }
@@ -1055,54 +1122,56 @@ if (count($pag) > 0){
 
 <div class="newpage"></div>
 
+
 <table>
     {!! Charts::scripts() !!}
     @foreach($code_arr as $who)
         @if($who!=="pag")
-        <tr>
-            <td style="width: 50%;">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">ZSCORE-PT - {{$who}}</h3>
+            <tr>
+                <td style="width: 50%;">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bar-chart-o"></i>
+                            <h3 class="box-title">ZSCORE-PT - {{$who}}</h3>
 
-                    </div>
-                    <div class="box-body">
-                        <div class="app">
-                            <center>
-                                {!! $chart[$who]->html() !!}
-                            </center>
                         </div>
+                        <div class="box-body">
+                            <div class="app">
+                                <center>
+                                    {!! $chart[$who]->html() !!}
+                                </center>
+                            </div>
 
-                        {!! $chart[$who]->script() !!}
-                    </div>
-                </div>
-            </td>
-            @if($who!=="bhb")
-            <td style="width: 50%;">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">ZSCORE-FIX - {{$who}}</h3>
-
-                    </div>
-                    <div class="box-body">
-                        <div class="app">
-                            <center>
-                                {!! $chartfx[$who]->html() !!}
-                            </center>
+                            {!! $chart[$who]->script() !!}
                         </div>
-
-                        {!! $chartfx[$who]->script() !!}
                     </div>
-                </div>
-            </td>
-            @endif
+                </td>
+                @if($who!=="bhb")
+                    <td style="width: 50%;">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <i class="fa fa-bar-chart-o"></i>
+                                <h3 class="box-title">ZSCORE-FIX - {{$who}}</h3>
 
-        </tr>
+                            </div>
+                            <div class="box-body">
+                                <div class="app">
+                                    <center>
+                                        {!! $chartfx[$who]->html() !!}
+                                    </center>
+                                </div>
+
+                                {!! $chartfx[$who]->script() !!}
+                            </div>
+                        </div>
+                    </td>
+                @endif
+
+            </tr>
         @endif
     @endforeach
 </table>
+
 </body>
 </html>
 

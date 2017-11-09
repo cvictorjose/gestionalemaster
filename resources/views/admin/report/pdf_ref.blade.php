@@ -27,6 +27,7 @@ if (count($round) > 0){
 
     foreach ($round as $r){
         $code_round             = $r->code_round;
+
         $results_received       = ($r->results_received)?"Yes":"No";
         $results_received_date  = ($r->results_received_date)? date("d-m-Y", strtotime($r->results_received_date)):"";
         switch ($r->code_test) {
@@ -62,8 +63,6 @@ if (count($round) > 0){
                 $scc_ref_q2      = ($r->question2)?"Yes":"No";
                 $s_a=1;
                 break;
-
-
         }
     }
 }
@@ -72,6 +71,7 @@ if (count($round) > 0){
 
 if (count($data) > 0){
     foreach ($data as $d){
+        $icar_code              = $d->icar_code;
         switch ($d->type) {
             case 'protein_ref':
                 $protein_ref_labcode = $d->lab_code;
@@ -134,7 +134,7 @@ if (count($data) > 0){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Report {{$code_round}} - {{$lab->lab_name}}</title>
+    <title>{{$icar_code}} - Report {{$code_round}} - {{$lab->lab_name}}</title>
     <style>
         @page {
             size: A4;
@@ -345,63 +345,100 @@ if (count($data) > 0){
         <!--  se il valore nella cella è all'interno del range, la cella è verde; se è al di fuori, la cella è rossa  -->
 
         <!-- range: tra -0,020 e +0,020  -->
-        <td class=
-        @if ($fat_ref_dev == '&nbsp;') {{''}} @elseif (('-0,020' <= $fat_ref_dev) && ($fat_ref_dev <= '0,020')) {{$class}}
-                @else {{$class_red}} @endif>{{$fat_ref_dev}}
-        </td>
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($fat_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($fat_ref_dev > -0.020 &&  $fat_ref_dev < 0.020) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$fat_ref_dev}}</td>
 
         <!-- range: tra -0,025 e +0,025  -->
-        <td class=
-        @if ($protein_ref_dev == '&nbsp;') {{''}} @elseif (('-0,025' <= $protein_ref_dev) && ($protein_ref_dev <= '0,025')) {{$class}}
-                @else {{$class_red}} @endif>{{$protein_ref_dev}}
-        </td>
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($protein_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($protein_ref_dev > -0.025 &&  $protein_ref_dev < 0.025) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$protein_ref_dev}}</td>
 
-        <!-- range: tra -0,10 e +0,10  -->
-        <td class=
-        @if ($lactose_ref_dev == '&nbsp;') {{''}} @elseif (('-0,10' <= $lactose_ref_dev) && ($lactose_ref_dev <= '0,10')) {{$class}}
-                @else {{$class_red}} @endif>{{$lactose_ref_dev}}
-        </td>
+
+        <!-- range: tra -0.10 e +0.10  -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($lactose_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($lactose_ref_dev > -0.10 &&  $lactose_ref_dev < 0.10) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$lactose_ref_dev}}</td>
 
         <!-- range: tra -2,5 e +2,5  -->
-        <td class=
-        @if ($urea_ref_dev == '&nbsp;') {{''}} @elseif (('-2,5' <= $urea_ref_dev) && ($urea_ref_dev <= '2,5')) {{$class}}
-                @else {{$class_red}} @endif>{{$urea_ref_dev}}
-        </td>
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($urea_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($urea_ref_dev > -2.5 &&  $urea_ref_dev < 2.5) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$urea_ref_dev}}</td>
+
 
         <!-- range: tra -10% e +10%  -->
-        <td class=
-        @if ($scc_ref_dev == '&nbsp;') {{''}} @elseif (('-10' <= $scc_ref_dev) && ($scc_ref_dev <= '10')) {{$class}}
-                @else {{$class_red}} @endif>{{$scc_ref_dev}}
-        </td>
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($scc_ref_dev == '&nbsp;') $class_sd="";
+        elseif ($scc_ref_dev > -10 &&  $scc_ref_dev < 10) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$scc_ref_dev}}</td>
     </tr>
     <tr>
-        <td class="bold">Sd</td>		<!-- stampo valore di s_dev per ogni type -->
+        <td class="bold">Sd</td>
         <!-- se il valore è superiore al limite, la cella è rossa; se è inferiore, la cella è verde; se è uguale, è bianca -->
-        <!-- limite: 0,030 -->
-        <td class=
-        @if ($fat_ref_sdev == '0,030' || $fat_ref_sdev == '&nbsp;') {{''}} @elseif ($fat_ref_sdev >'0,030') {{$class_red}}
-                @elseif($fat_ref_sdev < '0,030'){{$class}} @endif>{{$fat_ref_sdev}}</td>
+        <!-- limite: 0.030 -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($fat_ref_sdev == 0.030 || $fat_ref_sdev == '&nbsp;') $class_sd="";
+        if ($fat_ref_sdev > -0.030 &&  $fat_ref_sdev < 0.030) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$fat_ref_sdev}}</td>
 
-        <!-- limite: 0,020 -->
-        <td class=
-        @if ($protein_ref_sdev == '0,020' || $protein_ref_sdev == '&nbsp;') {{''}} @elseif ($protein_ref_sdev >'0,020') {{$class_red}}
-                @elseif($protein_ref_sdev < '0,020'){{$class}} @endif>{{$protein_ref_sdev}}</td>
+        <!-- limite: 0.020 -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($protein_ref_sdev == 0.020 || $protein_ref_sdev == '&nbsp;') $class_sd="";
+        if ($protein_ref_sdev > -0.020 &&  $protein_ref_sdev < 0.020) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$protein_ref_sdev}}</td>
 
-        <!-- limite: 0,010 -->
-        <td class=
-        @if ($lactose_ref_sdev == '0,010' || $lactose_ref_sdev == '&nbsp;') {{''}} @elseif ($lactose_ref_sdev >'0,010') {{$class_red}}
-                @elseif($lactose_ref_sdev < '0,010'){{$class}} @endif>{{$lactose_ref_sdev}}</td>
+        <!-- limite: 0.010 -->
+        <?php
+        $class_sd="green";
+        if ($lactose_ref_sdev == 0.10 || $lactose_ref_sdev == '&nbsp;') $class_sd="";
+        if ($lactose_ref_sdev < -0.10)$class_sd=$class_red;
+        if ($lactose_ref_sdev > 0.10)$class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$lactose_ref_sdev}}</td>
 
         <!-- limite: 1,5 -->
-        <td class=
-        @if ($urea_ref_sdev == '1,5' || $urea_ref_sdev == '&nbsp;') {{''}} @elseif ($urea_ref_sdev >'1,5') {{$class_red}}
-                @elseif($urea_ref_sdev < '1,5'){{$class}} @endif>{{$urea_ref_sdev}}</td>
-
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($urea_ref_sdev == 1.5 || $urea_ref_sdev == '&nbsp;') $class_sd="";
+        if ($urea_ref_sdev > -1.5 &&  $urea_ref_sdev < 1.5) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$urea_ref_sdev}}</td>
 
         <!-- limite: 10 -->
-        <td class=
-        @if ($scc_ref_sdev == '10' || $scc_ref_sdev == '&nbsp;') {{''}} @elseif ($scc_ref_sdev >'10') {{$class_red}}
-                @elseif($scc_ref_sdev < '10'){{$class}} @endif>{{$scc_ref_sdev}}</td>
+        <?php
+        $class_sd="";
+        $class="green";
+        if ($scc_ref_sdev == 10 || $scc_ref_sdev == '&nbsp;') $class_sd="";
+        if ($scc_ref_sdev > -10 &&  $scc_ref_sdev < 10) $class_sd=$class; else $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$scc_ref_sdev}}</td>
+
 
     </tr>
     <tr>
@@ -907,7 +944,7 @@ if (count($data) > 0){
             echo "<td class=".$class2.">".$pro_fx."</td>";
             echo "<td class=".$class3.">".$lac_fx."</td>";
             echo "<td class=".$class4.">".$ure_fx."</td>";
-            echo "<td class=".$class5.">".$scc_pt."</td>";
+            echo "<td class=".$class5.">".$scc_fx."</td>";
             ?>
         </tr>
         <?php

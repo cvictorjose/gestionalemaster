@@ -15,7 +15,7 @@ if (count($round) > 0){
     $p_ref_q2=$fat_ref_q2=$lac_ref_q2=$u_ref_q2=$scc_ref_q2=$bhb_ref_q2="";
 
     //tutti non spuntati
-    $p_a=$f_a=$l_a=$u_a=$s_a=$b_a=$pag_a=0;
+    $p_a=$f_a=$l_a=$u_a=$s_a=0;
 
 
     $protein_ref_labcode=$fat_ref_labcode=$lactose_ref_labcode=$urea_ref_labcode=$scc_ref_labcode=$bhb_ref_labcode="&nbsp;";
@@ -110,8 +110,8 @@ if (count($data) > 0){
                 $urea_ref_sdev    = number_format($d->s_dev,3);
                 $urea_ref_dist    = number_format($d->dist,3);
                 $urea_ref_m       = $d->method;
-                if ($d->method=="A")$urea_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$urea_ref_m="ISO
-                2446?IDF 226";
+                if ($d->method=="A")$urea_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$urea_ref_m="ISO
+                2446|IDF 226";
                 break;
             case 'scc_ref':
                 $scc_ref_labcode = $d->lab_code;
@@ -120,8 +120,8 @@ if (count($data) > 0){
                 $scc_ref_sdev    = number_format($d->s_dev,3)*100;
                 $scc_ref_dist    = number_format($d->dist,3)*100;
                 $scc_ref_m       = $d->method;
-                if ($d->method=="A")$scc_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$scc_ref_m="ISO
-                2446?IDF 226";
+                if ($d->method=="A")$scc_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$scc_ref_m="ISO
+                2446|IDF 226";
                 break;
 
         }
@@ -134,12 +134,12 @@ if (count($data) > 0){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Report Reference</title>
-
+    <title>Report {{$code_round}} - {{$lab->lab_name}}</title>
     <style>
         @page {
             size: A4;
         }
+        body { font-family: Arial, Helvetica, sans-serif; font-size:12px; margin-top:0; padding-top:0; }
         table { margin-top: 20px; width:775px; border: 1px solid #000; }
         table#info { width: 100% !important; border:none; }
         td { text-align:center; padding: 3px; border:1px solid #ccc; width:94px; font-size: 10px; vertical-align:middle; }
@@ -166,7 +166,6 @@ if (count($data) > 0){
         @media print {
             div.newpage {page-break-after: always;}
         }
-
     </style>
 </head>
 
@@ -471,28 +470,35 @@ if (count($data) > 0){
     <?php
     //print_r($arr_sp1);
     $numsample=1;
+    $class_f=$class_p=$class_l=$class_u=$class_s="";
     if (count($outlier) > 0){
     ?>
     @for($v=1; $v<11; $v++)
         <tr>
             <td>Sample {{$numsample}}</td>
             <?php
+
             $class_f=$class_p=$class_l=$class_u=$class_s="";
-
             if (isset($outlier[$v])){
-                if ($outlier[$v]->fat_ref!="" && $f_a==1)  $class_f="red"; elseif($outlier[$v]->fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
-                if ($outlier[$v]->protein_ref!="" && $p_a==1)  $class_p="red"; elseif($outlier[$v]->protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
-                if ($outlier[$v]->lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($outlier[$v]->lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
-                if ($outlier[$v]->urea_ref!="" && $u_a==1)  $class_u="red"; elseif($outlier[$v]->urea_ref==""&& $u_a==1) $class_u="green"; else $class_u="";
 
-                if ($outlier[$v]->scc_ref!="" && $s_a==1)  $class_s="red"; elseif($outlier[$v]->scc_ref==""&&
-                        $s_a==1) $class_s="green"; else $class_s="";
+                $fat_ref=(isset($outlier[$v]['fat_ref']))?$outlier[$v]['fat_ref']:"";
+                $protein_ref=(isset($outlier[$v]['protein_ref']))?$outlier[$v]['protein_ref']:"";
+                $lactose_ref=(isset($outlier[$v]['lactose_ref']))?$outlier[$v]['lactose_ref']:"";
+                $urea_ref=(isset($outlier[$v]['urea_ref']))?$outlier[$v]['urea_ref']:"";
+                $scc_ref=(isset($outlier[$v]['scc_ref']))?$outlier[$v]['scc_ref']:"";
 
-                echo "<td  class=".$class_f.">".$outlier[$v]->fat_ref."</td>";
-                echo "<td  class=".$class_p.">".$outlier[$v]->protein_ref."</td>";
-                echo "<td  class=".$class_l.">".$outlier[$v]->lactose_ref."</td>";
-                echo "<td  class=".$class_u.">".$outlier[$v]->urea_ref."</td>";
-                echo "<td  class=".$class_s.">".$outlier[$v]->scc_ref."</td>";
+                if ($fat_ref!="" && $f_a==1)  $class_f="red"; elseif($fat_ref=="" && $f_a==1) $class_f="green"; else $class_f="";
+                if ($protein_ref!="" && $p_a==1)  $class_p="red"; elseif($protein_ref=="" && $p_a==1) $class_p="green"; else $class_p="";
+                if ($lactose_ref!="" && $l_a==1)  $class_l="red"; elseif($lactose_ref=="" && $l_a==1) $class_l="green"; else $class_l="";
+                if ($urea_ref!="" && $u_a==1)  $class_u="red"; elseif($urea_ref==""&& $u_a==1) $class_u="green"; else $class_u="";
+                if ($scc_ref!="" && $s_a==1)  $class_s="red"; elseif($scc_ref==""&& $s_a==1) $class_s="green"; else $class_s="";
+
+
+                echo "<td  class=".$class_f.">".$fat_ref."</td>";
+                echo "<td  class=".$class_p.">".$protein_ref."</td>";
+                echo "<td  class=".$class_l.">".$lactose_ref."</td>";
+                echo "<td  class=".$class_u.">".$urea_ref."</td>";
+                echo "<td  class=".$class_s.">".$scc_ref."</td>";
 
             }else{
                 if ($f_a==1)  $class_f="green";
@@ -516,6 +522,23 @@ if (count($data) > 0){
     @endfor
     <?php
 
+    }else{
+        $class_f=$class_p=$class_l=$class_u=$class_s="";
+        for ($x = 1; $x <= 10; $x++) {
+            if ($f_a==1)  $class_f="green";
+            if ($p_a==1)  $class_p="green";
+            if ($l_a==1)  $class_l="green";
+            if ($u_a==1)  $class_u="green";
+            if ($s_a==1)  $class_s="green";
+            echo "<tr>";
+            echo "<td>Sample $x</td>";
+            echo "<td  class=".$class_f."> </td>";
+            echo "<td  class=".$class_p."> </td>";
+            echo "<td  class=".$class_l."> </td>";
+            echo "<td  class=".$class_u."> </td>";
+            echo "<td  class=".$class_s."> </td>";
+            echo "</tr>";
+        }
     }
     ?>
 </table>
@@ -673,7 +696,6 @@ if (count($data) > 0){
             <span class="half_r">126</span>
         </td>
     </tr>
-
 </table>
 
 
@@ -708,6 +730,7 @@ if (count($data) > 0){
     <?php
     //print_r($arr_sp1);
     $numsample=1;
+    if (count($zscorept) > 0){
     ?>
     @for($v=1; $v<11; $v++)
         <tr>
@@ -776,14 +799,28 @@ if (count($data) > 0){
             echo "<td class=".$class2.">".$pro_pt."</td>";
             echo "<td class=".$class3.">".$lac_pt."</td>";
             echo "<td class=".$class4.">".$ure_pt."</td>";
-            echo "<td>".$scc_pt."</td>";
+            echo "<td class=".$class5.">".$scc_pt."</td>";
+
             ?>
         </tr>
         <?php
         $numsample++;
         ?>
     @endfor
-
+    <?php
+    }else{
+        for ($x = 1; $x <= 10; $x++) {
+            echo "<tr>";
+            echo "<td>Sample $x</td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "</tr>";
+        }
+    }
+    ?>
     <tr>
         <td colspan="6" class="bold title">Your Z-Score Fix</td>
     </tr>
@@ -795,14 +832,13 @@ if (count($data) > 0){
         <td class="bold">Urea</td>
         <td class="bold">SCC</td>
     </tr>
-
-
     <!-- identica cosa di zscore-pt ma questa volta su tabella zscore-fix-->
 
 
     <?php
     //print_r($arr_sp1);
     $numsample=1;
+    if (count($zscorefix) > 0){
     ?>
     @for($v=1; $v<11; $v++)
         <tr>
@@ -871,15 +907,27 @@ if (count($data) > 0){
             echo "<td class=".$class2.">".$pro_fx."</td>";
             echo "<td class=".$class3.">".$lac_fx."</td>";
             echo "<td class=".$class4.">".$ure_fx."</td>";
-            echo "<td>".$scc_fx."</td>";
+            echo "<td class=".$class5.">".$scc_pt."</td>";
             ?>
         </tr>
         <?php
         $numsample++;
         ?>
     @endfor
-
-
+    <?php
+    }else{
+        for ($x = 1; $x <= 10; $x++) {
+            echo "<tr>";
+            echo "<td>Sample $x</td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "<td></td>";
+            echo "</tr>";
+        }
+    }
+    ?>
     <tr class="grey">
         <td colspan="6">
             <p class="note">If there is a sample with a &quot;z-score&quot; in the yellow or red area please check table VI and VII in correspondence of your lab code.</p>
@@ -906,6 +954,8 @@ if (count($data) > 0){
     </tr>
 </table>
 
+<div class="newpage"></div>
+
 <table>
     {!! Charts::scripts() !!}
     @foreach($code_arr as $who)
@@ -920,32 +970,34 @@ if (count($data) > 0){
                     <div class="box-body">
                         <div class="app">
                             <center>
-                                {!! $chart['zscorept'][$who]->html() !!}
+                                {!! $chart[$who]->html() !!}
                             </center>
                         </div>
 
-                        {!! $chart['zscorept'][$who]->script() !!}
+                        {!! $chart[$who]->script() !!}
                     </div>
                 </div>
             </td>
+
             <td style="width: 50%;">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">ZSCORE-FX - {{$who}}</h3>
+                        <h3 class="box-title">ZSCORE-FIX - {{$who}}</h3>
 
                     </div>
                     <div class="box-body">
                         <div class="app">
                             <center>
-                                {!! $chartfx['zscorefix'][$who]->html() !!}
+                                {!! $chartfx[$who]->html() !!}
                             </center>
                         </div>
 
-                        {!! $chartfx['zscorefix'][$who]->script() !!}
+                        {!! $chartfx[$who]->script() !!}
                     </div>
                 </div>
             </td>
+
         </tr>
     @endforeach
 </table>

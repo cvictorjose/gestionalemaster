@@ -65,7 +65,7 @@ class Round extends Model
                 $code_arr=array('fat_ref','protein_ref','lactose_ref','urea_ref','scc_ref');
                 break;
             case 'rot':
-                $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','bhb','pag');
+                $code_arr=array('fat_rout','protein_rout','lactose_rout','urea_rout','bhb');
                 break;
         }
 
@@ -79,6 +79,32 @@ class Round extends Model
                 }
             }
             return $array_attivate;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+
+    /**
+     * Get two rounds
+     *
+     * @var array
+     */
+    public static function getRoundsPrecedenti($round){
+        try {
+
+            $words = substr($round, 0, -4);
+            $rr = Round::Where('code_round', $round)->orderBy('id','ASC')->first();
+
+
+            $round = Round::select('code_round')
+                ->where('id','<' ,$rr->id)
+                ->where('code_round', 'like', $words.'%')
+                ->distinct()
+                ->orderBy('created_at','DESC')
+                ->limit(2)->get();
+            return $round;
+
         } catch (Exception $e) {
             return false;
         }
