@@ -3,6 +3,10 @@
 <script type="text/javascript">
     $(function (){
         Morris.Line({
+
+            ymax:4,
+            ymin:-4,
+            goals: [2, -2],
             element: "{{ $model->id }}",
             resize: true,
             data: [
@@ -26,7 +30,7 @@
                     "s{{ $i }}",
                 @endfor
             ],
-            hideHover: 'auto',
+            hideHover: false,
             parseTime: false,
             @if($model->colors)
                 lineColors: [
@@ -37,4 +41,6 @@
             @endif
         })
     });
+
+
 </script>

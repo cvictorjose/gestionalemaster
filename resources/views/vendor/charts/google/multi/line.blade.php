@@ -17,6 +17,7 @@
                     @endfor
                 ],
             @endfor
+
         ])
 
         var options = {
@@ -24,7 +25,16 @@
             fontSize: 12,
             @include('charts::google.titles')
             @include('charts::google.colors')
-            legend: { position: 'top', alignment: 'end' }
+            legend: {position: '', textStyle: {fontSize: 8}},
+            vAxis: {
+                viewWindowMode:'explicit',
+                viewWindow: {
+                    max:4,
+                    min:-4
+                }
+            },
+
+
         };
 
         var chart = new google.visualization.LineChart(document.getElementById("{{ $model->id }}"))

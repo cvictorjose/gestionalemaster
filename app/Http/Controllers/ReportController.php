@@ -153,21 +153,22 @@ class ReportController extends Controller
      */
     public function createChart($base,$block2,$block3,$round,$round2,$round3)
     {
-        $chart = Charts::multi('line', 'material')
+        $chart = Charts::multi('line', 'google')
             // Setup the chart settings
             ->title("")
             // A dimension of 0 means it will take 100% of the space
-            ->dimensions(0, 300) // Width x Height
+            ->dimensions(0, 250) // Width x Height
             // This defines a preset of colors already done:)
-            ->template("material")
+            ->template("google")
             // You could always set them manually
-            // ->colors(['#2196F3', '#F44336', '#FFC107'])
+             ->colors(['#2196F3', '#F44336', '#FFC107'])
             // Setup the diferent datasets (this is a multi chart)
+
             ->dataset($round, $base)
             ->dataset($round2,$block2)
             ->dataset($round3, $block3)
             // Setup what the values mean
-            ->labels([1, 2, 3, 4, 5, 6, 7,8,9,10]);
+            ->labels(['', '', '', '', '', '', '','','','']);
         return $chart;
     }
 

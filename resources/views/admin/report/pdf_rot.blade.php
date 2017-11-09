@@ -86,8 +86,8 @@ if (count($data) > 0){
                 $protein_ref_sdev    = number_format($d->s_dev,3);
                 $protein_ref_dist    = number_format($d->dist,3);
                 $protein_ref_m       = $d->method;
-                if ($d->method=="A")$protein_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$protein_ref_m="ISO
-                2446?IDF 226";
+                if ($d->method=="A")$protein_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$protein_ref_m="ISO
+                2446|IDF 226";
                 break;
             case 'fat_rout':
                 $fat_ref_labcode = $d->lab_code;
@@ -96,8 +96,8 @@ if (count($data) > 0){
                 $fat_ref_sdev    = number_format($d->s_dev,3);
                 $fat_ref_dist    = number_format($d->dist,3);
                 $fat_ref_m       = $d->method;
-                if ($d->method=="A")$fat_ref_m="ISO 1211?IDF 1"; elseif($d->method=="B")$fat_ref_m="ISO
-                2446?IDF 226";
+                if ($d->method=="A")$fat_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$fat_ref_m="ISO
+                2446|IDF 226";
                 break;
             case 'lactose_rout':
                 $lactose_ref_labcode = $d->lab_code;
@@ -385,7 +385,6 @@ if (count($data) > 0){
         ?>
         <td class= {{$class_sd}}> {{$fat_ref_dev}}</td>
 
-
         <!-- range: tra -0,025 e +0,025  -->
         <?php
         $class_sd="";
@@ -415,86 +414,79 @@ if (count($data) > 0){
         <td class= {{$class_sd}}> {{$urea_ref_dev}}</td>
 
 
+        <!-- range: tra -10% e +10%  -->
+        <?php
+        $class_sd="";
+        $class="green";
+        if ( $bhb_ref_dev == '&nbsp;') $class_sd="";
+        if ( $bhb_ref_dev > -10 &&  $bhb_ref_dev < 10) $class_sd=$class; else
+            $class_sd=$class_red;
+        ?>
+        <td class= {{$class_sd}}> {{$bhb_ref_dev}}%</td>
+
 
         <!-- range: tra -10% e +10%  -->
         <?php
         $class_sd="";
         $class="green";
-        if ($bhb_ref_dev == '&nbsp;') $class_sd="";
-        elseif ($bhb_ref_dev > -10 &&  $bhb_ref_dev < 10) $class_sd=$class; else $class_sd=$class_red;
+        if ( $pag_dev == '&nbsp;') $class_sd="";
+        if ( $pag_dev > -10 &&  $pag_dev < 10) $class_sd=$class; else
+            $class_sd=$class_red;
         ?>
-        <td class= {{$class_sd}}> {{$bhb_ref_dev}}</td>
-
-
-        <!-- range: tra -10% e +10%  -->
-        <?php
-        $class_sd="";
-        $class="green";
-        if ($pag_dev == '&nbsp;') $class_sd="";
-        elseif ($pag_dev > -0.045 &&  $pag_dev < 0.045) $class_sd=$class; else $class_sd=$class_red;
-        ?>
-        <td class= {{$class_sd}}> {{$pag_dev}}</td>
-
+        <td class= {{$class_sd}}> {{$pag_dev}}%</td>
 
     </tr>
     <tr>
         <td class="bold">Sd</td>		<!-- stampo valore di s_dev per ogni type -->
         <!-- se il valore è superiore al limite, la cella è rossa; se è inferiore, la cella è verde; se è uguale, è bianca -->
 
+        <!-- limite: 0.030 -->
         <?php
         $class_sd="";
-        $class="green";
-        if ($fat_ref_sdev == 0.030 || $fat_ref_sdev == '&nbsp;') $class_sd="";
-        elseif ($fat_ref_sdev > -0.030 &&  $fat_ref_sdev < 0.030) $class_sd=$class; else $class_sd=$class_red;
+        if (isset($fat_ref_sdev) < 0.030) $class_sd=$class;
+        elseif ($fat_ref_sdev > 0.030) $class_sd=$class_red; else $class_sd="";
         ?>
         <td class= {{$class_sd}}> {{$fat_ref_sdev}}</td>
 
         <!-- limite: 0.020 -->
         <?php
         $class_sd="";
-        $class="green";
-        if ($protein_ref_sdev == 0.020 || $protein_ref_sdev == '&nbsp;') $class_sd="";
-        elseif ($protein_ref_sdev > -0.020 &&  $protein_ref_sdev < 0.020) $class_sd=$class; else $class_sd=$class_red;
+        if (isset($protein_ref_sdev) < 0.020) $class_sd=$class;
+        elseif ($protein_ref_sdev > 0.020) $class_sd=$class_red; else $class_sd="";
         ?>
         <td class= {{$class_sd}}> {{$protein_ref_sdev}}</td>
 
         <!-- limite: 0.010 -->
         <?php
-        $class_sd="green";
-        if ($lactose_ref_sdev == 0.10 || $lactose_ref_sdev == '&nbsp;') $class_sd="";
-        if ($lactose_ref_sdev < -0.10)$class_sd=$class_red;
-        if ($lactose_ref_sdev > 0.10)$class_sd=$class_red;
+        $class_sd="";
+        if (isset($lactose_ref_sdev) < 0.10) $class_sd=$class;
+        elseif ($lactose_ref_sdev > 0.10) $class_sd=$class_red; else $class_sd="";
         ?>
         <td class= {{$class_sd}}> {{$lactose_ref_sdev}}</td>
 
         <!-- limite: 1,5 -->
         <?php
         $class_sd="";
-        $class="green";
-        if ($urea_ref_sdev == 1.5 || $urea_ref_sdev == '&nbsp;') $class_sd="";
-        elseif ($urea_ref_sdev > -1.5 &&  $urea_ref_sdev < 1.5) $class_sd=$class; else $class_sd=$class_red;
+        if (isset($urea_ref_sdev) < 1.5) $class_sd=$class;
+        elseif ($urea_ref_sdev > 1.5) $class_sd=$class_red; else $class_sd="";
         ?>
         <td class= {{$class_sd}}> {{$urea_ref_sdev}}</td>
 
         <!-- limite: 10 -->
         <?php
         $class_sd="";
-        $class="green";
-        if ($bhb_ref_sdev == 10 || $bhb_ref_sdev == '&nbsp;') $class_sd="";
-        elseif ($bhb_ref_sdev > -10 &&  $bhb_ref_sdev < 10) $class_sd=$class; else $class_sd=$class_red;
+        if ($bhb_ref_sdev==0 || isset($bhb_ref_sdev) < 10) $class_sd=$class;
+        elseif ($bhb_ref_sdev > 10) $class_sd=$class_red; else $class_sd="";
         ?>
-        <td class= {{$class_sd}}> {{$bhb_ref_sdev}}</td>
+        <td class= {{$class_sd}}> {{$bhb_ref_sdev}}%</td>
 
         <!-- limite: 045 -->
         <?php
         $class_sd="";
-        $class="green";
-        if ($pag_sdev == 0.045 || $pag_sdev == '&nbsp;') $class_sd="";
-        elseif ($pag_sdev > -0.045 &&  $pag_sdev < 0.045) $class_sd=$class; else $class_sd=$class_red;
+        if ($pag_sdev==0 || isset($pag_sdev) < 0.045) $class_sd=$class;
+        elseif ($pag_sdev > 0.045) $class_sd=$class_red; else $class_sd="";
         ?>
-        <td class= {{$class_sd}}> {{$pag_sdev}}</td>
-
-
+        <td class= {{$class_sd}}> {{$pag_sdev}}%</td>
     </tr>
     <tr>
         <td class="bold">D</td>			<!-- stampo valore di dist per ogni type; le celle sempre bianche -->
