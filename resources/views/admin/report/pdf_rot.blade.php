@@ -1123,6 +1123,7 @@ if (count($pagx) > 0){
 
 <table>
     {!! Charts::scripts() !!}
+    <?php $ch=1; ?>
     @foreach($code_arr as $who)
         @if($who!=="pag")
             <tr>
@@ -1164,8 +1165,13 @@ if (count($pagx) > 0){
                         </div>
                     </td>
                 @endif
-
             </tr>
+
+            <?php
+            if ($ch>2 && $ch<4){
+                echo "</table><div class=\"newpage\"></div><table>";
+            }
+            $ch=$ch+1; ?>
         @endif
     @endforeach
 </table>

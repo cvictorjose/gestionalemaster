@@ -1002,7 +1002,10 @@ if (count($data) > 0){
 
 <table>
     {!! Charts::scripts() !!}
+    <?php $ch=1; ?>
     @foreach($code_arr as $who)
+
+
         <tr>
             <td style="width: 50%;">
                 <div class="box box-primary">
@@ -1041,7 +1044,15 @@ if (count($data) > 0){
                 </div>
             </td>
         </tr>
-        <tr><td style="padding-top: 40px;"> </td><td style="padding-top: 40px;"> </td></tr>
+
+
+        <?php
+        if ($ch>2 && $ch<4){
+            echo "</table><div class=\"newpage\"></div><table>";
+        }
+        $ch=$ch+1; ?>
+
+
     @endforeach
 </table>
 </body>
