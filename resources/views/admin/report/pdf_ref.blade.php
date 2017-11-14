@@ -116,9 +116,9 @@ if (count($data) > 0){
             case 'scc_ref':
                 $scc_ref_labcode = $d->lab_code;
                 $scc_ref_x100    = $d->percent;
-                $scc_ref_dev     = number_format($d->dev,0)*100;
-                $scc_ref_sdev    = number_format($d->s_dev,0)*100;
-                $scc_ref_dist    = number_format($d->dist,0)*100;
+                $scc_ref_dev     = number_format($d->dev,2)*100;
+                $scc_ref_sdev    = number_format($d->s_dev,2)*100;
+                $scc_ref_dist    = number_format($d->dist,2)*100;
                 $scc_ref_m       = $d->method;
                 if ($d->method=="A")$scc_ref_m="ISO 1211|IDF 1"; elseif($d->method=="B")$scc_ref_m="ISO
                 2446|IDF 226";
@@ -251,7 +251,7 @@ if (count($data) > 0){
     <tr>
         <!-- la riga seguente può essere No con classe "red" o Yes con classe "green" -->
         <td class=@if ($results_received=='Yes') {{$class}} @else {{$class_red}} @endif>{{$results_received}}</td>
-        <td style="width:614px;">Deadline: {{$results_received_date}}</td> <!-- prendo la data dal db -->
+        <td style="width:614px;"> {{$results_received_date}}</td> <!-- prendo la data dal db -->
     </tr>
 </table>
 
@@ -338,7 +338,7 @@ if (count($data) > 0){
         <td>{{ $protein_ref_x100 }}</td>
         <td>{{ $lactose_ref_x100 }}</td>
         <td>{{ $urea_ref_x100 }}</td>
-        <td>{{ $scc_ref_x100 }}%</td>
+        <td>{{ $scc_ref_x100 }}@if ($s_a>0 && $scc_ref_x100!="")% @endif</td>
     </tr>
     <tr>
         <td class="bold">d</td>
@@ -384,13 +384,15 @@ if (count($data) > 0){
 
         <!-- range: tra -10% e +10%  -->
         <?php
-        $class_sd="";
+        $class_sd=$xx="";
         $class="green";
-        if ( $scc_ref_dev == '&nbsp;') $class_sd="";
-        if ( $scc_ref_dev > -10 &&  $scc_ref_dev < 10) $class_sd=$class; else
-            $class_sd=$class_red;
+        if ($scc_ref_dev!="" && $s_a>0 ) {
+            $xx="%";
+            if ( $scc_ref_dev > -10 &&  $scc_ref_dev < 10) $class_sd=$class; else $class_sd=$class_red;
+        }
+
         ?>
-        <td class= {{$class_sd}}> {{$scc_ref_dev}}%</td>
+        <td class= {{$class_sd}}> {{$scc_ref_dev}}{{$xx}}</td>
     </tr>
     <tr>
         <td class="bold">Sd</td>
@@ -398,44 +400,49 @@ if (count($data) > 0){
         <!-- limite: 0.030 -->
         <?php
         $class_sd="";
-        if (isset($fat_ref_sdev) < 0.030) $class_sd=$class;
-        elseif ($fat_ref_sdev > 0.030) $class_sd=$class_red; else $class_sd="";
+        if ($fat_ref_sdev!="" && $f_a>0 ) {
+            if ($fat_ref_sdev < 0.030) $class_sd=$class; elseif ($fat_ref_sdev > 0.030) $class_sd=$class_red;
+        }
         ?>
         <td class= {{$class_sd}}> {{$fat_ref_sdev}}</td>
 
         <!-- limite: 0.020 -->
         <?php
         $class_sd="";
-        if (isset($protein_ref_sdev) < 0.020) $class_sd=$class;
-        elseif ($protein_ref_sdev > 0.020) $class_sd=$class_red; else $class_sd="";
+        if ($protein_ref_sdev!="" && $p_a>0 ) {
+            if ($protein_ref_sdev < 0.020) $class_sd=$class; elseif ($protein_ref_sdev > 0.020) $class_sd=$class_red;
+        }
         ?>
         <td class= {{$class_sd}}> {{$protein_ref_sdev}}</td>
 
         <!-- limite: 0.010 -->
         <?php
         $class_sd="";
-        if (isset($lactose_ref_sdev) < 0.10) $class_sd=$class;
-        elseif ($lactose_ref_sdev > 0.10) $class_sd=$class_red; else $class_sd="";
+        if ($lactose_ref_sdev!="" && $l_a>0 ) {
+            if ($lactose_ref_sdev < 0.10) $class_sd=$class; elseif ($lactose_ref_sdev > 0.10) $class_sd=$class_red;
+        }
         ?>
         <td class= {{$class_sd}}> {{$lactose_ref_sdev}}</td>
 
         <!-- limite: 1,5 -->
         <?php
         $class_sd="";
-        if (isset($urea_ref_sdev) < 1.5) $class_sd=$class;
-        elseif ($urea_ref_sdev > 1.5) $class_sd=$class_red; else $class_sd="";
+        if ($urea_ref_sdev!="" && $u_a>0 ) {
+            if ($urea_ref_sdev < 1.5) $class_sd=$class; elseif ($urea_ref_sdev > 1.5) $class_sd=$class_red;
+        }
         ?>
         <td class= {{$class_sd}}> {{$urea_ref_sdev}}</td>
 
         <!-- limite: 10 -->
         <?php
         $class_sd="";
-        if ($scc_ref_sdev==0 || isset($scc_ref_sdev) < 10) $class_sd=$class;
-        elseif ($scc_ref_sdev > 10) $class_sd=$class_red; else $class_sd="";
+        $xx="";
+        if ($scc_ref_sdev!="" && $s_a>0 ) {
+            $xx="%";
+            if ($scc_ref_sdev < 10) $class_sd=$class; elseif ($scc_ref_sdev > 10) $class_sd=$class_red;
+        }
         ?>
-        <td class= {{$class_sd}}> {{$scc_ref_sdev}}%</td>
-
-
+        <td class= {{$class_sd}}> {{$scc_ref_sdev}}{{$xx}}</td>
     </tr>
     <tr>
         <td class="bold">D</td>			<!-- stampo valore di dist per ogni type; le celle sempre bianche -->
@@ -443,7 +450,7 @@ if (count($data) > 0){
         <td>{{ $protein_ref_dist }}</td>
         <td>{{ $lactose_ref_dist }}</td>
         <td>{{ $urea_ref_dist }}</td>
-        <td>{{ $scc_ref_dist }}%</td>
+        <td>{{ $scc_ref_dist }}@if ($s_a>0 && $scc_ref_dist!="")% @endif</td>
     </tr>
     <tr>
         <td class="bold">Method</td>	<!-- stampo valore di method per ogni type; le celle sempre bianche -->
