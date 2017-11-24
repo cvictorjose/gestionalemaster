@@ -18,8 +18,8 @@
             legend: { position: 'top', alignment: 'end' }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById("{{ $model->id }}"))
-
+        var chart = new google.visualization.LineChart(document.getElementById("{{ $model->id }}"));
+		
         chart.draw(data, options)
     }
 </script>

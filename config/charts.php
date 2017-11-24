@@ -170,7 +170,13 @@ return [
                 'https://cdnjs.cloudflare.com/ajax/libs/echarts/3.6.2/echarts.min.js',
             ],
         ],
-
+		'html2pdf' => [
+            'scripts' => [
+				'html2pdf/vendor/jspdf.min.js',
+				'html2pdf/vendor/html2canvas.min.js',
+                'html2pdf/src/html2pdf.js',
+            ],
+        ],
         /*'amcharts' => [
             'scripts' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/amcharts.js',

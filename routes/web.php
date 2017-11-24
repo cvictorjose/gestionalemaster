@@ -1,5 +1,12 @@
 <?php
 Route::get('/', function () { return redirect('/laboratorio'); });
+Route::get('/me', function () { 
+
+$pdf = App::make('dompdf.wrapper');
+$pdf->loadHTML('<h1>Test</h1>');
+return $pdf->stream();
+});
+
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');

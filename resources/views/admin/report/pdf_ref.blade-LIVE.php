@@ -202,7 +202,7 @@ if (count($data) > 0){
     <tr>
         <!--
       Per il laboratorio, in questo round, ho selezionato il test?
-      se sÃ¬: compare Yes con classe green;
+      se sì: compare Yes con classe green;
       se no: compare No senza classe
       -->
         <td class=@if ($fat_ref_sub=='Yes') {{$class}} @endif>{{$fat_ref_sub}}</td>
@@ -216,7 +216,7 @@ if (count($data) > 0){
         <!--
         Tabella: data
         Query: cerca id del laboratorio in icar_code e round attuale in round
-        memorizzo lab_code in una variabile perchÃ© mi serve dopo
+        memorizzo lab_code in una variabile perché mi serve dopo
         -->
         <td>{{$fat_ref_labcode}}</td>				<!-- stampo valore di rank quando type = fat_ref -->
         <td>{{$protein_ref_labcode}}</td>				<!-- stampo valore di rank quando type = protein_ref -->
@@ -230,8 +230,8 @@ if (count($data) > 0){
     <tr>
         <td class="left bold">Are all the sample results received?</td>
         <!--
-        Per il laboratorio, in questo round, ho risposto sÃ¬ alla prima domanda?
-        se sÃ¬: compare Yes con classe green;
+        Per il laboratorio, in questo round, ho risposto sì alla prima domanda?
+        se sì: compare Yes con classe green;
         se no: compare No senza classe
         -->
         <td class=@if ($fat_ref_sample=='Yes') {{$class}} @endif>{{$fat_ref_sample}}</td>
@@ -249,7 +249,7 @@ if (count($data) > 0){
         <td colspan="2" class="bold title2">Data results received on time</td>
     </tr>
     <tr>
-        <!-- la riga seguente puÃ² essere No con classe "red" o Yes con classe "green" -->
+        <!-- la riga seguente può essere No con classe "red" o Yes con classe "green" -->
         <td class=@if ($results_received=='Yes') {{$class}} @else {{$class_red}} @endif>{{$results_received}}</td>
         <td style="width:614px;"> {{$results_received_date}}</td> <!-- prendo la data dal db -->
     </tr>
@@ -277,7 +277,7 @@ if (count($data) > 0){
         <td>SCC*1000/ml</td>
     </tr>
     <tr>
-        <!-- puÃ² essere Yes con classe "green", No con classe "red", vuoto senza classe -->
+        <!-- può essere Yes con classe "green", No con classe "red", vuoto senza classe -->
 
         <td class=@if ($fat_ref_q2=='Yes') {{$class}}  @elseif ($fat_ref_q2=='No'){{$class_red}} @else
             {{$class_no}}@endif>{{$fat_ref_q2}}</td>
@@ -342,7 +342,7 @@ if (count($data) > 0){
     </tr>
     <tr>
         <td class="bold">d</td>
-        <!--  se il valore nella cella Ã¨ all'interno del range, la cella Ã¨ verde; se Ã¨ al di fuori, la cella Ã¨ rossa  -->
+        <!--  se il valore nella cella è all'interno del range, la cella è verde; se è al di fuori, la cella è rossa  -->
 
         <!-- range: tra -0,020 e +0,020  -->
         <?php
@@ -396,7 +396,7 @@ if (count($data) > 0){
     </tr>
     <tr>
         <td class="bold">Sd</td>
-        <!-- se il valore Ã¨ superiore al limite, la cella Ã¨ rossa; se Ã¨ inferiore, la cella Ã¨ verde; se Ã¨ uguale, Ã¨ bianca -->
+        <!-- se il valore è superiore al limite, la cella è rossa; se è inferiore, la cella è verde; se è uguale, è bianca -->
         <!-- limite: 0.030 -->
         <?php
         $class_sd="";
@@ -503,9 +503,9 @@ if (count($data) > 0){
         <td>mg/dl</td>
         <td>SCC*1000/ml</td>
     </tr>
-    <!-- se il test Ã¨ attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
-    <!-- se il test Ã¨ attivato ma non ho righe con sample_number = 1, cella vuota verde -->
-    <!-- se il test non Ã¨ stato attivato, la cella Ã¨ bianca -->
+    <!-- se il test è attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
+    <!-- se il test è attivato ma non ho righe con sample_number = 1, cella vuota verde -->
+    <!-- se il test non è stato attivato, la cella è bianca -->
 
     <?php
     //print_r($arr_sp1);
@@ -755,7 +755,7 @@ if (count($data) > 0){
 
     <!--
     Classi da assegnare alle celle:
-    se la cella Ã¨ vuota, nessuna classe
+    se la cella è vuota, nessuna classe
     se valore minore di -3 : classe red
     se valore tra -3 e -2 : classe yellow
     se valore tra -2 e +2 : classe green
@@ -1002,10 +1002,7 @@ if (count($data) > 0){
 
 <table>
     {!! Charts::scripts() !!}
-    <?php $ch=1; 
-	$numItems = count($code_arr);
-	$i = 0;
-	?>
+    <?php $ch=1; ?>
     @foreach($code_arr as $who)
 
 
@@ -1053,29 +1050,11 @@ if (count($data) > 0){
         if ($ch>2 && $ch<4){
             echo "</table><div class=\"newpage\"></div><table>";
         }
-        $ch=$ch+1;
-		?>
-		@if(++$i === $numItems)
-			
-			<script>
-			setTimeout(call_pdf, 2000);
-			function call_pdf(){
-				var element = document.body;
-				html2pdf(element, {
-				  margin:       0.1,
-				  filename:     Math.floor(Math.random() * (2000000000 - 1000000000 + 1)) + 1000000000 +'-report.pdf',
-				  image:        { type: 'jpeg', quality: 0.98 },
-				  html2canvas:  { dpi: 192, letterRendering: true },
-				  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-				});
-				setTimeout("window.close()", 5000);
-			}
-			</script>
-		@endif
+        $ch=$ch+1; ?>
+
 
     @endforeach
 </table>
-
 </body>
 </html>
 

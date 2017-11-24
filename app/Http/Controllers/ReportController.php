@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App;
 use App\Data;
 use App\Laboratory;
 use App\Means;
@@ -11,6 +11,7 @@ use App\Repeatability;
 use App\Round;
 use App\Zscorefix;
 use App\Zscorept;
+use Barryvdh\DomPDF\Facade as PDF;
 use ConsoleTVs\Charts\Facades\Charts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -113,10 +114,12 @@ class ReportController extends Controller
 
 
                 $grafico   = $this->graficoReport($lab_id,$round,$type,$icar);
+				
                 //return $grafico;
                 if (empty($grafico))return response()->view('errors.custom', ['code' => 404, 'error' => "CHART EMPTY"],404);
                 $chart     = $grafico['chart']['zscorept'];
                 $chartfx   = $grafico['chartfx']['zscorefix'];
+
             }
             //PAG
             if ($type=="rot"){
@@ -130,9 +133,8 @@ class ReportController extends Controller
 
 
             if ($type=="ref"){
-                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept',
-                    'zscorefix','chart','chartfx','code_arr'));
-            }else{
+                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr'));
+			 }else{
                 return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
                     'zscorefix','pagx','chart','chartfx','code_arr','icar'));
             }

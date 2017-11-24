@@ -38,7 +38,11 @@
         };
 
         var chart = new google.visualization.LineChart(document.getElementById("{{ $model->id }}"))
-
+		// Wait for the chart to finish drawing before calling the getImageURI() method.
+		google.visualization.events.addListener(chart, 'ready', function () {
+			document.getElementById("{{ $model->id }}").innerHTML = '<img src="' + chart.getImageURI() + '">';
+		});
+		
         chart.draw(data, options)
     }
 </script>
