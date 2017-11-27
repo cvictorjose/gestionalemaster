@@ -999,7 +999,6 @@ if (count($data) > 0){
 </table>
 
 <div class="newpage"></div>
-
 <table>
     {!! Charts::scripts() !!}
     <?php $ch=1; 
@@ -1055,7 +1054,7 @@ if (count($data) > 0){
         }
         $ch=$ch+1;
 		?>
-		@if(++$i === $numItems)
+		@if(++$i === $numItems && $action == 'd')
 			
 			<script>
 			setTimeout(call_pdf, 2000);
@@ -1068,12 +1067,13 @@ if (count($data) > 0){
 				  html2canvas:  { dpi: 192, letterRendering: true },
 				  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
 				});
-				setTimeout("window.close()", 5000);
+				
 			}
 			</script>
 		@endif
 
     @endforeach
+	
 </table>
 
 </body>
