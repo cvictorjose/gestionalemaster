@@ -1123,7 +1123,23 @@ if (count($pagx) > 0){
 
 <table>
     {!! Charts::scripts() !!}
-    <?php $ch=1; ?>
+    <?php $ch=1;?>
+	@if($action == 'd')
+			<script>
+			setTimeout(call_pdf, 2000);
+			function call_pdf(){
+				var element = document.body;
+				html2pdf(element, {
+				  margin:       0.1,
+				  filename:     Math.floor(Math.random() * (2000000000 - 1000000000 + 1)) + 1000000000 +'-report.pdf',
+				  image:        { type: 'jpeg', quality: 0.98 },
+				  html2canvas:  { dpi: 192, letterRendering: true },
+				  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+				});
+				
+			}
+			</script>
+	@endif
     @foreach($code_arr as $who)
         @if($who!=="pag")
             <tr>
@@ -1172,8 +1188,9 @@ if (count($pagx) > 0){
                 echo "</table><div class=\"newpage\"></div><table>";
             }
             $ch=$ch+1; ?>
+			
         @endif
-    @endforeach
+	@endforeach
 </table>
 
 </body>

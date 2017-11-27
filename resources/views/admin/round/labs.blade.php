@@ -33,10 +33,10 @@
                                 $words = substr($lab->code_round, 0, -4);
 
                                 $url_ref = action('ReportController@roundReportRef', ['lab_id' => $lab->laboratory_id,
-                                'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'ref']);
+                                'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'ref','action'=>'r']);
 
                                 $url_rout = action('ReportController@roundReportRef', ['lab_id' => $lab->laboratory_id,
-                                        'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'rot']);
+                                        'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'rot','action'=>'r']);
 
                                 ?>
 
@@ -82,7 +82,23 @@
                                 <input name="lab_round" type="hidden" value={{$lab->code_round}}>
                                 {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
                                 {!! Form::close() !!}
-                            </td>
+								<?php
+                                $words = substr($lab->code_round, 0, -4);
+
+                                $url_ref = action('ReportController@roundReportRef', ['lab_id' => $lab->laboratory_id,
+                                'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'ref','action'=>'d']);
+
+                                $url_rout = action('ReportController@roundReportRef', ['lab_id' => $lab->laboratory_id,
+                                        'icar_code' => $lab->icar_code,'code_round' => $lab->code_round,'type' => 'rot','action'=>'d']);
+
+                                ?>
+
+                                @if($words=="RF")
+                                    <a href="{{ $url_ref }}" class = 'btn btn-xs btn-success' target="_blank"><span class="fa fa-download">&nbsp;</span>{!! trans('global.app_download') !!}</a>
+                                @else
+                                    <a href="{{ $url_rout }}" class = 'btn btn-xs btn-success' target="_blank"><span class="fa fa-download">&nbsp;</span>{!! trans('global.app_download') !!}</a>
+                                @endif
+							 </td>
                         </tr>
                     @endforeach
                 @else

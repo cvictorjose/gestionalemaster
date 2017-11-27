@@ -84,6 +84,7 @@ class ReportController extends Controller
             $round = request()->code_round;
             $lab_id =request()->lab_id;
             $type =request()->type;
+			$action = request()->action;
 
             $data=$outlier=$repeat=$zscorept=$zscorefix=$chart=$chartfx=$code_arr=array();
 
@@ -133,10 +134,10 @@ class ReportController extends Controller
 
 
             if ($type=="ref"){
-                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr'));
+                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr','action'));
 			 }else{
                 return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
-                    'zscorefix','pagx','chart','chartfx','code_arr','icar'));
+                    'zscorefix','pagx','chart','chartfx','code_arr','icar','action'));
             }
 
         } catch (\Exception $e) {
