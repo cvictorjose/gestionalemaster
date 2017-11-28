@@ -1001,6 +1001,13 @@ if (count($data) > 0){
 <div class="newpage"></div>
 <table>
     {!! Charts::scripts() !!}
+	<script>
+	$(function(){
+		$.LoadingOverlay("show", {
+			fade  : [2000, 1000]
+		});
+	});
+	</script>
     <?php $ch=1; 
 	$numItems = count($code_arr);
 	$i = 0;
@@ -1059,6 +1066,7 @@ if (count($data) > 0){
 			<script>
 			setTimeout(call_pdf, 2000);
 			function call_pdf(){
+				$('.loadingoverlay').remove(); 
 				var element = document.body;
 				html2pdf(element, {
 				  margin:       0.1,
