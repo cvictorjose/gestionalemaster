@@ -1123,11 +1123,19 @@ if (count($pagx) > 0){
 
 <table>
     {!! Charts::scripts() !!}
+	<script>
+	$(function(){
+		$.LoadingOverlay("show", {
+			fade  : [2000, 1000]
+		});
+	});
+	</script>
     <?php $ch=1;?>
 	@if($action == 'd')
 			<script>
 			setTimeout(call_pdf, 2000);
 			function call_pdf(){
+				$('.loadingoverlay').remove(); 
 				var element = document.body;
 				html2pdf(element, {
 				  margin:       0.1,
