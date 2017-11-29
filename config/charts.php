@@ -172,6 +172,7 @@ return [
         ],
 		'html2pdf' => [
             'scripts' => [
+				'https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.5.4/src/loadingoverlay.min.js',
 				'html2pdf/vendor/jspdf.min.js',
 				'html2pdf/vendor/html2canvas.min.js',
                 'html2pdf/src/html2pdf.js',
