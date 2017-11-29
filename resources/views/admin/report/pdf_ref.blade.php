@@ -1062,7 +1062,7 @@ if (count($data) > 0){
 				var element = document.body;
 				html2pdf(element, {
 				  margin:       0.1,
-				  filename:     Math.floor(Math.random() * (2000000000 - 1000000000 + 1)) + 1000000000 +'-report.pdf',
+				  filename:     '{{$icar_code}} - Report {{$code_round}} - {{$lab->lab_name}}-report.pdf',
 				  image:        { type: 'jpeg', quality: 0.98 },
 				  html2canvas:  { dpi: 192, letterRendering: true },
 				  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }

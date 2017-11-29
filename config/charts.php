@@ -81,7 +81,7 @@ return [
             ],
         ],
 
-        'chartist' => [
+        /*'chartist' => [
             'scripts' => ['chart/chartist/chartist.min.js',],
             'styles' =>  ['chart/chartist/chartist.min.css',
             ],
@@ -98,7 +98,7 @@ return [
                 'chart/fusioncharts/fusioncharts.js',
                 'chart/fusioncharts/fusioncharts.theme.fint.js',
             ],
-        ],
+        ],*/
 
         'google' => [
             'scripts' => [
@@ -108,7 +108,7 @@ return [
             ],
         ],
 
-        'highcharts' => [
+        /*'highcharts' => [
             'styles' => [
                 // The following CSS is not added due to color compatibility errors.
                 // 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/css/highcharts.css',
@@ -120,7 +120,7 @@ return [
                 'chart/highcharts/data.js',
                 'chart/highcharts/world.js',
             ],
-        ],
+        ],*/
 
         'justgage' => [
             'scripts' => [
@@ -129,7 +129,7 @@ return [
             ],
         ],
 
-        'morris' => [
+       /* 'morris' => [
             'styles' => [
                 'chart/morris/morris.css',
             ],
@@ -137,7 +137,7 @@ return [
                 'https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.6/raphael.min.js',
                 'chart/morris/morris.min.js',
             ],
-        ],
+        ],*/
 
         'plottablejs' => [
             'scripts' => [
