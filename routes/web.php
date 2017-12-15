@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
 Route::get('round_report_ref',array('as'=>'report_pdf_ref','uses'=>'ReportController@roundReportRef'));
 
 
+
+
 //CHART
 Route::get('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));
 //AUTOCOMPLETE

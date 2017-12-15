@@ -75,11 +75,28 @@ return [
             'scripts' => ['chart/jquery.min.js',],
         ],
 
-        'canvas-gauges' => [
+        'google' => [
+            'scripts' => [
+                'https://www.google.com/jsapi',
+                'chart/google/loader.js',
+                "google.charts.load('current', {'packages':['corechart', 'gauge', 'geochart', 'bar', 'line']})",
+            ],
+        ],
+        'html2pdf' => [
+            'scripts' => [
+                'https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.5.4/src/loadingoverlay.min.js',
+                'https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.5.4/extras/loadingoverlay_progress/loadingoverlay_progress.min.js',
+                'html2pdf/vendor/jspdf.min.js',
+                'html2pdf/vendor/html2canvas.min.js',
+                'html2pdf/src/html2pdf.js',
+            ],
+        ],
+
+        /*'canvas-gauges' => [
             'scripts' => [
                 'https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.2/all/gauge.min.js',
             ],
-        ],
+        ],*/
 
         /*'chartist' => [
             'scripts' => ['chart/chartist/chartist.min.js',],
@@ -100,13 +117,7 @@ return [
             ],
         ],*/
 
-        'google' => [
-            'scripts' => [
-                'https://www.google.com/jsapi',
-                'chart/google/loader.js',
-                "google.charts.load('current', {'packages':['corechart', 'gauge', 'geochart', 'bar', 'line']})",
-            ],
-        ],
+
 
         /*'highcharts' => [
             'styles' => [
@@ -122,12 +133,12 @@ return [
             ],
         ],*/
 
-        'justgage' => [
+       /* 'justgage' => [
             'scripts' => [
                 'chart/justgage/raphael.min.js',
                 'chart/justgage/justgage.min.js',
             ],
-        ],
+        ],*/
 
        /* 'morris' => [
             'styles' => [
@@ -139,7 +150,7 @@ return [
             ],
         ],*/
 
-        'plottablejs' => [
+        /*'plottablejs' => [
             'scripts' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js',
                 'https://cdnjs.cloudflare.com/ajax/libs/plottable.js/2.8.0/plottable.min.js',
@@ -147,15 +158,15 @@ return [
             'styles' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/plottable.js/2.2.0/plottable.css',
             ],
-        ],
+        ],*/
 
-        'progressbarjs' => [
+        /*'progressbarjs' => [
             'scripts' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js',
             ],
-        ],
+        ],*/
 
-        'c3' => [
+        /*'c3' => [
             'scripts' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js',
                 'https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js',
@@ -163,21 +174,14 @@ return [
             'styles' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css',
             ],
-        ],
+        ],*/
 
-        'echarts' => [
+        /*'echarts' => [
             'scripts' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/echarts/3.6.2/echarts.min.js',
             ],
-        ],
-		'html2pdf' => [
-            'scripts' => [
-				'https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.5.4/src/loadingoverlay.min.js',
-				'html2pdf/vendor/jspdf.min.js',
-				'html2pdf/vendor/html2canvas.min.js',
-                'html2pdf/src/html2pdf.js',
-            ],
-        ],
+        ],*/
+
         /*'amcharts' => [
             'scripts' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/amcharts.js',

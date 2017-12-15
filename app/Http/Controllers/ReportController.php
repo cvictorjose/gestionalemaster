@@ -133,12 +133,29 @@ class ReportController extends Controller
             $lab   = Laboratory::find($lab_id);
 
 
-            if ($type=="ref"){
-                return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept','zscorefix','chart','chartfx','code_arr','action'));
-			 }else{
-                return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
-                    'zscorefix','pagx','chart','chartfx','code_arr','icar','action'));
-            }
+
+                switch ($action) {
+                    case 'r':
+                        if ($type=="ref"){
+                            return view('admin.report.pdf_ref', compact('data','round','lab','outlier','repeat','zscorept',
+                                'zscorefix','chart','chartfx','code_arr'));
+                        }else{
+                            return view('admin.report.pdf_rot', compact('data','round','lab','outlier','repeat','zscorept',
+                                'zscorefix','pagx','chart','chartfx','code_arr','icar'));
+                        }
+                        break;
+
+                    case 'd':
+                        if ($type=="ref"){
+                            return view('admin.report.down_ref', compact('data','round','lab','outlier','repeat',
+                                'zscorept','zscorefix','chart','chartfx','code_arr'));
+                        }else{
+                            return view('admin.report.down_rot', compact('data','round','lab','outlier','repeat','zscorept',
+                                'zscorefix','pagx','chart','chartfx','code_arr','icar'));
+                        }
+                        break;
+
+                }
 
         } catch (\Exception $e) {
             $message = [
