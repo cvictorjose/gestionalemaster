@@ -2,19 +2,16 @@
 @extends('layouts.app')
 
 @section('content')
-
     {{--<a href="{{ route('round.create') }}" class="btn btn-success pull-right">@lang('global.app_add_new')</a>--}}
     <div class="panel panel-default">
         <div class="panel-heading">
-
-            <h4>@lang('global.app_list')  dei Test </h4>
+            <h4> @lang('global.app_list') dei Test <br>{{$lab_name}}</h4>
             {!! Form::open(array(
                'style' => 'display: inline-block;',
                'method' => 'POST',
                'route' => ['round_labs'])) !!}
             {{ csrf_field() }}
             <input name="round_id" type="hidden" value={{$lab_round}}>
-
             {!! Form::submit(trans('global.app_back_to_list'), array('class' => 'btn btn-xs btn-danger')) !!}
             {!! Form::close() !!}
         </div>

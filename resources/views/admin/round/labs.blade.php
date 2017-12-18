@@ -8,7 +8,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>@lang('global.app_list')  @lang('global.labs.title') @lang('global.round.title') </h4>
+            <h4>@lang('global.app_list')  Laboratori partecipanti al Round </h4>
         </div>
 
         <div class="panel-body table-responsive">
@@ -60,14 +60,32 @@
                                 {!! Form::close() !!}--}}
                             </td>
                             <td>
+                                {{--modify test--}}
+
+                                {!! Form::open(array(
+                                       'style' => 'display: inline-block;',
+                                       'method' => 'GET',
+                                       'route' => ['round.edit',$lab->code_round])) !!}
+                                {{ csrf_field() }}
+                                <input name="lab_id" type="hidden" value="{{$lab->laboratory_id}}">
+                                <input name="lab_round" type="hidden" value="{{$lab->code_round}}">
+                                <input name="lab_name" type="hidden" value="{{ $lab->lab_name}}">
+                                {!! Form::submit(trans('global.app_edit'), array('class' => 'btn btn-xs btn-warning')) !!}
+                                {!! Form::close() !!}
+
+
+
+
+
                                 {{--details test--}}
                                 {!! Form::open(array(
                                        'style' => 'display: inline-block;',
                                        'method' => 'POST',
                                        'route' => ['round_lab_test'])) !!}
                                 {{ csrf_field() }}
-                                <input name="lab_id" type="hidden" value={{$lab->laboratory_id}}>
-                                <input name="lab_round" type="hidden" value={{$lab->code_round}}>
+                                <input name="lab_id" type="hidden" value="{{$lab->laboratory_id}}">
+                                <input name="lab_round" type="hidden" value="{{$lab->code_round}}">
+                                <input name="lab_name" type="hidden" value="{{ $lab->lab_name}}">
                                 {!! Form::submit(trans('global.app_view'), array('class' => 'btn btn-xs btn-info')) !!}
                                 {!! Form::close() !!}
 
@@ -80,6 +98,7 @@
                                 {{ csrf_field() }}
                                 <input name="lab_id" type="hidden" value={{$lab->laboratory_id}}>
                                 <input name="lab_round" type="hidden" value={{$lab->code_round}}>
+
                                 {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
                                 {!! Form::close() !!}
 								<?php

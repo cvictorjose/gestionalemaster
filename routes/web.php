@@ -1,11 +1,5 @@
 <?php
 Route::get('/', function () { return redirect('/laboratorio'); });
-Route::get('/me', function () { 
-
-$pdf = App::make('dompdf.wrapper');
-$pdf->loadHTML('<h1>Test</h1>');
-return $pdf->stream();
-});
 
 
 // Authentication Routes...
@@ -36,7 +30,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 
 Route::group(['middleware' => ['auth']], function () {
 
-  Route::resource('laboratorio', 'LaboratoryController');
+    Route::resource('laboratorio', 'LaboratoryController');
 
     //ROUND
     Route::resource('round', 'RoundController');
@@ -56,9 +50,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 //OPEN NEW TAB
 Route::get('round_report_ref',array('as'=>'report_pdf_ref','uses'=>'ReportController@roundReportRef'));
-
-
-
 
 //CHART
 Route::get('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));

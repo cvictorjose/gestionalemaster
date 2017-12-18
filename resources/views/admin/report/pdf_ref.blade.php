@@ -172,7 +172,7 @@ if (count($data) > 0){
 <body>
 <table id="header">
     <tr>
-        <td class="logo"><img src="../assets/img/logo.png" class="logo" /></td>
+        <td class="logo"><img src="assets/img/logo.png" class="logo" /></td>
         <td class="title2">Chemical Reference Methods<br />Laboratory participation codes and Performance analyses</td>
         <td class="box">ICAR PT <br />{{$code_round}}</td>
     </tr>
@@ -234,11 +234,11 @@ if (count($data) > 0){
         se sì: compare Yes con classe green;
         se no: compare No senza classe
         -->
-        <td class=@if ($fat_ref_sample=='Yes') {{$class}} @endif>{{$fat_ref_sample}}</td>
-        <td class=@if ($p_ref_sample=='Yes') {{$class}} @endif>{{$p_ref_sample}}</td>
-        <td class=@if ($lac_ref_sample=='Yes') {{$class}} @endif>{{$lac_ref_sample}}</td>
-        <td class=@if ($u_ref_sample=='Yes') {{$class}} @endif>{{$u_ref_sample}}</td>
-        <td class=@if ($scc_ref_sample=='Yes') {{$class}} @endif>{{$scc_ref_sample}}</td>
+        <td class="@if ($fat_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$fat_ref_sample}}</td>
+        <td class="@if ($p_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$p_ref_sample}}</td>
+        <td class="@if ($lac_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$lac_ref_sample}}</td>
+        <td class="@if ($u_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$u_ref_sample}}</td>
+        <td class="@if ($scc_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$scc_ref_sample}}</td>
         {{--<td class=@if ($bhb_ref_sample=='Yes') {{$class}} @endif>{{$bhb_ref_sample}}</td>--}}
     </tr>
 </table>

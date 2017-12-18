@@ -43,10 +43,7 @@ class RoundController extends Controller
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-
-
        // return Round::getRoundsPrecedenti('RF0916');
-
      return view('admin.round.index', compact('rounds'));
     }
 
@@ -96,14 +93,16 @@ class RoundController extends Controller
             $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
             $lab_id=$inputData['lab_id'];
             $lab_round=$inputData['lab_round'];
-            $labs = Round::where('laboratory_id',$lab_id)->Where('code_round', $lab_round)->get();
+            $lab_name=$inputData['lab_name'];
+
+           $labs = Round::where('laboratory_id',$lab_id)->Where('code_round', $lab_round)->get();
         } catch (\Exception $e) {
             $message = [
                 'flashType'    => 'danger',
                 'flashMessage' => 'Errore! Laboratorio'
             ];
         }
-        return view('admin.round.lab_test', compact('labs','lab_round'));
+        return view('admin.round.lab_test', compact('labs','lab_round','lab_name'));
     }
 
 
@@ -230,20 +229,49 @@ class RoundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateRoundLab()
+    public function update(Request $request,$laboratory_id)
     {
-       /* try {
-            $inputData  = Input::all(); // echo "<pre>"; print_r($inputData); //exit;
-            $lab_id=$inputData['lab_id'];
-            $lab_round=$inputData['lab_round'];
 
-            $lab = Round::where('laboratory_id',$lab_id)->Where('code_round', $lab_round)->get();
 
-            return $lab;
-            //return view('admin.round.edit', compact('lab'));
+       try {
+            $inputData  = Input::all();  //echo "<pre>"; print_r($inputData); exit;
+            $code_round=$inputData['code_round'];
+
+            $round = Round::where('laboratory_id',$laboratory_id)->Where('code_round', $code_round)->delete();
+
+
+           $code_test= CodeTest::where('status','1')->get(['code']);
+           foreach ($code_test as $ct){
+               $test_active  = (Input::get($ct->code))? 1 : 0;
+               if ($test_active == 1){
+                   $receive_date=Input::get('date');
+
+                   $item = new Round();
+                   $item->laboratory_id         = $laboratory_id;
+                   $item->code_round            = Input::get('code_round');
+                   $item->results_received      = Input::get('results_received')? '1' : '0';
+                   $item->results_received_date = $receive_date;
+                   $item->code_test   = $ct->code;
+                   $item->question1   = Input::get('question1_'.$ct->code)? '1' : '0';
+                   $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
+                   $item->status   = 1;
+
+                   // print_r(json_decode($item)) ;
+                   $item->save();
+               }
+           }
+
+           $message = [
+               'flashType'    => 'success',
+               'flashMessage' => 'Round aggiornato con successo!'
+           ];
+
+           return back()->withInput()->with($message);
+
+
         } catch (Exception $e) {
             //log
-        }*/
+        }
     }
 
     /**
@@ -296,5 +324,48 @@ class RoundController extends Controller
         } catch (Exception $e) {
             //log
         }
+    }
+
+
+    /**
+     * Show the form for editing Lab.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        try {
+            $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); //exit;
+            $lab_id=$inputData['lab_id'];
+            $lab_round=$inputData['lab_round'];
+
+            $result = Round::where('laboratory_id',$lab_id)->Where('code_round', $lab_round)->get();
+            //return $result;
+            $round= new \stdClass();
+            foreach ($result as $r){
+                $round->laboratory_id               = $r->laboratory_id;
+                $round->code_round                  = $r->code_round;
+                $round->results_received            = $r->results_received;
+                $round->results_received_date       = $r->results_received_date;
+
+                $tt= new \stdClass();
+                $tt->test=$r->code_test;
+                $tt->q1=$r->question1;
+                $tt->q2=$r->question2;
+                $round->test[] = $tt;
+            }
+
+            $tests = CodeTest::all();
+
+          // return response()->json($round);
+
+        } catch (\Exception $e) {
+            $message = [
+                'flashType'    => 'danger',
+                'flashMessage' => 'Errore! Modifica Round'
+            ];
+        }
+        return view('admin.round.edit', compact('round','tests'));
     }
 }

@@ -67,8 +67,6 @@ if (count($round) > 0){
     }
 }
 
-
-
 if (count($data) > 0){
     foreach ($data as $d){
         $icar_code              = $d->icar_code;
@@ -140,10 +138,11 @@ if (count($data) > 0){
         @page {
             size: A4;
         }
-        body { font-family: Arial, Helvetica, sans-serif; font-size:12px; margin-top:0; padding-top:0; }
-        table { margin-top: 20px; width:775px; border: 1px solid #000; }
+        body { font-family: Arial, Helvetica, sans-serif; font-size:12px; margin-top:0; padding-top:0;}
+        table { margin-top: 3px; width:775px; border: 1px solid #000; }
         table#info { width: 100% !important; border:none; }
-        td { text-align:center; padding: 3px; border:1px solid #ccc; width:94px; font-size: 10px; vertical-align:middle; }
+        td { text-align:center; padding: 2px; border:1px solid #ccc; width:94px; font-size: 10px;
+            vertical-align:middle; }
         span.half_r { width:49%; padding:0; display:inline-block;float:left;}
         span.half_l { width:49%; padding:0; display:inline-block;float:left; border-right:1px solid #000;}
         .double { }
@@ -155,13 +154,13 @@ if (count($data) > 0){
         .red { background-color: #F00; }
         .yellow {background-color:#FF0; }
         .green { background-color:#92D050;}
-        .title2 { font-size: 14px; background-color:#e8e8e8; }
+        .title { font-size: 14px; background-color:#e8e8e8; }
         .note { font-style:italic; }
-        #labname { height: 40px; }
+        #labname { height: 20px; }
         #g td { width: 112px; }
         #header { border: none; width: 775px; margin-top:0; }
         #header .logo { width: 100px; border:none;}
-        #header .title2 { width: 575px; color: #06C; font-size: 18px; font-weight:bold; border: none; background-color: #fff; }
+        #header .title { width: 575px; color: #06C; font-size: 18px; font-weight:bold; border: none; background-color: #fff; }
         #header .box { border: 1px solid #ccc; width: 100px; font-size:14px; font-weight:bold;}
 
         @media print {
@@ -174,7 +173,7 @@ if (count($data) > 0){
 <table id="header">
     <tr>
         <td class="logo"><img src="assets/img/logo.png" class="logo" /></td>
-        <td class="title2">Chemical Reference Methods<br />Laboratory participation codes and Performance analyses</td>
+        <td class="title">Chemical Reference Methods<br />Laboratory participation codes and Performance analyses</td>
         <td class="box">ICAR PT <br />{{$code_round}}</td>
     </tr>
 </table>
@@ -201,11 +200,6 @@ if (count($data) > 0){
         {{--<td class="bold">BHB</td>--}}
     </tr>
     <tr>
-        <!--
-      Per il laboratorio, in questo round, ho selezionato il test?
-      se sì: compare Yes con classe green;
-      se no: compare No senza classe
-      -->
         <td class="@if ($fat_ref_sub=='Yes'){{$class}}@endif">{{$fat_ref_sub}}</td>
         <td class="@if ($p_ref_sub=='Yes') {{$class}} @endif">{{$p_ref_sub}}</td>
         <td class="@if ($lac_ref_sub=='Yes') {{$class}} @endif">{{$lac_ref_sub}}</td>
@@ -226,12 +220,11 @@ if (count($data) > 0){
     <tr>
         <td class="left bold">Are all the sample results received?</td>
 
-        <td class="@if ($fat_ref_sample=='Yes') {{$class}} @endif">{{$fat_ref_sample}}</td>
-        <td class="@if ($p_ref_sample=='Yes') {{$class}} @endif">{{$p_ref_sample}}</td>
-        <td class="@if ($lac_ref_sample=='Yes') {{$class}} @endif">{{$lac_ref_sample}}</td>
-        <td class="@if ($u_ref_sample=='Yes') {{$class}} @endif">{{$u_ref_sample}}</td>
-        <td class="@if ($scc_ref_sample=='Yes') {{$class}} @endif">{{$scc_ref_sample}}</td>
-        {{--<td class="@if ($bhb_ref_sample=='Yes') {{$class}} @endif">{{$bhb_ref_sample}}</td>--}}
+        <td class="@if ($fat_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$fat_ref_sample}}</td>
+        <td class="@if ($p_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$p_ref_sample}}</td>
+        <td class="@if ($lac_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$lac_ref_sample}}</td>
+        <td class="@if ($u_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$u_ref_sample}}</td>
+        <td class="@if ($scc_ref_sample=='Yes') {{$class}} @else {{$class_red}} @endif">{{$scc_ref_sample}}</td>
     </tr>
 </table>
 
@@ -475,7 +468,7 @@ if (count($data) > 0){
     </tr>
 </table>
 
-<div class="html2pdf__page-break"></div>
+
 
 <table cellspacing="0" id="e">
     <tr>
@@ -497,9 +490,6 @@ if (count($data) > 0){
         <td>mg/dl</td>
         <td>SCC*1000/ml</td>
     </tr>
-    <!-- se il test è attivato e ho una riga con sample_number = 1, cella rossa con valore outliers_type -->
-    <!-- se il test è attivato ma non ho righe con sample_number = 1, cella vuota verde -->
-    <!-- se il test non è stato attivato, la cella è bianca -->
 
     <?php
     //print_r($arr_sp1);
@@ -576,6 +566,8 @@ if (count($data) > 0){
     }
     ?>
 </table>
+
+<div class="html2pdf__page-break"></div>
 
 <table cellspacing="0" id="f">
     <tr>
@@ -730,7 +722,7 @@ if (count($data) > 0){
     </tr>
 </table>
 
-<div class="html2pdf__page-break"></div>
+
 <table cellspacing="0" id="g">
     <tr>
         <td rowspan="25" class="tabcode">G</td>
@@ -1024,13 +1016,6 @@ if (count($data) > 0){
             </td>
         </tr>
 
-
-        <?php
-        if ($ch>2 && $ch<4){
-            echo "</table><div class=\"html2pdf__page-break\"></div><table>";
-        }
-        $ch=$ch+1;
-		?>
     @endforeach
 
 </table>
@@ -1042,7 +1027,6 @@ if (count($data) > 0){
     setTimeout(call_pdf, 2000);
 
     function call_pdf(){
-
         $.LoadingOverlaySetup({
             color           : "rgba(0, 0, 0, 0.4)",
             image           : "../assets/img/loading.gif",
@@ -1075,9 +1059,9 @@ if (count($data) > 0){
         html2pdf(element, {
             margin:       0.1,
             filename:     '{{$icar_code}} - Report {{$code_round}}-report.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
+            image:        { type: 'jpeg', quality: 0.99 },
             html2canvas:  { dpi: 192, letterRendering: true },
-            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            jsPDF:        { unit: 'in', format: 'c4', orientation: 'portrait' }
 
         });
         // $('.loadingoverlay').remove();

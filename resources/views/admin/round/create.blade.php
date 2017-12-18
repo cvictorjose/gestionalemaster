@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-xs-2 form-group">
                     {!! Form::label('Code', 'Codice Round*', ['class' => 'control-label']) !!}
-                    {!! Form::text('code_round',$today, ['class' => 'form-control', 'placeholder' => 'Inserisci il Code Round' ]) !!}
+                    {!! Form::text('code_round',"", ['class' => 'form-control', 'placeholder' => 'Code Round' ]) !!}
                 </div>
 
                 <div class="col-xs-10 form-group">

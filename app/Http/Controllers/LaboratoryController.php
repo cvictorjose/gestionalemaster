@@ -206,7 +206,7 @@ class LaboratoryController extends Controller
         foreach ($posts as $p){
             $new= new \stdClass();
             $new->id  =$p->id;
-            $new->text=$p->lab_name;
+            $new->text=$p->icar_code." - ".$p->lab_name;
             $results[]=$new;
         }
         return response()->json(['results' => $results]);
