@@ -64,17 +64,14 @@
 
                                 {!! Form::open(array(
                                        'style' => 'display: inline-block;',
-                                       'method' => 'GET',
-                                       'route' => ['round.edit',$lab->code_round])) !!}
+                                       'method' => 'POST',
+                                       'route' => ['edit_round',$lab->laboratory_id])) !!}
                                 {{ csrf_field() }}
                                 <input name="lab_id" type="hidden" value="{{$lab->laboratory_id}}">
                                 <input name="lab_round" type="hidden" value="{{$lab->code_round}}">
                                 <input name="lab_name" type="hidden" value="{{ $lab->lab_name}}">
                                 {!! Form::submit(trans('global.app_edit'), array('class' => 'btn btn-xs btn-warning')) !!}
                                 {!! Form::close() !!}
-
-
-
 
 
                                 {{--details test--}}

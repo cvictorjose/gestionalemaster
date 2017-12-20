@@ -6,19 +6,22 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>@lang('global.app_create') Round</h4>
+            <h4>@lang('global.app_edit') Round: <strong>{{$round->code_round}}</strong> </h4>
         </div>
 
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-2 form-group">
                     {!! Form::label('Code', 'Codice Round*', ['class' => 'control-label']) !!}
-                    {!! Form::text('code_round', old('code_round'), ['class' => 'form-control', 'placeholder' => 'Code Round']) !!}
+                    {!! Form::text('code_round', old('code_round'),  ['class' => 'form-control', 'placeholder' => 'Code Round','readonly' => 'true']) !!}
                 </div>
 
                 <div class="col-xs-10 form-group">
                     {!! Form::label('Lab', 'Laboratorio*', ['class' => 'control-label']) !!}
-                    <select class="js-data-example-ajax" style="width: 100%" name="laboratory_id"></select>
+                    <select class="js-data-example-ajax" style="width: 100%" name="laboratory_id">
+                        <option value={{$round->laboratory_id}} selected="selected">
+                            {{$lab->icar_code}} -{{$lab->lab_name}}</option>
+                    </select>
                 </div>
 
 
@@ -65,11 +68,12 @@
                         ?>
                         @if (count($tests) > 0)
                             @foreach ($tests as $test)
-                                <?php $boca[]=$test->code; ?>
+
                                 @foreach ($round->test as $tt)
                                     <?php
-                                    if (in_array($tt->test,$boca)){
+                                    //if (in_array($tt->test,$boca)){
                                         if ($test->code==$tt->test){
+                                            $test_nochecked[]=$test->code;
                                             ?>
                                             <tr data-entry-id="{{ $test->id }}">
                                                 <td>
@@ -111,10 +115,51 @@
                                                 </td>
                                             </tr>
                                         <?php
-                                        }
+                                      //  }
                                     }
                                     ?>
                                 @endforeach
+                            @endforeach
+                            {{--NO CHECKED--}}
+                            @foreach ($tests as $test)
+                                @if (!in_array($test->code, $test_nochecked))
+                                <tr data-entry-id="{{ $test->id }}">
+                                <td>
+                                    <div class="funkyradio-default">
+                                        <input type="checkbox" name="{{ $test->code }}" id="{{ $test->code }}" />
+                                        <label for="checkbox1">{{strtoupper($test->code) }}</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-vertical" data-toggle="buttons">
+                                        <div class="input-group">
+                                            <div id="radioBtn" class="btn-group">
+                                                <a class="btn btn-primary btn-sm active"
+                                                   data-toggle="happy_{{ $test->code }}"
+                                                   data-title="1" >YES</a>
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="happy_{{ $test->code }}"
+                                                   data-title="0">NO</a>
+                                            </div>
+                                            <input type="hidden" name="question1_{{ $test->code }}" id="happy_{{$test->code }}" value="1">
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="btn-group btn-group-vertical" data-toggle="buttons">
+                                        <div class="input-group">
+                                            <div id="radioBtn" class="btn-group">
+                                                <a class="btn btn-primary btn-sm active" data-toggle="happy2_{{$test->code }}"
+                                                   data-title="1">YES</a>
+                                                <a class="btn btn-primary btn-sm notActive"
+                                                   data-toggle="happy2_{{ $test->code }}" data-title="0">NO</a>
+                                            </div>
+                                            <input type="hidden" name="question2_{{ $test->code }}" id="happy2_{{$test->code }}" value="1">
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                @endif
                             @endforeach
                         @else
                             <tr>

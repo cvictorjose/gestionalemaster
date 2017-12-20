@@ -222,57 +222,7 @@ class RoundController extends Controller
 
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$laboratory_id)
-    {
 
-
-       try {
-            $inputData  = Input::all();  //echo "<pre>"; print_r($inputData); exit;
-            $code_round=$inputData['code_round'];
-
-            $round = Round::where('laboratory_id',$laboratory_id)->Where('code_round', $code_round)->delete();
-
-
-           $code_test= CodeTest::where('status','1')->get(['code']);
-           foreach ($code_test as $ct){
-               $test_active  = (Input::get($ct->code))? 1 : 0;
-               if ($test_active == 1){
-                   $receive_date=Input::get('date');
-
-                   $item = new Round();
-                   $item->laboratory_id         = $laboratory_id;
-                   $item->code_round            = Input::get('code_round');
-                   $item->results_received      = Input::get('results_received')? '1' : '0';
-                   $item->results_received_date = $receive_date;
-                   $item->code_test   = $ct->code;
-                   $item->question1   = Input::get('question1_'.$ct->code)? '1' : '0';
-                   $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
-                   $item->status   = 1;
-
-                   // print_r(json_decode($item)) ;
-                   $item->save();
-               }
-           }
-
-           $message = [
-               'flashType'    => 'success',
-               'flashMessage' => 'Round aggiornato con successo!'
-           ];
-
-           return back()->withInput()->with($message);
-
-
-        } catch (Exception $e) {
-            //log
-        }
-    }
 
     /**
      * Remove Round from storage.
@@ -357,7 +307,6 @@ class RoundController extends Controller
             }
 
             $tests = CodeTest::all();
-
           // return response()->json($round);
 
         } catch (\Exception $e) {
@@ -366,6 +315,69 @@ class RoundController extends Controller
                 'flashMessage' => 'Errore! Modifica Round'
             ];
         }
-        return view('admin.round.edit', compact('round','tests'));
+        $lab= Laboratory::find($lab_id);
+        return view('admin.round.edit', compact('round','tests','lab'));
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request,$laboratory_id)
+    {
+        try {
+            $inputData  = Input::all();  //echo "<pre>"; print_r($inputData); exit;
+            $code_round=$inputData['code_round'];
+
+            $round = Round::where('laboratory_id',$laboratory_id)->Where('code_round', $code_round)->delete();
+            $tests= CodeTest::where('status','1')->get(['code']);
+            foreach ($tests as $ct){
+                $test_active  = (Input::get($ct->code))? 1 : 0;
+                if ($test_active == 1){
+                    $receive_date=Input::get('date');
+                    $item = new Round();
+                    $item->laboratory_id         = Input::get('laboratory_id');
+                    $item->code_round            = Input::get('code_round');
+                    $item->results_received      = Input::get('results_received')? '1' : '0';
+                    $item->results_received_date = $receive_date;
+                    $item->code_test   = $ct->code;
+                    $item->question1   = Input::get('question1_'.$ct->code)? '1' : '0';
+                    $item->question2   = Input::get('question2_'.$ct->code)? '1' : '0';
+                    $item->status   = 1;
+                    //  print_r(json_decode($item)) ;
+                    $item->save();
+                }
+            }
+
+            $message = [
+                'flashType'    => 'success',
+                'flashMessage' => 'Round aggiornato con successo!'
+            ];
+
+            $lab= Laboratory::find(Input::get('laboratory_id'));
+            $result = Round::where('laboratory_id',Input::get('laboratory_id'))->Where('code_round', $code_round)->get();
+            $round= new \stdClass();
+            foreach ($result as $r){
+                $round->laboratory_id               = $r->laboratory_id;
+                $round->code_round                  = $r->code_round;
+                $round->results_received            = $r->results_received;
+                $round->results_received_date       = $r->results_received_date;
+
+                $tt= new \stdClass();
+                $tt->test       = $r->code_test;
+                $tt->q1         = $r->question1;
+                $tt->q2         = $r->question2;
+                $round->test[]  = $tt;
+            }
+
+            return view('admin.round.edit', compact('round','tests','lab'))->with($message);
+          //  return view('admin.round.edit', ['round' => $round,'tests'=>$tests,'lab'=>$lab,'message'=>$message]);
+        } catch (Exception $e) {
+            //log
+        }
     }
 }

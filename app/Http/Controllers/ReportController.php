@@ -128,11 +128,8 @@ class ReportController extends Controller
                 //return $pagx;
             }
 
-
             $round = Round::where('laboratory_id',$lab_id)->Where('code_round', $round)->get();
             $lab   = Laboratory::find($lab_id);
-
-
 
                 switch ($action) {
                     case 'r':
