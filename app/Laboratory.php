@@ -16,7 +16,28 @@ class Laboratory extends Model
      * @var array
      */
     protected $fillable = [
-        'icar_code','lab_name','status'
+        'icar_code','lab_name','status',
+        'nominativo_contatto',
+        'email',
+        'spedizione_address',
+        'spedizione_cap',
+        'spedizione_city',
+        'spedizione_country',
+        'ente_associato','',
+        'contatto_amministrativo',
+        'email_amministrativa',
+        'invoice_address',
+        'invoice_cap',
+        'invoice_city',
+        'invoice_country',
+        'invoicetype',
+        'vat_number',
+        'participation_fee',
+        'shipment_cost',
+        'fat_ref',
+        'protein_ref','lactose_ref','urea_ref','scc_ref',
+        'fat_rout','protein_rout','lactose_rout','urea_rout',
+        'bhb','pag','dna'
     ];
     /**
      * The attributes that should be hidden for arrays.
