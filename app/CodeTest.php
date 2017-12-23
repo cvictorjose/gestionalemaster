@@ -14,7 +14,7 @@ class CodeTest extends Model
      * @var array
      */
     protected $fillable = [
-        'code','status'
+        'code','price','status'
     ];
     /**
      * The attributes that should be hidden for arrays.

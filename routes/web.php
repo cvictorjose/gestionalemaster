@@ -41,9 +41,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('update_round_lab',array('as'=>'update_round_lab','uses'=>'RoundController@updateRoundLab'));
     Route::post('round_destroy',array('as'=>'round_destroy','uses'=>'RoundController@destroyRound'));
     Route::post('round_destroy_test',array('as'=>'round_destroy_test','uses'=>'RoundController@destroySingleTest'));
-
-
     Route::post('edit_round/{id}',array('as'=>'edit_round','uses'=>'RoundController@edit'));
+
+
+    Route::resource('codetest', 'CodetestController');
+    Route::post('update_price',array('as'=>'update_price','uses'=>'CodetestController@updatePrice'));
 
 
    //REPORT

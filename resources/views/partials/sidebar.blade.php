@@ -26,6 +26,14 @@
                 </a>
             </li>
 
+
+            <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
+                <a href="{{ url('/codetest') }}">
+                    <i class="fa fa-stethoscope"></i>
+                    <span class="title">@lang('global.app_price')</span>
+                </a>
+            </li>
+
             {{--<li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/grafico') }}">
                     <i class="fa fa-line-chart"></i>
