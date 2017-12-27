@@ -47,6 +47,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('codetest', 'CodetestController');
     Route::post('update_price',array('as'=>'update_price','uses'=>'CodetestController@updatePrice'));
 
+    //INVOICE
+    Route::resource('invoice', 'InvoiceController');
 
    //REPORT
     // Route::post('round_report_ref',array('as'=>'round_report_ref','uses'=>'ReportController@roundReportRef'));

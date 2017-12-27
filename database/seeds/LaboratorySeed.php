@@ -14,6 +14,6 @@ class LaboratorySeed extends Seeder
     {
         DB::table('laboratory')->delete();
         DB::statement("ALTER TABLE `users` AUTO_INCREMENT = 1;");
-        factory(Laboratory::class, 15)->create();
+        factory(Laboratory::class, 3)->create();
     }
 }

@@ -26,7 +26,7 @@
     $(document).ready(function() {
         $('.js-data-example-ajax').select2({
             ajax: {
-                url: '/typeahead-response',
+                url: '../typeahead-response',
                 data: function (params) {
                     var query = {
                         query: params.term,

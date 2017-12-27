@@ -250,7 +250,7 @@ return [
         'Image'        => Intervention\Image\Facades\Image::class,
         'Form'         => Collective\Html\FormFacade::class,
         'Html'         => Collective\Html\HtmlFacade::class,
-		'PDF' => Barryvdh\DomPDF\Facade::class,
+		'PDF'          => Barryvdh\DomPDF\Facade::class,
         
     ],
 

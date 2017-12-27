@@ -34,6 +34,13 @@
                 </a>
             </li>
 
+            <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
+                <a href="{{ route('invoice.create') }}">
+                    <i class="fa fa-stethoscope"></i>
+                    <span class="title">@lang('global.app_invoice')</span>
+                </a>
+            </li>
+
             {{--<li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/grafico') }}">
                     <i class="fa fa-line-chart"></i>

@@ -19,25 +19,25 @@ class CreateLaboratoryTable extends Migration
             $table->string('lab_name');
             $table->integer('status')->default(0);
 
-            $table->string('nominativo_contatto');
-            $table->string('email');
+            $table->string('nominativo_contatto')->nullable();
+            $table->string('email')->nullable();
 
-            $table->string('spedizione_address');
-            $table->string('spedizione_cap');
-            $table->string('spedizione_city');
-            $table->string('spedizione_country');
-            $table->string('ente_associato');
+            $table->string('spedizione_address')->nullable();
+            $table->string('spedizione_cap')->nullable();
+            $table->string('spedizione_city')->nullable();
+            $table->string('spedizione_country')->nullable();
+            $table->string('ente_associato')->nullable();
 
-            $table->string('contatto_amministrativo');
-            $table->string('email_amministrativa');
-            $table->string('invoice_address');
-            $table->string('invoice_cap');
-            $table->string('invoice_city');
-            $table->string('invoice_country');
-            $table->string('vat_number');
-            $table->string('participation_fee');
-            $table->string('shipment_cost');
-            $table->string('invoicetype');
+            $table->string('contatto_amministrativo')->nullable();
+            $table->string('email_amministrativa')->nullable();
+            $table->string('invoice_address')->nullable();
+            $table->string('invoice_cap')->nullable();
+            $table->string('invoice_city')->nullable();
+            $table->string('invoice_country')->nullable();
+            $table->string('vat_number')->nullable();
+            $table->string('participation_fee')->nullable();
+            $table->string('shipment_cost')->nullable();
+            $table->string('invoicetype')->nullable();
 
 
             $table->integer('fat_ref')->default(0);
