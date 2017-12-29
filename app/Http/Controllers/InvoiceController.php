@@ -8,6 +8,7 @@ use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
+
 class InvoiceController extends Controller
 {
     public function index()

@@ -50,6 +50,9 @@ Route::group(['middleware' => ['auth']], function () {
     //INVOICE
     Route::resource('invoice', 'InvoiceController');
 
+    //CSV
+    Route::resource('csv', 'ExportController');
+
    //REPORT
     // Route::post('round_report_ref',array('as'=>'round_report_ref','uses'=>'ReportController@roundReportRef'));
 

@@ -29,15 +29,22 @@
 
             <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/codetest') }}">
-                    <i class="fa fa-stethoscope"></i>
+                    <i class="fa fa-eur"></i>
                     <span class="title">@lang('global.app_price')</span>
                 </a>
             </li>
 
             <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ route('invoice.create') }}">
-                    <i class="fa fa-stethoscope"></i>
+                    <i class="fa fa-file-pdf-o"></i>
                     <span class="title">@lang('global.app_invoice')</span>
+                </a>
+            </li>
+
+            <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
+                <a href="{{ route('csv.index') }}">
+                    <i class="fa fa-file-o"></i>
+                    <span class="title">@lang('global.app_csv')</span>
                 </a>
             </li>
 

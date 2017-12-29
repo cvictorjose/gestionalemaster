@@ -80,10 +80,10 @@ class ReportController extends Controller
             $round = $inputData['round'];
             $lab_id =$inputData['lab_id'];*/
 
-            $icar  = request()->icar_code;
-            $round = request()->code_round;
-            $lab_id =request()->lab_id;
-            $type =request()->type;
+            $icar   = request()->icar_code;
+            $round  = request()->code_round;
+            $lab_id = request()->lab_id;
+            $type   = request()->type;
 			$action = request()->action;
 
             $data=$outlier=$repeat=$zscorept=$zscorefix=$chart=$chartfx=$code_arr=array();
