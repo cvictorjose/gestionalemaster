@@ -62,6 +62,12 @@ return [
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
         ],
+        'csv' => [
+            'driver'     => 'local',
+            'root'       => storage_path('csv'),
+            'url'        => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
 
     ],
 

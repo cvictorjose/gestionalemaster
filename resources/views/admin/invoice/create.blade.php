@@ -28,7 +28,7 @@
                 {!! Form::textarea('activities',"", ['class' => 'form-control' ]) !!}
             </div>
         </div>
-        {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-success']) !!}
+        {!! Form::submit(trans('global.app_create_invoice'), ['class' => 'btn btn-success']) !!}
         {!! Form::close() !!}
     </div>
 @stop

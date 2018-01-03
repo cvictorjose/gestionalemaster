@@ -110,4 +110,23 @@ class Round extends Model
         }
     }
 
+
+
+    /**
+     * Get last round numbers
+     *
+     * @var array
+     */
+    public static function getLastRoundNumbers(){
+        try {
+            $round = Round::orderBy('id','DESC')->first();
+            $numbers = substr($round->code_round, 2, 4);
+            // print_r($numbers);
+            return $numbers;
+
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
 }
