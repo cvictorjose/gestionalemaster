@@ -62,12 +62,9 @@ class ExportController extends Controller
 
       //  return $labs;
 
-       $this->createCsv($labs);
+       $this->createCsv($labs,$round);
         // return view('admin.export.index', compact('labs'));
     }
-
-
-
 
 
     /**
@@ -75,11 +72,13 @@ class ExportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createCsv($csv)
+    public function createCsv($csv,$round)
     {
         try {
             $writer = Writer::createFromFileObject(new SplTempFileObject());
             $writer->setDelimiter(";");
+            $writer->insertOne(['','Participation updated on : 04-01-2018',
+            ]);
             $writer->insertOne([
                 'ICAR Code', 'Laboratorio', 'Delivery Address',
                 'City', 'Country', 'Contact person','Email',
@@ -90,11 +89,12 @@ class ExportController extends Controller
 
 
             foreach ($csv as $e) {
-
                 $records = [
                     [
                         "*".$e->icar_code,
+
                         $e->lab_name,
+
                         $e->invoice_address,
                         $e->invoice_city,
                         $e->invoice_country,
@@ -112,12 +112,21 @@ class ExportController extends Controller
                         (isset($e->bhb))?1:0 ,
                         (isset($e->pag))?1:0 ,
                         (isset($e->dna))?1:0 ,
-
                     ],
                 ];
                 $writer->insertAll($records);
             }
-            $writer->output('people.csv');exit;
+
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=file.csv');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            echo "\xEF\xBB\xBF"; // UTF-8 BOM
+
+            $writer->output('round-'.$round.'.csv');exit;
             // Storage::disk('csv')->put('round0917.csv', $writer);
 
         } catch (Exception $e) {

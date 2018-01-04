@@ -118,12 +118,12 @@
 
                 <div class="col-xs-3 form-group">
                     {!! Form::label('participation_fee', 'Participation fee*', ['class' => 'control-label']) !!}
-                    {!! Form::text('participation_fee', old('Participation fee'), ['class' => 'form-control', 'placeholder' => 'Inserisci Participation fee', 'required' => '']) !!}
+                    {!! Form::number('participation_fee', old('Participation fee'), ['class' => 'form-control', 'placeholder' => 'Inserisci Participation fee', 'required' => '','step'=>'any']) !!}
                 </div>
 
                 <div class="col-xs-3 form-group">
                     {!! Form::label('shipment_cost', 'Shipment cost*', ['class' => 'control-label']) !!}
-                    {!! Form::text('shipment_cost', old('Shipment cost'), ['class' => 'form-control', 'placeholder' => 'Inserisci Shipment cost', 'required' => '']) !!}
+                    {!! Form::number('shipment_cost', old('Shipment cost'), ['class' => 'form-control', 'placeholder' => 'Inserisci Shipment cost', 'required' => '','step'=>'any']) !!}
                 </div>
 
                 <div class="col-xs-3 form-group">

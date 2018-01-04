@@ -45,12 +45,24 @@ class InvoiceController extends Controller
         try {
             $inputData  = Input::all(); //echo "<pre>"; print_r($inputData); exit;
             $id         = $inputData['laboratory_id'];
-             $invoice    = $inputData['invoice_no'];
-             $date       = $inputData['date'];
-             $activities = $inputData['activities'];
+            $invoice    = $inputData['invoice_no'];
+            $date       = $inputData['date'];
+            $activities = $inputData['activities'];
 
             //$id   =1;
             $lab   = Laboratory::findOrFail($id);
+
+
+            if (is_null($lab->invoice_country) || is_null($lab->invoicetype) || is_null($lab->vat_number) || is_null
+                ($lab->contatto_amministrativo) || is_null($lab->invoice_address) || is_null($lab->invoice_cap) || is_null($lab->invoice_city) || is_null($lab->invoice_country)){
+
+                $message = [
+                    'flashType'    => 'danger',
+                    'flashMessage' => 'Errore! Dati mancanti per generare la fattura'
+                ];
+                return back()->withInput()->with($message);
+            }
+
             $country=Country::where('iso',$lab->invoice_country)->first();
             $lab->invoice_country=$country->nicename;
 
