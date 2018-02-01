@@ -54,8 +54,15 @@
                     {{ Form::select ('spedizionecountry', $countries, 'IT' , ['class' => 'form-control','id' =>'spedizionecountry']) }}
                     {{--{!! Form::text('spedizione_country', old('Nazione'), ['class' => 'form-control', 'placeholder' => 'Inserisci Nazione', 'required' => '']) !!}--}}
                 </div>
+
+                <div class="col-xs-12 form-group">
+                    <a href="#" class="btn btn-success pull-left" onclick="pasteinvoice()">Incolla l'indirizzo per
+                        la fatturazione</a>
+                </div>
+
+
             </fieldset>
-            <br>
+            {{--<br>
 
             <fieldset class="group-border">
                 <legend class="group-border">Scegli Test</legend>
@@ -67,7 +74,7 @@
                         </div>
                     @endforeach
                 @endif
-            </fieldset>
+            </fieldset>--}}
 
             <br>
             <fieldset class="group-border">

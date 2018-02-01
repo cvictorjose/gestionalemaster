@@ -277,6 +277,24 @@ class RoundController extends Controller
     }
 
 
+    public function dropdown($lab_id)
+    {
+        $rounds= Round::where('laboratory_id',$lab_id)->groupBy('code_round')->get();
+        $lastRound="";
+        $clean_rounds=$lastRound= array();
+        foreach ($rounds as $r){
+            $numbers = substr($r->code_round, 2, 4);
+           if (!in_array($numbers,$lastRound)){
+               $n= new \stdClass();
+               $n->code_round= $numbers;
+               $clean_rounds[]=$n;
+               $lastRound[]=$numbers;
+           }
+        }
+        return $clean_rounds;
+    }
+
+
     /**
      * Show the form for editing Lab.
      *

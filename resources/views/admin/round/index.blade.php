@@ -35,6 +35,18 @@
 
                                 {!! Form::submit(trans('global.labs.det_labs'), array('class' => 'btn btn-xs btn-info')) !!}
                                 {!! Form::close() !!}
+
+                                {!! Form::open(array(
+                                           'style' => 'display: inline-block;',
+                                           'method' => 'POST',
+                                           'route' => ['export_round'])) !!}
+                                {{ csrf_field() }}
+                                <input name="round_id" type="hidden" value={{$round->code_round}}>
+
+                                {!! Form::submit(trans('global.app_csv'), array('class' => 'btn btn-xs btn-info')) !!}
+                                {!! Form::close() !!}
+
+
                             </td>
                         </tr>
                     @endforeach

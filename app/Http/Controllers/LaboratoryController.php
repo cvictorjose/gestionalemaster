@@ -201,7 +201,20 @@ class LaboratoryController extends Controller
                         $lab->participation_fee       = Input::get('participation_fee');
                         $lab->shipment_cost           = Input::get('shipment_cost');
 
-                        $lab->fat_ref           = Input::get('fat_ref');
+                        $lab->fat_ref           = 1;
+                        $lab->protein_ref       = 1;
+                        $lab->lactose_ref       = 1;
+                        $lab->urea_ref          = 1;
+                        $lab->scc_ref           = 1;
+                        $lab->fat_rout          = 1;
+                        $lab->protein_rout      = 1;
+                        $lab->lactose_rout      = 1;
+                        $lab->urea_rout         = 1;
+                        $lab->bhb               = 1;
+                        $lab->pag               = 1;
+                        $lab->dna               = 1;
+
+                        /*$lab->fat_ref           = Input::get('fat_ref');
                         $lab->protein_ref       = Input::get('protein_ref');
                         $lab->lactose_ref       = Input::get('lactose_ref');
                         $lab->urea_ref          = Input::get('urea_ref');
@@ -212,7 +225,9 @@ class LaboratoryController extends Controller
                         $lab->urea_rout         = Input::get('urea_rout');
                         $lab->bhb               = Input::get('bhb');
                         $lab->pag               = Input::get('pag');
-                        $lab->dna               = Input::get('dna');
+                        $lab->dna               = Input::get('dna');*/
+
+
 
                         $lab->save();
                         //$status         = array('stat'=>'ok', 'msg'=>'Laboratorio aggiunto','mode'=>'add');

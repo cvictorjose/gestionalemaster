@@ -149,41 +149,38 @@
                     Reference Method
                 </td>
             </tr>
-            @if($lab->fat_ref>0)
+            @if($template_codetest->fat_ref>0)
             <tr class="item">
                 <td>Fat_ref</td>
-                <td>{{$lab->fat_ref}}</td>
+                <td>{{$template_codetest->fat_ref}}</td>
             </tr>
             @endif
 
-
-            @if($lab->protein_ref>0)
+            @if($template_codetest->protein_ref>0)
                 <tr class="item">
                     <td>Protein_ref</td>
-                    <td>{{$lab->protein_ref}}</td>
+                    <td>{{$template_codetest->protein_ref}}</td>
                 </tr>
             @endif
 
-            @if($lab->lactose_ref>0)
+            @if($template_codetest->lactose_ref>0)
                 <tr class="item">
                     <td>Lactose_ref</td>
-                    <td>{{$lab->lactose_ref}}</td>
+                    <td>{{$template_codetest->lactose_ref}}</td>
                 </tr>
             @endif
 
-
-
-            @if($lab->urea_ref>0)
+            @if($template_codetest->urea_ref>0)
                 <tr class="item">
                     <td>Urea_ref</td>
-                    <td>{{$lab->urea_ref}}</td>
+                    <td>{{$template_codetest->urea_ref}}</td>
                 </tr>
             @endif
 
-            @if($lab->scc_ref>0)
+            @if($template_codetest->scc_ref>0)
                 <tr class="item">
                     <td>Scc_ref</td>
-                    <td>{{$lab->scc_ref}}</td>
+                    <td>{{$template_codetest->scc_ref}}</td>
                 </tr>
             @endif
         @endif
@@ -195,53 +192,53 @@
                 </td>
             </tr>
 
-            @if($lab->fat_rout>0)
+            @if($template_codetest->fat_rout>0)
                 <tr class="item">
                     <td>Fat_rout</td>
-                    <td>{{$lab->fat_rout}}</td>
+                    <td>{{$template_codetest->fat_rout}}</td>
                 </tr>
             @endif
 
 
-            @if($lab->protein_rout>0)
+            @if($template_codetest->protein_rout>0)
                 <tr class="item">
                     <td>Protein_rout</td>
-                    <td>{{$lab->protein_rout}}</td>
+                    <td>{{$template_codetest->protein_rout}}</td>
                 </tr>
             @endif
 
-            @if($lab->lactose_rout>0)
+            @if($template_codetest->lactose_rout>0)
                 <tr class="item">
                     <td>Lactose_rout</td>
-                    <td>{{$lab->lactose_rout}}</td>
+                    <td>{{$template_codetest->lactose_rout}}</td>
                 </tr>
             @endif
 
-            @if($lab->urea_rout>0)
+            @if($template_codetest->urea_rout>0)
                 <tr class="item">
                     <td>Urea_rout</td>
-                    <td>{{$lab->urea_rout}}</td>
+                    <td>{{$template_codetest->urea_rout}}</td>
                 </tr>
             @endif
 
-            @if($lab->bhb>0)
+            @if($template_codetest->bhb>0)
                 <tr class="item">
                     <td>BHB</td>
-                    <td>{{$lab->bhb}}</td>
+                    <td>{{$template_codetest->bhb}}</td>
                 </tr>
             @endif
 
-            @if($lab->pag>0)
+            @if($template_codetest->pag>0)
                 <tr class="item">
                     <td>PAG</td>
-                    <td>{{$lab->pag}}</td>
+                    <td>{{$template_codetest->pag}}</td>
                 </tr>
             @endif
 
-            @if($lab->dna>0)
+            @if($template_codetest->dna>0)
                 <tr class="item">
                     <td>DNA</td>
-                    <td>{{$lab->dna}}</td>
+                    <td>{{$template_codetest->dna}}</td>
                 </tr>
             @endif
         @endif

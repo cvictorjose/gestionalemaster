@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Input;
+
 Route::get('/', function () { return redirect('/laboratorio'); });
 
 
@@ -47,6 +49,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('codetest', 'CodetestController');
     Route::post('update_price',array('as'=>'update_price','uses'=>'CodetestController@updatePrice'));
 
+    Route::post('export_round',array('as'=>'export_round','uses'=>'ExportController@index'));
+
     //INVOICE
     Route::resource('invoice', 'InvoiceController');
 
@@ -66,3 +70,12 @@ Route::get('round_report_ref',array('as'=>'report_pdf_ref','uses'=>'ReportContro
 Route::get('grafico',array('as'=>'grafico','uses'=>'ReportController@grafico'));
 //AUTOCOMPLETE
 Route::get('typeahead-response',array('as'=>'typeahead.response','uses'=>'LaboratoryController@ajaxData'));
+
+Route::get('api/dropdown/{id}', function(){
+    $id = Input::get('laboratory_id');
+    $models = \App\Round::where("laboratory_id",$id)->get('code_round', 'id');
+    return $models;
+});
+
+Route::get('dropdown/{id}',array('as'=>'dropdown','uses'=>'RoundController@dropdown'));
+

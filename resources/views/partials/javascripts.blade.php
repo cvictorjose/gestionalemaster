@@ -18,12 +18,38 @@
 <script src="{{ url('adminlte/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ url('adminlte/plugins/fastclick/fastclick.js') }}"></script>
 <script src="{{ url('adminlte/js/app.min.js') }}"></script>
+
+
 <script>
     window._token = '{{ csrf_token() }}';
 
     $('div.alert').delay(3000).slideUp(300);
 
     $(document).ready(function() {
+
+
+            $('select[name="laboratory_id"]').on('change', function() {
+                var stateID = $(this).val();
+                if(stateID) {
+                    $.ajax({
+                        url: '../dropdown/'+stateID,
+                        type: "GET",
+                        dataType: "json",
+                        success:function(data) {
+                            $('select[name="itemselect"]').empty();
+                            $.each(data, function(key, value) {
+                                $('select[name="itemselect"]').append('<option value="'+ value.code_round +'">' + value.code_round + '</option>');
+                            });
+                        }
+                    });
+                }else{
+                    $('select[name="organizer_id"]').empty();
+                }
+            });
+
+
+
+
         $('.js-data-example-ajax').select2({
             ajax: {
                 url: '../typeahead-response',
@@ -48,11 +74,33 @@
 
         $('.date').datepicker({
             dateFormat: 'yy/mm/dd'});
+
     });
+
+    function pasteinvoice() {
+        var $foo = $('#spedizione_address');
+        var $bar = $('#invoice_address');
+        $bar.val($foo.val());
+
+        var $foo = $('#spedizione_cap');
+        var $bar = $('#invoice_cap');
+        $bar.val($foo.val());
+
+        var $foo = $('#spedizione_city');
+        var $bar = $('#invoice_city');
+        $bar.val($foo.val());
+
+        var $foo = $('#spedizionecountry');
+        var $bar = $('#invoicecountry');
+        $bar.val($foo.val());
+    }
 </script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+
+
+
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>--}}
 {{--<script type="text/javascript">
     var url = "{{ route('typeahead.response') }}";

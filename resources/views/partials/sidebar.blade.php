@@ -41,12 +41,12 @@
                 </a>
             </li>
 
-            <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
+            {{--<li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ route('csv.index') }}">
                     <i class="fa fa-file-o"></i>
                     <span class="title">@lang('global.app_csv')</span>
                 </a>
-            </li>
+            </li>--}}
 
             {{--<li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/grafico') }}">

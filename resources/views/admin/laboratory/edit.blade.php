@@ -54,9 +54,14 @@
                     {{ Form::select ('spedizionecountry', $countries, $lab->spedizione_country , ['class' => 'form-control','id' =>'spedizionecountry']) }}
                 </div>
 
+                <div class="col-xs-12 form-group">
+                    <a href="#" class="btn btn-success pull-left" onclick="pasteinvoice()">Incolla l'indirizzo per
+                        la fatturazione</a>
+                </div>
+
             </fieldset>
 
-            <br>
+            {{--<br>
 
             <fieldset class="group-border">
                 <legend class="group-border">Scegli Test</legend>
@@ -68,7 +73,7 @@
                         </div>
                     @endforeach
                 @endif
-            </fieldset>
+            </fieldset>--}}
 
             <br>
             <fieldset class="group-border">

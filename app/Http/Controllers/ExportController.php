@@ -6,23 +6,27 @@ use App\Laboratory;
 use App\Round;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use League\Csv\Writer;
 use SplTempFileObject;
 
 class ExportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
             //$round="0917";
-            $round=Round::getLastRoundNumbers();
+            //$round=Round::getLastRoundNumbers();
             //$data   = Round::select('laboratory_id','code_test')->where('code_round',$round)->get();
 
-            $data   = Round::select('laboratory_id','code_test')->where('code_round', 'like', '%' .$round. '%')
-                ->orderBy('laboratory_id', 'ASC')->get();
+            $inputData  = Input::all();  //echo "<pre>"; print_r($inputData); exit;
+            $round=$inputData['round_id'];
 
-            //   return $data;
+           /* $data   = Round::select('laboratory_id','code_test')->where('code_round', 'like', '%' .$round. '%')
+                ->orderBy('laboratory_id', 'ASC')->get();*/
+
+            $data   = Round::select('laboratory_id','code_test')->where('code_round', $round)->orderBy('laboratory_id', 'ASC')->get();
 
             $last_id=0;
             $labs=array();
@@ -75,9 +79,11 @@ class ExportController extends Controller
     public function createCsv($csv,$round)
     {
         try {
+            $today = date("d-m-Y");
+
             $writer = Writer::createFromFileObject(new SplTempFileObject());
             $writer->setDelimiter(";");
-            $writer->insertOne(['','Participation updated on : 04-01-2018',
+            $writer->insertOne(['',"Participation updated on :$today",
             ]);
             $writer->insertOne([
                 'ICAR Code', 'Laboratorio', 'Delivery Address',
@@ -92,9 +98,7 @@ class ExportController extends Controller
                 $records = [
                     [
                         "*".$e->icar_code,
-
                         $e->lab_name,
-
                         $e->invoice_address,
                         $e->invoice_city,
                         $e->invoice_country,

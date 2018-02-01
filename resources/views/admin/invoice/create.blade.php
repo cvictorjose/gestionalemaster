@@ -8,24 +8,31 @@
         </div>
 
         <div class="panel-body table-responsive">
-            <div class="col-xs-8 form-group">
+            <div class="row">
+            <div class="col-xs-12 form-group">
                 {!! Form::label('Lab', 'Laboratorio*', ['class' => 'control-label']) !!}
                 <select class="js-data-example-ajax" style="width: 100%" name="laboratory_id"></select>
             </div>
 
-            <div class="col-xs-2 form-group">
+            <div class="col-xs-3 form-group">
+                {!! Form::label('Round', 'Round*', ['class' => 'control-label']) !!}
+                <select class="form-control"  id="itemselect" name="itemselect"><option>Scegli un Round</option></select>
+            </div>
+
+            <div class="col-xs-3 form-group">
                 {!! Form::label('invoice_no', 'Invoice No.*', ['class' => 'control-label']) !!}
                 {!! Form::text('invoice_no',"", ['class' => 'form-control', 'placeholder' => 'Invoice No.' ]) !!}
             </div>
 
-            <div class="col-xs-2 form-group">
+            <div class="col-xs-6 form-group">
                 {!! Form::label('date', 'Date*', ['class' => 'control-label']) !!}
-                {!!  Form::date('date', \Carbon\Carbon::now(), ['class' => 'control-label']) !!}
+                {!!  Form::date('date', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
             </div>
 
             <div class="col-xs-12 form-group">
                 {!! Form::label('activities', 'Activities*', ['class' => 'control-label']) !!}
                 {!! Form::textarea('activities',"", ['class' => 'form-control' ]) !!}
+            </div>
             </div>
         </div>
         {!! Form::submit(trans('global.app_create_invoice'), ['class' => 'btn btn-success']) !!}
